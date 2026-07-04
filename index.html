@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FE Interview Prep — 40 Day Dashboard</title>
+<style>
+  :root{
+    --bg:#0b0f1a; --bg2:#111726; --card:#151c2e; --card2:#1b2438;
+    --line:#243049; --txt:#e6ecf7; --muted:#8b97b3; --muted2:#5f6c8a;
+    --pink:#f472b6; --blue:#60a5fa; --yellow:#facc15; --green:#34d399;
+    --purple:#a78bfa; --orange:#fb923c; --red:#f87171;
+    --accent:#7c8cff;
+    --radius:16px; --shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(1200px 600px at 80% -10%, #1a2440 0%, transparent 60%),
+               radial-gradient(1000px 500px at 0% 0%, #161d33 0%, transparent 55%),
+               var(--bg);
+    color:var(--txt); min-height:100vh; padding:22px 20px 80px;
+  }
+  .wrap{max-width:1180px;margin:0 auto}
+  h1,h2,h3{margin:0}
+  a{color:var(--blue)}
+
+  /* Header */
+  .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+  .brand{display:flex;flex-direction:column;gap:6px}
+  .brand h1{font-size:24px;letter-spacing:-.5px;display:flex;align-items:center;gap:10px}
+  .brand .sub{color:var(--muted);font-size:13px}
+  .levelbox{background:linear-gradient(135deg,var(--card2),var(--card));border:1px solid var(--line);
+    border-radius:var(--radius);padding:12px 16px;min-width:230px;box-shadow:var(--shadow)}
+  .levelbox .lvltop{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .levelbox .lvlname{font-weight:700;font-size:14px}
+  .levelbox .xp{font-size:11px;color:var(--muted)}
+  .xpbar{height:8px;background:#0e1424;border-radius:999px;overflow:hidden}
+  .xpbar>div{height:100%;background:linear-gradient(90deg,var(--accent),var(--purple));border-radius:999px;transition:width .5s}
+
+  /* Stat cards */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+  .stat .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+  .stat .v{font-size:32px;font-weight:800;letter-spacing:-1px;margin-top:6px;line-height:1}
+  .stat .foot{font-size:12px;color:var(--muted2);margin-top:6px}
+  .stat .glow{position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;filter:blur(30px);opacity:.25}
+
+  .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:start}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .panel h2{font-size:15px;display:flex;align-items:center;gap:9px;margin-bottom:14px}
+  .panel h2 .tag{margin-left:auto;font-size:11px;color:var(--muted);font-weight:500}
+
+  /* Log form */
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+  label{font-size:11px;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+  input,select,textarea{width:100%;background:#0e1424;border:1px solid var(--line);color:var(--txt);
+    border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit;outline:none;transition:border .2s}
+  input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+  textarea{resize:vertical;min-height:44px}
+  .btn{background:linear-gradient(135deg,var(--accent),var(--purple));color:#fff;border:none;border-radius:10px;
+    padding:11px 16px;font-size:14px;font-weight:700;cursor:pointer;transition:transform .1s,filter .2s}
+  .btn:hover{filter:brightness(1.08)}
+  .btn:active{transform:scale(.98)}
+  .btn.ghost{background:#0e1424;border:1px solid var(--line);color:var(--muted)}
+  .btn.sm{padding:7px 12px;font-size:12px}
+
+  /* today log list */
+  .logitem{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+  .logitem:first-child{border-top:none}
+  .pill{font-size:11px;padding:3px 9px;border-radius:999px;font-weight:700;white-space:nowrap}
+  .logitem .body{flex:1;min-width:0}
+  .logitem .t{font-size:14px;font-weight:600}
+  .logitem .n{font-size:12px;color:var(--muted);margin-top:2px;word-wrap:break-word}
+  .logitem .meta{font-size:11px;color:var(--muted2);margin-top:3px}
+  .del{background:none;border:none;color:var(--muted2);cursor:pointer;font-size:15px;padding:2px 6px;border-radius:6px}
+  .del:hover{color:var(--red);background:#0e1424}
+  .empty{color:var(--muted2);font-size:13px;text-align:center;padding:16px}
+
+  /* category rings */
+  .cats{display:flex;flex-direction:column;gap:12px}
+  .cat{display:flex;align-items:center;gap:14px}
+  .ring{position:relative;flex:none}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .ico{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px}
+  .cat .info{flex:1;min-width:0}
+  .cat .info .name{font-size:13px;font-weight:600;display:flex;justify-content:space-between}
+  .cat .info .name span:last-child{color:var(--muted)}
+  .catbar{height:6px;background:#0e1424;border-radius:999px;margin-top:6px;overflow:hidden}
+  .catbar>div{height:100%;border-radius:999px;transition:width .5s}
+  .cat .hrs{font-size:11px;color:var(--muted2);margin-top:3px}
+
+  /* heatmap */
+  .heat{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+  .cell{aspect-ratio:1;border-radius:6px;background:#0e1424;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted2);position:relative;cursor:default}
+  .cell.today{outline:2px solid var(--accent);outline-offset:1px}
+  .cell.future{opacity:.4}
+  .cell .tip{visibility:hidden;position:absolute;bottom:115%;left:50%;transform:translateX(-50%);
+    background:#000;color:#fff;padding:5px 9px;border-radius:7px;font-size:11px;white-space:nowrap;z-index:5;box-shadow:var(--shadow)}
+  .cell:hover .tip{visibility:visible}
+  .heat-legend{display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-top:10px;font-size:11px;color:var(--muted)}
+  .heat-legend .sw{width:13px;height:13px;border-radius:4px}
+
+  /* resume */
+  .resume-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .resume-head .pct{font-size:26px;font-weight:800}
+  .resbar{flex:1;height:10px;background:#0e1424;border-radius:999px;overflow:hidden}
+  .resbar>div{height:100%;background:linear-gradient(90deg,var(--green),var(--blue));transition:width .5s}
+  .residem{padding:11px 0;border-top:1px solid var(--line)}
+  .residem:first-child{border-top:none}
+  .residem .top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .residem .rlabel{font-size:13px;font-weight:600}
+  .residem .rorg{font-size:11px;color:var(--muted2);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+  .conf{display:flex;gap:5px}
+  .conf button{border:1px solid var(--line);background:#0e1424;color:var(--muted2);border-radius:7px;
+    padding:4px 9px;font-size:11px;cursor:pointer;font-weight:600;transition:all .15s}
+  .conf button.on{color:#fff;border-color:transparent}
+  .conf button.on[data-l="1"]{background:var(--orange)}
+  .conf button.on[data-l="2"]{background:var(--blue)}
+  .conf button.on[data-l="3"]{background:var(--green)}
+
+  /* achievements */
+  .badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:12px}
+  .badge{background:#0e1424;border:1px solid var(--line);border-radius:12px;padding:12px 8px;text-align:center;position:relative;transition:transform .15s}
+  .badge:hover{transform:translateY(-2px)}
+  .badge.locked{opacity:.35;filter:grayscale(1)}
+  .badge .bico{font-size:26px}
+  .badge .bname{font-size:11px;font-weight:700;margin-top:5px}
+  .badge .bdesc{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.3}
+  .badge.unlocked{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset,0 6px 18px rgba(124,140,255,.18)}
+
+  /* activity feed */
+  .feed{max-height:280px;overflow:auto}
+  .feed .fitem{display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:13px}
+  .feed .fitem:first-child{border-top:none}
+  .feed .fdate{color:var(--muted2);font-size:11px;flex:none;width:52px}
+
+  /* toast */
+  .toast-wrap{position:fixed;top:20px;right:20px;z-index:100;display:flex;flex-direction:column;gap:10px}
+  .toast{background:linear-gradient(135deg,#1b2438,#151c2e);border:1px solid var(--accent);border-radius:12px;
+    padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);animation:pop .4s ease, fade .4s ease 3.6s forwards;min-width:240px}
+  .toast .ti{font-size:28px}
+  .toast .tt{font-weight:800;font-size:14px}
+  .toast .td{font-size:12px;color:var(--muted)}
+  @keyframes pop{0%{transform:translateX(60px) scale(.9);opacity:0}100%{transform:none;opacity:1}}
+  @keyframes fade{to{opacity:0;transform:translateX(60px)}}
+
+  .quote{font-size:13px;color:var(--muted);font-style:italic;text-align:center;margin:2px 0 20px}
+  .footer-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+  .mini{font-size:11px;color:var(--muted2);text-align:center;margin-top:14px}
+  .setter{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted)}
+  .setter input{width:auto;padding:6px 9px}
+
+  /* syllabus */
+  .syl-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .syl-top .pct{font-size:26px;font-weight:800}
+  .sylbar{flex:1;height:10px;background:#0e1424;border-radius:999px;overflow:hidden}
+  .sylbar>div{height:100%;background:linear-gradient(90deg,var(--purple),var(--pink));transition:width .5s}
+  .sylgroup{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden;background:#0e1424}
+  .sylhead{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;user-select:none}
+  .sylhead:hover{background:#131b2e}
+  .sylhead .caret{color:var(--muted2);font-size:12px;width:12px}
+  .sylhead .sylicon{font-size:16px}
+  .sylhead .syltitle{font-weight:700;font-size:13px;flex:none}
+  .sylhead .sylprog{font-size:11px;color:var(--muted);margin-left:auto;white-space:nowrap}
+  .sylhead .sylminibar{width:90px;height:6px;background:#0b1120;border-radius:999px;overflow:hidden;flex:none}
+  .sylhead .sylminibar>div{height:100%;border-radius:999px;transition:width .5s}
+  @media(max-width:640px){.sylhead .sylminibar{display:none}}
+  .sylitems{padding:4px 14px 12px 14px}
+  .sylitem{display:flex;align-items:center;gap:11px;padding:7px 0;cursor:pointer}
+  .sylitem:hover .stext{color:#fff}
+  .dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--muted2);flex:none;position:relative;transition:all .2s}
+  .dot.d1{background:var(--orange);border-color:var(--orange)}
+  .dot.d2{background:var(--green);border-color:var(--green)}
+  .dot.d2::after{content:"✓";position:absolute;inset:0;font-size:10px;color:#04120a;display:flex;align-items:center;justify-content:center;font-weight:900}
+  .stext{font-size:13px;color:var(--muted);transition:color .2s}
+  .stext.donetext{color:var(--muted2);text-decoration:line-through}
+  .syl-legend{font-size:11px;color:var(--muted2);display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .syl-legend b{color:var(--muted);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <h1>🚀 FE Interview Prep <span style="color:var(--muted);font-weight:400;font-size:15px">· 40-Day Sprint</span></h1>
+      <div class="sub" id="dateline"></div>
+      <div class="setter">
+        Start date: <input type="date" id="startDate" />
+        <button class="btn ghost sm" id="saveStart">Set</button>
+      </div>
+    </div>
+    <div class="levelbox">
+      <div class="lvltop">
+        <div class="lvlname" id="lvlName">🥚 Rookie</div>
+        <div class="xp" id="xpText">0 XP</div>
+      </div>
+      <div class="xpbar"><div id="xpFill" style="width:0%"></div></div>
+      <div class="xp" id="nextLvl" style="margin-top:6px"></div>
+    </div>
+  </div>
+
+  <div class="quote" id="quote"></div>
+
+  <div class="stats">
+    <div class="stat"><div class="glow" style="background:var(--blue)"></div>
+      <div class="k">Days Left</div><div class="v" id="daysLeft">40</div><div class="foot" id="dayProgress"></div></div>
+    <div class="stat"><div class="glow" style="background:var(--orange)"></div>
+      <div class="k">Current Streak</div><div class="v" id="streak">0 🔥</div><div class="foot" id="bestStreak"></div></div>
+    <div class="stat"><div class="glow" style="background:var(--green)"></div>
+      <div class="k">Total Hours</div><div class="v" id="totalHours">0</div><div class="foot" id="totalEntries"></div></div>
+    <div class="stat"><div class="glow" style="background:var(--purple)"></div>
+      <div class="k">Overall Readiness</div><div class="v" id="readiness">0%</div><div class="foot">across all tracks</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="col">
+      <!-- LOG -->
+      <div class="panel">
+        <h2>📝 Dump today's work <span class="tag" id="todayCount"></span></h2>
+        <div class="form-row">
+          <div><label>Category</label><select id="fCat"></select></div>
+          <div><label>Time (mins)</label><input type="number" id="fMin" min="0" step="5" placeholder="e.g. 45" /></div>
+        </div>
+        <div style="margin-bottom:10px"><label>What did you study / solve?</label>
+          <input id="fTitle" placeholder="e.g. Built autocomplete w/ keyboard nav + caching" /></div>
+        <div style="margin-bottom:12px"><label>Notes / takeaways (optional)</label>
+          <textarea id="fNotes" placeholder="Key insight, what to revise, link…"></textarea></div>
+        <div style="display:flex;gap:10px">
+          <button class="btn" id="addBtn" style="flex:1">+ Log it</button>
+          <button class="btn ghost" id="addBackdate">Backdate…</button>
+        </div>
+        <div id="todayList" style="margin-top:14px"></div>
+      </div>
+
+      <!-- HEATMAP -->
+      <div class="panel">
+        <h2>🗓️ 40-Day Consistency <span class="tag">hover a day for detail</span></h2>
+        <div class="heat" id="heat"></div>
+        <div class="heat-legend">Less
+          <span class="sw" style="background:#0e1424;border:1px solid var(--line)"></span>
+          <span class="sw" style="background:#1e3a5f"></span>
+          <span class="sw" style="background:#2d6fb0"></span>
+          <span class="sw" style="background:#4da3ff"></span>
+          <span class="sw" style="background:#7cc4ff"></span>More
+        </div>
+      </div>
+
+      <!-- ACHIEVEMENTS -->
+      <div class="panel">
+        <h2>🏆 Milestones <span class="tag" id="badgeCount"></span></h2>
+        <div class="badges" id="badges"></div>
+      </div>
+    </div>
+
+    <div class="col">
+      <!-- CATEGORIES -->
+      <div class="panel">
+        <h2>📊 Track coverage</h2>
+        <div class="cats" id="cats"></div>
+      </div>
+
+      <!-- RESUME -->
+      <div class="panel">
+        <h2>📄 Resume depth <span class="tag">interview-proof each project</span></h2>
+        <div class="resume-head">
+          <div class="pct" id="resPct">0%</div>
+          <div class="resbar"><div id="resFill" style="width:0%"></div></div>
+        </div>
+        <div id="resList"></div>
+        <div class="mini">Learning · Solid · Bulletproof — click to set your depth on each</div>
+      </div>
+
+      <!-- FEED -->
+      <div class="panel">
+        <h2>⚡ Recent activity</h2>
+        <div class="feed" id="feed"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SYLLABUS -->
+  <div class="panel">
+    <h2>📚 Study Syllabus <span class="tag" id="sylCount"></span></h2>
+    <div class="syl-top">
+      <div class="pct" id="sylPct">0%</div>
+      <div class="sylbar"><div id="sylFill" style="width:0%"></div></div>
+      <button class="btn ghost sm" id="sylToggleAll">Expand all</button>
+    </div>
+    <div id="syllabus"></div>
+    <div class="syl-legend" style="margin-top:12px">
+      Tap an item to cycle:
+      <span><span class="dot" style="display:inline-block;vertical-align:middle"></span> <b>To-do</b></span>
+      <span><span class="dot d1" style="display:inline-block;vertical-align:middle"></span> <b>Learning</b></span>
+      <span><span class="dot d2" style="display:inline-block;vertical-align:middle"></span> <b>Done</b></span>
+    </div>
+  </div>
+
+  <div class="footer-actions">
+    <button class="btn ghost sm" id="exportBtn">⬇︎ Backup (export JSON)</button>
+    <button class="btn ghost sm" id="importBtn">⬆︎ Restore</button>
+    <input type="file" id="importFile" accept="application/json" style="display:none" />
+    <button class="btn ghost sm" id="resetBtn" style="color:var(--red)">Reset all</button>
+  </div>
+  <div class="mini">Everything is saved locally in this browser. Export a backup weekly. · Built for Swapnil's 40-day sprint.</div>
+</div>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script>
+"use strict";
+const LS_KEY = "fe_prep_tracker_v1";
+const todayISO = () => new Date().toISOString().slice(0,10);
+
+const CATS = {
+  "Machine Coding":       {target:20, color:"#f472b6", icon:"🧩"},
+  "System Design":        {target:8,  color:"#60a5fa", icon:"🏛️"},
+  "JS Core & Polyfills":  {target:20, color:"#facc15", icon:"⚡"},
+  "DSA":                  {target:15, color:"#34d399", icon:"🧠"},
+  "Behavioral":           {target:10, color:"#a78bfa", icon:"🎯"},
+};
+
+const RESUME_SEED = [
+  {id:"mmt-mfe",   org:"MakeMyTrip", label:"Insurance post-sales micro-frontend migration (Module Federation)"},
+  {id:"mmt-cwv",   org:"MakeMyTrip", label:"B2C insurance listing revamp + Core Web Vitals (conversion lift)"},
+  {id:"mmt-cab",   org:"MakeMyTrip", label:"Themeable cab-modification package (MMT + Goibibo unified)"},
+  {id:"mmt-cancel",org:"MakeMyTrip", label:"Reason-aware cancellation-recovery + flight-delay auto-reschedule"},
+  {id:"mmt-track", org:"MakeMyTrip", label:"Real-time cab tracking in RN (Firebase) + trip-sharing safety view"},
+  {id:"mmt-xdm",   org:"MakeMyTrip", label:"Analytics migration Omniture → Adobe XDM"},
+  {id:"ck-lib",    org:"CK-12",      label:"WCAG-compliant component library + tokenized white-label theming"},
+  {id:"ck-tiny",   org:"CK-12",      label:"TinyMCE custom plugins (web components + LaTeX authoring)"},
+  {id:"ck-feed",   org:"CK-12",      label:"Personalized student microlearning study feeds"},
+  {id:"nl-onboard",org:"Nineleaps",  label:"Property-onboarding flow (co-living startup admin)"},
+];
+
+const CURRICULUM = [
+  {id:"sd-concepts", title:"System Design — Concepts", icon:"🏛️", color:"#60a5fa", items:[
+    "RADIO framework (Requirements→Architecture→Data→Interface→Optimizations)",
+    "Rendering strategies: CSR / SSR / SSG / ISR / streaming",
+    "React Server Components, hydration, islands, PPR",
+    "Core Web Vitals: LCP, CLS, INP — and how to fix each",
+    "Bundle optimization: code splitting, tree shaking, lazy loading",
+    "Image & asset optimization (formats, responsive, CDN)",
+    "List virtualization / windowing",
+    "Prefetching, preloading, resource hints",
+    "REST vs GraphQL (over/under-fetching)",
+    "Pagination: offset vs cursor + infinite scroll",
+    "Real-time: polling vs SSE vs WebSockets",
+    "Caching layers: HTTP, CDN, service worker, in-memory, normalized",
+    "Stale-while-revalidate & React Query / SWR caching",
+    "Offline support: service workers + IndexedDB + background sync",
+    "Optimistic UI & rollback",
+    "State management: server vs client state, normalization",
+    "Accessibility: semantic HTML, ARIA, keyboard, focus, WCAG",
+    "Security: XSS, CSRF, CSP, sanitization, CORS",
+    "Auth: cookies vs JWT, sessions, OAuth basics",
+    "i18n / l10n / RTL",
+    "Error handling, retries, error boundaries",
+    "Monitoring, logging, RUM, error tracking",
+    "Micro-frontends (Module Federation) & monorepos",
+    "Design systems, tokens, theming",
+    "Feature flags, A/B testing, analytics/telemetry",
+    "Component API design (compound, controlled/uncontrolled)",
+  ]},
+  {id:"sd-cases", title:"System Design — Case Studies", icon:"🗺️", color:"#818cf8", items:[
+    "Typeahead / autocomplete (Google search)",
+    "News feed (Facebook / Twitter)",
+    "Chat / messaging (WhatsApp)",
+    "Photo sharing (Instagram)",
+    "E-commerce listing + product page (Amazon)",
+    "Video streaming (YouTube)",
+    "Collaborative editor (Google Docs)",
+    "Email client (Gmail)",
+    "Analytics dashboard",
+    "Nested comments (Reddit)",
+    "Kanban board (Trello)",
+    "File / media uploader (chunked, resumable)",
+    "Infinite feed with ads & prefetch",
+    "Notification / activity center",
+  ]},
+  {id:"react", title:"React — Concepts", icon:"⚛️", color:"#22d3ee", items:[
+    "Virtual DOM, reconciliation, diffing, keys",
+    "Fiber architecture (high level)",
+    "useState & render batching",
+    "useEffect: deps, cleanup, timing",
+    "useEffect pitfalls: stale closures, race conditions",
+    "useRef & DOM refs",
+    "useMemo / useCallback — when they actually help",
+    "React.memo & re-render rules",
+    "useContext & context performance",
+    "useReducer & state machines",
+    "Custom hooks patterns",
+    "forwardRef & useImperativeHandle",
+    "Controlled vs uncontrolled components",
+    "Composition: compound components, render props, HOCs",
+    "Portals",
+    "Error boundaries",
+    "Suspense & lazy loading",
+    "Concurrent: useTransition, useDeferredValue",
+    "useSyncExternalStore",
+    "Derived state vs effects (avoid unnecessary effects)",
+    "Rules of Hooks, StrictMode double-invoke",
+    "State colocation & lifting state",
+  ]},
+  {id:"next", title:"Next.js — Concepts", icon:"▲", color:"#e5e7eb", items:[
+    "App Router vs Pages Router",
+    "Server vs Client Components (RSC)",
+    "Rendering: SSG, SSR, ISR, streaming",
+    "Data fetching in App Router (async components, fetch cache)",
+    "Data fetching in Pages (getServerSideProps / getStaticProps)",
+    "Server Actions",
+    "Route handlers / API routes",
+    "Next caching: request memo, data cache, full route cache, router cache",
+    "Dynamic, catch-all, parallel & intercepting routes",
+    "Layouts, templates, loading & error UI",
+    "Metadata & SEO",
+    "next/image optimization",
+    "next/font optimization",
+    "Middleware (edge)",
+    "Edge vs Node runtime",
+    "Link prefetching",
+    "Partial Prerendering (PPR)",
+    "Environment config & deployment",
+  ]},
+  {id:"js", title:"JavaScript & TypeScript", icon:"⚡", color:"#facc15", items:[
+    "Event loop: microtasks vs macrotasks",
+    "Closures, scope, hoisting, TDZ",
+    "this, call / apply / bind",
+    "Prototypes & prototype chain",
+    "Promises, async/await, error handling",
+    "Generators & iterators",
+    "Modules: ESM vs CommonJS",
+    "Debounce & throttle (implement)",
+    "Currying, partial application, compose/pipe",
+    "Deep clone / structuredClone",
+    "Event delegation, bubbling / capturing",
+    "Memory leaks, WeakMap / WeakRef",
+    "Polyfill: Promise.all / race / allSettled / any",
+    "Polyfill: bind / call / apply, map / reduce / filter",
+    "Custom Promise implementation",
+    "EventEmitter / pub-sub",
+    "LRU cache",
+    "TS: generics & constraints",
+    "TS: utility types (Partial, Pick, Omit, Record…)",
+    "TS: discriminated unions & narrowing",
+  ]},
+  {id:"mc", title:"Machine Coding — Build List", icon:"🧩", color:"#f472b6", items:[
+    "Star rating",
+    "Todo (add / edit / filter / persist)",
+    "Tabs",
+    "Accordion",
+    "Tic-tac-toe (+ N×N)",
+    "Autocomplete / typeahead",
+    "Infinite scroll (IntersectionObserver)",
+    "Modal (portal + focus trap)",
+    "Image carousel",
+    "Data table (sort / filter / paginate)",
+    "Toast notification system",
+    "OTP input",
+    "Nested comments (recursive)",
+    "Pagination",
+    "Multi-step progress bar",
+    "Stopwatch / timer",
+    "Calendar / date picker",
+    "Kanban drag-drop",
+    "File explorer tree",
+    "Chip / multi-select input",
+    "Poll / quiz widget",
+    "Debounced search with API",
+  ]},
+];
+
+const LEVELS = [
+  {xp:0,    name:"🥚 Rookie"},
+  {xp:300,  name:"🐣 Warming Up"},
+  {xp:800,  name:"⚙️ Grinder"},
+  {xp:1600, name:"🔧 Builder"},
+  {xp:2800, name:"🧭 Navigator"},
+  {xp:4400, name:"🎨 Craftsman"},
+  {xp:6500, name:"🏗️ Systems Thinker"},
+  {xp:9200, name:"🧠 Senior Mode"},
+  {xp:12500,name:"🛡️ Interview-Proof"},
+  {xp:16500,name:"🏆 FE Architect"},
+];
+
+const QUOTES = [
+  "Consistency beats intensity. Show up today.",
+  "You've shipped this stuff at scale — interviews are just narrating it well.",
+  "Every polyfill you write cold is one less thing to fear.",
+  "Design the system you already built. You have the receipts.",
+  "Small daily reps compound into an unfair advantage.",
+  "Done today > perfect someday.",
+  "The best time to log was after studying. The second best is now.",
+];
+
+const ACHIEVEMENTS = [
+  {id:"first",  ico:"👟", name:"First Steps",   desc:"Log your first entry",        check:s=>s.logs.length>=1},
+  {id:"s3",     ico:"🔥", name:"Warming Up",     desc:"3-day streak",               check:s=>bestStreak(s)>=3},
+  {id:"s7",     ico:"🔥", name:"On Fire",        desc:"7-day streak",               check:s=>bestStreak(s)>=7},
+  {id:"s14",    ico:"🌋", name:"Unstoppable",    desc:"14-day streak",              check:s=>bestStreak(s)>=14},
+  {id:"h10",    ico:"⏱️", name:"Getting Serious",desc:"10 hours logged",            check:s=>totalMin(s)>=600},
+  {id:"h50",    ico:"⌛", name:"Deep Work",       desc:"50 hours logged",            check:s=>totalMin(s)>=3000},
+  {id:"mc5",    ico:"🧩", name:"Builder",        desc:"5 machine-coding builds",    check:s=>catCount(s,"Machine Coding")>=5},
+  {id:"mc15",   ico:"🏭", name:"Component Machine",desc:"15 MC builds",             check:s=>catCount(s,"Machine Coding")>=15},
+  {id:"sd3",    ico:"🏛️", name:"Architect",      desc:"3 system-design sessions",   check:s=>catCount(s,"System Design")>=3},
+  {id:"sd8",    ico:"🗺️", name:"Systems Master", desc:"8 system-design sessions",   check:s=>catCount(s,"System Design")>=8},
+  {id:"js15",   ico:"⚡", name:"Polyglot",        desc:"15 JS/polyfill reps",        check:s=>catCount(s,"JS Core & Polyfills")>=15},
+  {id:"half",   ico:"🌓", name:"Halfway There",  desc:"Reach day 20",               check:s=>dayNumber(s)>=20},
+  {id:"res50",  ico:"📄", name:"Story Ready",     desc:"50% resume depth",           check:s=>resumePct(s)>=50},
+  {id:"res100", ico:"🛡️", name:"Bulletproof",    desc:"100% resume depth",          check:s=>resumePct(s)>=100},
+  {id:"syl25",  ico:"📚", name:"Bookworm",       desc:"25% of syllabus covered",    check:s=>syllabusPct(s)>=25},
+  {id:"syl50",  ico:"📖", name:"Well Read",      desc:"50% of syllabus covered",    check:s=>syllabusPct(s)>=50},
+  {id:"sdcpt",  ico:"🏛️", name:"SD Theory Done", desc:"All System Design concepts", check:s=>groupDone(s,"sd-concepts")},
+  {id:"reactc", ico:"⚛️", name:"React Master",   desc:"All React concepts done",    check:s=>groupDone(s,"react")},
+  {id:"nextc",  ico:"▲",  name:"Next Master",    desc:"All Next.js concepts done",  check:s=>groupDone(s,"next")},
+  {id:"ready",  ico:"🎓", name:"Interview Ready", desc:"80% overall readiness",      check:s=>readiness(s)>=80},
+];
+
+// ---------- state ----------
+function defaultState(){
+  return {
+    startDate: todayISO(),
+    totalDays: 40,
+    logs: [],
+    resume: RESUME_SEED.map(r=>({...r, conf:0})),
+    syllabus: {},
+    seen: [],
+  };
+}
+function load(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if(!raw) return defaultState();
+    const s = JSON.parse(raw);
+    // migrate resume if seed changed
+    const map = Object.fromEntries((s.resume||[]).map(r=>[r.id,r.conf]));
+    s.resume = RESUME_SEED.map(r=>({...r, conf: map[r.id]||0}));
+    s.syllabus = s.syllabus||{};
+    s.logs = s.logs||[]; s.seen = s.seen||[]; s.totalDays = s.totalDays||40;
+    s.startDate = s.startDate||todayISO();
+    return s;
+  }catch(e){ return defaultState(); }
+}
+function save(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+let state = load();
+
+// ---------- computations ----------
+const totalMin = s => s.logs.reduce((a,l)=>a+(+l.minutes||0),0);
+const catCount = (s,c) => s.logs.filter(l=>l.category===c).length;
+const catMin   = (s,c) => s.logs.filter(l=>l.category===c).reduce((a,l)=>a+(+l.minutes||0),0);
+function logDates(s){ return [...new Set(s.logs.map(l=>l.date))].sort(); }
+function daysBetween(a,b){ return Math.round((new Date(b)-new Date(a))/86400000); }
+function dayNumber(s){ return daysBetween(s.startDate, todayISO())+1; }
+
+function currentStreak(s){
+  const set = new Set(s.logs.map(l=>l.date));
+  let streak=0; let d=new Date(todayISO());
+  // allow streak to count from today or yesterday
+  if(!set.has(fmt(d))){ d.setDate(d.getDate()-1); if(!set.has(fmt(d))) return 0; }
+  while(set.has(fmt(d))){ streak++; d.setDate(d.getDate()-1); }
+  return streak;
+}
+function bestStreak(s){
+  const dates = logDates(s); if(!dates.length) return 0;
+  let best=1,cur=1;
+  for(let i=1;i<dates.length;i++){
+    if(daysBetween(dates[i-1],dates[i])===1) cur++; else cur=1;
+    best=Math.max(best,cur);
+  }
+  return best;
+}
+function fmt(d){ return d.toISOString().slice(0,10); }
+
+function catPct(s,c){ return Math.min(100, Math.round(catCount(s,c)/CATS[c].target*100)); }
+function avgCatPct(s){ const ks=Object.keys(CATS); return ks.reduce((a,c)=>a+catPct(s,c),0)/ks.length; }
+function resumePct(s){ const max=s.resume.length*3; const got=s.resume.reduce((a,r)=>a+r.conf,0); return max?Math.round(got/max*100):0; }
+
+function slug(t){ return t.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"").slice(0,44); }
+function itemId(gid,text){ return gid+"#"+slug(text); }
+function syllabusTotal(){ return CURRICULUM.reduce((a,g)=>a+g.items.length,0); }
+function syllabusSum(s){ return Object.values(s.syllabus||{}).reduce((a,v)=>a+(+v||0),0); }
+function syllabusPct(s){ const tot=syllabusTotal()*2; return tot?Math.round(syllabusSum(s)/tot*100):0; }
+function groupPct(s,g){ const got=g.items.reduce((a,t)=>a+(s.syllabus[itemId(g.id,t)]||0),0); return Math.round(got/(g.items.length*2)*100); }
+function groupDoneCount(s,g){ return g.items.filter(t=>(s.syllabus[itemId(g.id,t)]||0)===2).length; }
+function groupDone(s,gid){ const g=CURRICULUM.find(x=>x.id===gid); return g?groupPct(s,g)>=100:false; }
+
+function readiness(s){ return Math.round(avgCatPct(s)*0.3 + syllabusPct(s)*0.4 + resumePct(s)*0.3); }
+
+function xp(s){
+  return totalMin(s) // 1xp per min
+       + s.logs.length*20
+       + s.resume.reduce((a,r)=>a+r.conf,0)*30
+       + syllabusSum(s)*15
+       + unlocked(s).length*120;
+}
+function levelInfo(s){
+  const x=xp(s); let i=0;
+  for(let k=0;k<LEVELS.length;k++){ if(x>=LEVELS[k].xp) i=k; }
+  const cur=LEVELS[i], next=LEVELS[i+1];
+  const pct = next ? Math.round((x-cur.xp)/(next.xp-cur.xp)*100) : 100;
+  return {x,i,cur,next,pct};
+}
+function unlocked(s){ return ACHIEVEMENTS.filter(a=>a.check(s)); }
+
+// ---------- render ----------
+function render(){
+  // header
+  const dn = dayNumber(state);
+  const left = Math.max(0, state.totalDays - dn + 1);
+  document.getElementById("daysLeft").textContent = left;
+  document.getElementById("dayProgress").textContent =
+    dn<1 ? `starts in ${1-dn} day(s)` : `Day ${Math.min(dn,state.totalDays)} of ${state.totalDays}`;
+  document.getElementById("dateline").textContent =
+    new Date().toLocaleDateString(undefined,{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+  document.getElementById("startDate").value = state.startDate;
+
+  const cs = currentStreak(state), bs = bestStreak(state);
+  document.getElementById("streak").textContent = cs + " 🔥";
+  document.getElementById("bestStreak").textContent = "best: " + bs + " days";
+  document.getElementById("totalHours").textContent = (totalMin(state)/60).toFixed(1);
+  document.getElementById("totalEntries").textContent = state.logs.length + " entries logged";
+  document.getElementById("readiness").textContent = readiness(state) + "%";
+
+  // level
+  const L = levelInfo(state);
+  document.getElementById("lvlName").textContent = L.cur.name;
+  document.getElementById("xpText").textContent = L.x.toLocaleString() + " XP";
+  document.getElementById("xpFill").style.width = L.pct + "%";
+  document.getElementById("nextLvl").textContent = L.next ? `${(L.next.xp-L.x).toLocaleString()} XP to ${L.next.name}` : "MAX LEVEL — you're ready 🏆";
+
+  // quote (stable per day)
+  document.getElementById("quote").textContent = "“" + QUOTES[dn>=0?dn%QUOTES.length:0] + "”";
+
+  renderCatSelect();
+  renderTodayList();
+  renderCats();
+  renderHeat();
+  renderResume();
+  renderSyllabus();
+  renderBadges();
+  renderFeed();
+  save();
+}
+
+let expanded = {};
+function renderSyllabus(){
+  const box=document.getElementById("syllabus");
+  document.getElementById("sylPct").textContent = syllabusPct(state)+"%";
+  document.getElementById("sylFill").style.width = syllabusPct(state)+"%";
+  const doneItems = CURRICULUM.reduce((a,g)=>a+groupDoneCount(state,g),0);
+  document.getElementById("sylCount").textContent = `${doneItems}/${syllabusTotal()} topics done`;
+  box.innerHTML="";
+  CURRICULUM.forEach(g=>{
+    const gp=groupPct(state,g), done=groupDoneCount(state,g), open=!!expanded[g.id];
+    const grp=document.createElement("div"); grp.className="sylgroup";
+    grp.innerHTML=`
+      <div class="sylhead" data-g="${g.id}">
+        <span class="caret">${open?"▾":"▸"}</span>
+        <span class="sylicon">${g.icon}</span>
+        <span class="syltitle">${g.title}</span>
+        <span class="sylprog">${done}/${g.items.length}</span>
+        <div class="sylminibar"><div style="width:${gp}%;background:${g.color}"></div></div>
+      </div>
+      <div class="sylitems" style="display:${open?"block":"none"}">
+        ${g.items.map(t=>{ const id=itemId(g.id,t); const st=state.syllabus[id]||0;
+          return `<div class="sylitem" data-id="${id}"><span class="dot d${st}"></span><span class="stext ${st===2?"donetext":""}">${esc(t)}</span></div>`;
+        }).join("")}
+      </div>`;
+    box.appendChild(grp);
+  });
+  box.querySelectorAll(".sylhead").forEach(h=>h.onclick=()=>{ expanded[h.dataset.g]=!expanded[h.dataset.g]; renderSyllabus(); });
+  box.querySelectorAll(".sylitem").forEach(it=>it.onclick=()=>{
+    const id=it.dataset.id; state.syllabus[id]=((state.syllabus[id]||0)+1)%3; render(); checkNewAchievements();
+  });
+}
+
+function renderCatSelect(){
+  const sel=document.getElementById("fCat");
+  if(sel.options.length) return;
+  Object.keys(CATS).forEach(c=>{ const o=document.createElement("option"); o.value=c; o.textContent=CATS[c].icon+" "+c; sel.appendChild(o); });
+}
+
+function renderTodayList(){
+  const box=document.getElementById("todayList");
+  const t=todayISO();
+  const items=state.logs.filter(l=>l.date===t).sort((a,b)=>b.ts-a.ts);
+  document.getElementById("todayCount").textContent = items.length?`${items.length} today · ${items.reduce((a,l)=>a+(+l.minutes||0),0)} min`:"";
+  if(!items.length){ box.innerHTML='<div class="empty">Nothing logged today yet. Dump your first win ↑</div>'; return; }
+  box.innerHTML="";
+  items.forEach(l=>{
+    const c=CATS[l.category]||{color:"#888",icon:"•"};
+    const el=document.createElement("div"); el.className="logitem";
+    el.innerHTML=`<span class="pill" style="background:${hex2rgba(c.color,.16)};color:${c.color}">${c.icon} ${l.category}</span>
+      <div class="body"><div class="t">${esc(l.title)}</div>
+      ${l.notes?`<div class="n">${esc(l.notes)}</div>`:""}
+      <div class="meta">${l.minutes||0} min</div></div>
+      <button class="del" title="delete">✕</button>`;
+    el.querySelector(".del").onclick=()=>{ state.logs=state.logs.filter(x=>x.id!==l.id); render(); };
+    box.appendChild(el);
+  });
+}
+
+function renderCats(){
+  const box=document.getElementById("cats"); box.innerHTML="";
+  Object.keys(CATS).forEach(c=>{
+    const cf=CATS[c], cnt=catCount(state,c), pct=catPct(state,c), mins=catMin(state,c);
+    const R=22, C=2*Math.PI*R, off=C-(pct/100)*C;
+    const el=document.createElement("div"); el.className="cat";
+    el.innerHTML=`
+      <div class="ring">
+        <svg width="54" height="54">
+          <circle cx="27" cy="27" r="${R}" stroke="#0e1424" stroke-width="6" fill="none"/>
+          <circle cx="27" cy="27" r="${R}" stroke="${cf.color}" stroke-width="6" fill="none"
+            stroke-dasharray="${C}" stroke-dashoffset="${off}" stroke-linecap="round" style="transition:stroke-dashoffset .6s"/>
+        </svg>
+        <div class="ico">${cf.icon}</div>
+      </div>
+      <div class="info">
+        <div class="name"><span>${c}</span><span>${cnt}/${cf.target}</span></div>
+        <div class="catbar"><div style="width:${pct}%;background:${cf.color}"></div></div>
+        <div class="hrs">${(mins/60).toFixed(1)} h logged</div>
+      </div>`;
+    box.appendChild(el);
+  });
+}
+
+function renderHeat(){
+  const box=document.getElementById("heat"); box.innerHTML="";
+  const byDate={};
+  state.logs.forEach(l=>{ byDate[l.date]=(byDate[l.date]||0)+(+l.minutes||0); });
+  const start=new Date(state.startDate);
+  const t=todayISO();
+  for(let i=0;i<state.totalDays;i++){
+    const d=new Date(start); d.setDate(d.getDate()+i); const iso=fmt(d);
+    const mins=byDate[iso]||0;
+    const cell=document.createElement("div"); cell.className="cell";
+    if(iso===t) cell.className+=" today";
+    if(iso>t) cell.className+=" future";
+    cell.style.background=heatColor(mins);
+    if(mins>0) cell.style.color="#fff";
+    cell.textContent=i+1;
+    const label=d.toLocaleDateString(undefined,{month:"short",day:"numeric"});
+    cell.innerHTML+=`<div class="tip">Day ${i+1} · ${label}<br>${mins?mins+" min":"nothing yet"}</div>`;
+    box.appendChild(cell);
+  }
+}
+function heatColor(m){
+  if(m<=0) return "#0e1424";
+  if(m<30) return "#1e3a5f";
+  if(m<60) return "#2d6fb0";
+  if(m<120)return "#4da3ff";
+  return "#7cc4ff";
+}
+
+function renderResume(){
+  const pct=resumePct(state);
+  document.getElementById("resPct").textContent=pct+"%";
+  document.getElementById("resFill").style.width=pct+"%";
+  const box=document.getElementById("resList"); box.innerHTML="";
+  const labels=["","Learning","Solid","Bulletproof"];
+  state.resume.forEach(r=>{
+    const el=document.createElement("div"); el.className="residem";
+    el.innerHTML=`<div class="top">
+        <div><div class="rorg">${r.org}</div><div class="rlabel">${esc(r.label)}</div></div>
+      </div>
+      <div class="conf" style="margin-top:8px">
+        ${[1,2,3].map(l=>`<button data-l="${l}" class="${r.conf>=l?'on':''}">${labels[l]}</button>`).join("")}
+      </div>`;
+    el.querySelectorAll(".conf button").forEach(b=>{
+      b.onclick=()=>{ const l=+b.dataset.l; r.conf = (r.conf===l)?l-1:l; render(); };
+    });
+    box.appendChild(el);
+  });
+}
+
+function renderBadges(){
+  const box=document.getElementById("badges"); box.innerHTML="";
+  const got=unlocked(state);
+  document.getElementById("badgeCount").textContent=`${got.length}/${ACHIEVEMENTS.length} unlocked`;
+  ACHIEVEMENTS.forEach(a=>{
+    const on=a.check(state);
+    const el=document.createElement("div"); el.className="badge "+(on?"unlocked":"locked");
+    el.innerHTML=`<div class="bico">${a.ico}</div><div class="bname">${a.name}</div><div class="bdesc">${a.desc}</div>`;
+    box.appendChild(el);
+  });
+}
+
+function renderFeed(){
+  const box=document.getElementById("feed"); box.innerHTML="";
+  const items=[...state.logs].sort((a,b)=>b.ts-a.ts).slice(0,25);
+  if(!items.length){ box.innerHTML='<div class="empty">Your logged work will appear here.</div>'; return; }
+  items.forEach(l=>{
+    const c=CATS[l.category]||{color:"#888",icon:"•"};
+    const d=new Date(l.date+"T00:00:00").toLocaleDateString(undefined,{month:"short",day:"numeric"});
+    const el=document.createElement("div"); el.className="fitem";
+    el.innerHTML=`<div class="fdate">${d}</div>
+      <div><span style="color:${c.color}">${c.icon}</span> ${esc(l.title)}
+      <span style="color:var(--muted2)"> · ${l.minutes||0}m</span></div>`;
+    box.appendChild(el);
+  });
+}
+
+// ---------- achievements toast ----------
+function checkNewAchievements(){
+  const got=unlocked(state).map(a=>a.id);
+  const fresh=got.filter(id=>!state.seen.includes(id));
+  fresh.forEach(id=>{ const a=ACHIEVEMENTS.find(x=>x.id===id); toast(a.ico,"Achievement unlocked!",a.name); });
+  if(fresh.length){ state.seen=got; save(); }
+}
+function toast(ico,title,desc){
+  const w=document.getElementById("toasts");
+  const el=document.createElement("div"); el.className="toast";
+  el.innerHTML=`<div class="ti">${ico}</div><div><div class="tt">${title}</div><div class="td">${desc}</div></div>`;
+  w.appendChild(el);
+  setTimeout(()=>el.remove(),4200);
+}
+
+// ---------- actions ----------
+function addLog(dateOverride){
+  const cat=document.getElementById("fCat").value;
+  const title=document.getElementById("fTitle").value.trim();
+  const min=+document.getElementById("fMin").value||0;
+  const notes=document.getElementById("fNotes").value.trim();
+  if(!title){ flash("fTitle"); return; }
+  const date = dateOverride || todayISO();
+  state.logs.push({id:"l"+Date.now()+Math.random().toString(36).slice(2,6), date, category:cat, title, minutes:min, notes, ts:Date.now()});
+  document.getElementById("fTitle").value="";
+  document.getElementById("fMin").value="";
+  document.getElementById("fNotes").value="";
+  render();
+  checkNewAchievements();
+}
+function flash(id){ const el=document.getElementById(id); el.style.borderColor="var(--red)"; setTimeout(()=>el.style.borderColor="",800); }
+
+document.getElementById("addBtn").onclick=()=>addLog();
+document.getElementById("addBackdate").onclick=()=>{
+  const d=prompt("Log for which date? (YYYY-MM-DD)", todayISO());
+  if(d && /^\d{4}-\d{2}-\d{2}$/.test(d)) addLog(d);
+  else if(d) alert("Use format YYYY-MM-DD");
+};
+document.getElementById("fNotes").addEventListener("keydown",e=>{ if(e.metaKey&&e.key==="Enter") addLog(); });
+document.getElementById("fTitle").addEventListener("keydown",e=>{ if(e.key==="Enter") addLog(); });
+
+document.getElementById("sylToggleAll").onclick=(e)=>{
+  const anyOpen=CURRICULUM.some(g=>expanded[g.id]);
+  CURRICULUM.forEach(g=>expanded[g.id]=!anyOpen);
+  e.target.textContent=anyOpen?"Expand all":"Collapse all";
+  renderSyllabus();
+};
+
+document.getElementById("saveStart").onclick=()=>{
+  const v=document.getElementById("startDate").value;
+  if(v){ state.startDate=v; render(); }
+};
+
+document.getElementById("exportBtn").onclick=()=>{
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+  a.download=`fe-prep-backup-${todayISO()}.json`; a.click();
+};
+document.getElementById("importBtn").onclick=()=>document.getElementById("importFile").click();
+document.getElementById("importFile").onchange=e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{ try{ state=JSON.parse(r.result); load(); state=Object.assign(defaultState(),state); render(); toast("✅","Restored","Backup loaded"); }catch(err){ alert("Invalid file"); } };
+  r.readAsText(f);
+};
+document.getElementById("resetBtn").onclick=()=>{
+  if(confirm("Erase ALL logged data and start fresh? Export a backup first if unsure.")){
+    localStorage.removeItem(LS_KEY); state=defaultState(); render();
+  }
+};
+
+// ---------- utils ----------
+function esc(s){ return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function hex2rgba(hex,a){ const n=parseInt(hex.slice(1),16); return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`; }
+
+render();
+checkNewAchievements();
+</script>
+</body>
+</html>
