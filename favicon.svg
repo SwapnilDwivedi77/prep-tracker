@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Money">
+  <defs>
+    <linearGradient id="coin" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde68a"/>
+      <stop offset="45%" stop-color="#facc15"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="100%" stop-color="#a16207"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="8" fill="#0b0f1a"/>
+  <circle cx="16" cy="16" r="11" fill="url(#rim)"/>
+  <circle cx="16" cy="16" r="9.5" fill="url(#coin)"/>
+  <circle cx="16" cy="16" r="7.5" fill="none" stroke="#a16207" stroke-width=".8" opacity=".45"/>
+  <text x="16" y="20.5" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-size="13" font-weight="800" fill="#713f12">$</text>
+</svg>

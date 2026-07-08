@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>FE Interview Prep — 40 Day Dashboard</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<title>40-Day Progress Tracker</title>
 <style>
   :root{
     --bg:#0b0f1a; --bg2:#111726; --card:#151c2e; --card2:#1b2438;
@@ -22,7 +23,7 @@
                var(--bg);
     color:var(--txt); min-height:100vh; padding:22px 20px 80px;
   }
-  .wrap{max-width:1180px;margin:0 auto}
+  .wrap{max-width:1180px;margin:0 auto;min-width:0}
   h1,h2,h3{margin:0}
   a{color:var(--blue)}
 
@@ -46,8 +47,8 @@
   .xpbar>div{height:100%;background:linear-gradient(90deg,var(--accent),var(--purple));border-radius:999px;transition:width .5s}
   .levelbox .nextline{font-size:9px;color:var(--muted2);margin-top:4px;line-height:1.3}
 
-  .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:stretch}
-  .col{display:flex;flex-direction:column;gap:18px;min-height:0}
+  .grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:18px;align-items:stretch}
+  .col{display:flex;flex-direction:column;gap:18px;min-height:0;min-width:0}
   .col .panel{margin-bottom:0}
   .panel-feed{flex:1;display:flex;flex-direction:column;min-height:0}
   @media(max-width:900px){
@@ -57,7 +58,7 @@
     .panel-feed{flex:none}
   }
 
-  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:18px;box-shadow:var(--shadow);min-width:0}
   .panel h2{font-size:15px;display:flex;align-items:center;gap:9px;margin-bottom:14px}
   .panel h2 .tag{margin-left:auto;font-size:11px;color:var(--muted);font-weight:500}
 
@@ -76,12 +77,15 @@
   .btn.sm{padding:7px 12px;font-size:12px}
 
   /* today log list */
-  .logitem{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+  #todayList{min-width:0;overflow:hidden}
+  .logitem{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-top:1px solid var(--line);min-width:0;max-width:100%}
   .logitem:first-child{border-top:none}
-  .pill{font-size:11px;padding:3px 9px;border-radius:999px;font-weight:700;white-space:nowrap}
-  .logitem .body{flex:1;min-width:0}
-  .logitem .t{font-size:14px;font-weight:600}
-  .logitem .n{font-size:12px;color:var(--muted);margin-top:2px;word-wrap:break-word}
+  .pill{font-size:11px;padding:3px 9px;border-radius:999px;font-weight:700;white-space:nowrap;flex-shrink:0}
+  .logitem .body{flex:1;min-width:0;overflow:hidden}
+  .logitem .t{font-size:14px;font-weight:600;overflow-wrap:anywhere;word-break:break-word}
+  .logitem .n{font-size:12px;color:var(--muted);margin-top:2px;overflow-wrap:anywhere;word-break:break-word}
+  .logitem .n a{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--blue);text-decoration:none}
+  .logitem .n a:hover{text-decoration:underline}
   .logitem .meta{font-size:11px;color:var(--muted2);margin-top:3px}
   .del{background:none;border:none;color:var(--muted2);cursor:pointer;font-size:15px;padding:2px 6px;border-radius:6px}
   .del:hover{color:var(--red);background:#0e1424}
@@ -250,6 +254,45 @@
   .stext.donetext{color:var(--muted2);text-decoration:line-through}
   .syl-legend{font-size:11px;color:var(--muted2);display:flex;gap:16px;align-items:center;flex-wrap:wrap}
   .syl-legend b{color:var(--muted);font-weight:600}
+
+  /* nav */
+  .nav{display:flex;gap:6px;margin-bottom:14px}
+  .nav button{background:#0e1424;border:1px solid var(--line);color:var(--muted);border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
+  .nav button:hover{color:var(--txt);border-color:#3a4a6a}
+  .nav button.active{background:var(--card2);color:var(--txt);border-color:var(--accent);box-shadow:0 0 0 1px rgba(124,140,255,.25) inset}
+  .nav .badge{font-size:10px;background:rgba(250,204,21,.15);color:var(--yellow);padding:2px 7px;border-radius:999px;margin-left:4px}
+
+  /* star */
+  .starbtn{background:none;border:none;cursor:pointer;font-size:16px;line-height:1;padding:2px 4px;border-radius:6px;color:var(--muted2);transition:transform .12s,color .15s}
+  .starbtn:hover{color:var(--yellow);transform:scale(1.1)}
+  .starbtn.on{color:var(--yellow);text-shadow:0 0 10px rgba(250,204,21,.35)}
+  .star-toggle{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .star-toggle label{margin:0;text-transform:none;letter-spacing:0;font-size:13px;color:var(--txt);cursor:pointer;display:flex;align-items:center;gap:6px}
+
+  /* history */
+  .hist-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+  .hist-toolbar .filter-bar{display:flex;gap:4px;background:#0e1424;border:1px solid var(--line);border-radius:10px;padding:4px}
+  .hist-toolbar .filter-bar button{background:transparent;border:none;color:var(--muted);border-radius:7px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+  .hist-toolbar .filter-bar button.active{background:var(--card2);color:var(--txt)}
+  .hist-search{flex:1;min-width:180px}
+  .hist-list{display:flex;flex-direction:column;gap:10px;min-width:0}
+  .hist-card{background:#0e1424;border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;transition:border-color .15s,background .15s;min-width:0;max-width:100%;overflow:hidden}
+  .hist-card:hover{border-color:#3a4a6a;background:#111a2c}
+  .hist-card.open{border-color:var(--accent);background:#121a2e}
+  .hist-card .hrow{display:flex;align-items:flex-start;gap:10px}
+  .hist-card .hbody{flex:1;min-width:0}
+  .hist-card .htitle{font-size:14px;font-weight:700;line-height:1.35;overflow-wrap:anywhere;word-break:break-word}
+  .hist-card .hmeta{font-size:11px;color:var(--muted2);margin-top:4px;display:flex;gap:8px;flex-wrap:wrap}
+  .hist-card .hdetail{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-size:13px;line-height:1.55;overflow-wrap:anywhere;word-break:break-word}
+  .hist-card.open .hdetail{display:block}
+  .hist-card .hdetail .lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+  .hist-card .hdetail .notes{color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word}
+  .hist-card .hdetail .linkrow{margin-top:10px}
+  .hist-card .hdetail a.linkpill{display:inline-flex;align-items:center;gap:6px;max-width:100%;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.3);color:var(--blue);padding:6px 10px;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;overflow-wrap:anywhere;word-break:break-all}
+  .hist-card .hdetail a.linkpill:hover{background:rgba(96,165,250,.18)}
+  .hist-card .hactions{display:flex;gap:4px;flex:none}
+  .view{display:none}
+  .view.active{display:block}
 </style>
 </head>
 <body>
@@ -257,7 +300,7 @@
 
   <div class="topbar">
     <div class="brand">
-      <h1>🚀 FE Interview Prep <span style="color:var(--muted);font-weight:400;font-size:15px">· 40-Day Sprint</span></h1>
+      <h1>📈 Progress Tracker <span style="color:var(--muted);font-weight:400;font-size:15px">· 40-Day Sprint</span></h1>
       <div class="sub" id="dateline"></div>
       <div class="setter">
         Start date: <input type="date" id="startDate" />
@@ -300,6 +343,12 @@
 
   <div class="quote" id="quote"></div>
 
+  <div class="nav">
+    <button class="active" id="navDash" data-view="dashboard">🏠 Dashboard</button>
+    <button id="navHist" data-view="history">📜 Log History <span class="badge" id="starCount" style="display:none"></span></button>
+  </div>
+
+  <div class="view active" id="viewDashboard">
   <div class="grid">
     <div class="col">
       <!-- LOG -->
@@ -311,8 +360,14 @@
         </div>
         <div style="margin-bottom:10px"><label>What did you study / solve?</label>
           <input id="fTitle" placeholder="e.g. Built autocomplete w/ keyboard nav + caching" /></div>
-        <div style="margin-bottom:12px"><label>Notes / takeaways (optional)</label>
-          <textarea id="fNotes" placeholder="Key insight, what to revise, link…"></textarea></div>
+        <div style="margin-bottom:10px"><label>Notes / takeaways (optional)</label>
+          <textarea id="fNotes" placeholder="Key insight, what to revise, things to revisit…"></textarea></div>
+        <div style="margin-bottom:10px"><label>Link (optional)</label>
+          <input id="fLink" type="url" placeholder="https://leetcode.com/… or repo / article URL" /></div>
+        <div class="star-toggle">
+          <button type="button" class="starbtn" id="fStar" title="Star this log">☆</button>
+          <label for="fStar">Star this log — save to revisit later</label>
+        </div>
         <div style="display:flex;gap:10px">
           <button class="btn" id="addBtn" style="flex:1">+ Log it</button>
           <button class="btn ghost" id="addBackdate">Backdate…</button>
@@ -394,6 +449,24 @@
         </div>
         <div class="heat-legend-row" style="color:var(--muted2);font-size:9px">🟢 ring = streak day</div>
       </div>
+    </div>
+  </div>
+  </div><!-- /viewDashboard -->
+
+  <div class="view" id="viewHistory">
+    <div class="panel">
+      <h2>📜 Log History <span class="tag" id="histCount"></span></h2>
+      <div class="hist-toolbar">
+        <div class="filter-bar">
+          <button class="active" data-hist="all" id="histAll">All</button>
+          <button data-hist="starred" id="histStarred">⭐ Starred</button>
+        </div>
+        <select id="histCat" style="width:auto;min-width:160px">
+          <option value="">All categories</option>
+        </select>
+        <input class="hist-search" id="histSearch" placeholder="Search title, notes, link…" />
+      </div>
+      <div class="hist-list" id="histList"></div>
     </div>
   </div>
 
@@ -661,6 +734,10 @@ function load(){
     s.logs = s.logs||[]; s.seen = s.seen||[]; s.totalDays = s.totalDays||40;
     s.startDate = s.startDate||todayISO();
     s.activeTab = s.activeTab||"syllabus";
+    s.view = s.view||"dashboard";
+    s.histFilter = s.histFilter||"all";
+    s.histOpenId = s.histOpenId||null;
+    s.logs.forEach(l=>{ if(l.starred==null) l.starred=false; if(l.link==null) l.link=""; });
     return s;
   }catch(e){ return defaultState(); }
 }
@@ -750,6 +827,12 @@ function levelInfo(s){
   return {x,i,cur,next,pct};
 }
 function unlocked(s){ return ACHIEVEMENTS.filter(a=>a.check(s)); }
+const starredCount = s => s.logs.filter(l=>l.starred).length;
+function getLog(id){ return state.logs.find(l=>l.id===id); }
+function toggleStar(id){
+  const l=getLog(id); if(!l) return;
+  l.starred=!l.starred; render();
+}
 
 // ---------- render ----------
 function render(){
@@ -789,7 +872,22 @@ function render(){
   renderBadges();
   renderFeed();
   renderTabs();
+  renderNav();
+  if(state.view==="history") renderHistory();
   save();
+}
+
+function renderNav(){
+  const stars=starredCount(state);
+  const badge=document.getElementById("starCount");
+  if(badge){
+    if(stars){ badge.style.display="inline"; badge.textContent=stars; }
+    else badge.style.display="none";
+  }
+  document.getElementById("navDash").classList.toggle("active", state.view==="dashboard");
+  document.getElementById("navHist").classList.toggle("active", state.view==="history");
+  document.getElementById("viewDashboard").classList.toggle("active", state.view==="dashboard");
+  document.getElementById("viewHistory").classList.toggle("active", state.view==="history");
 }
 
 function renderTabs(){
@@ -851,10 +949,13 @@ function renderTodayList(){
     const c=CATS[l.category]||{color:"#888",icon:"•"};
     const el=document.createElement("div"); el.className="logitem";
     el.innerHTML=`<span class="pill" style="background:${hex2rgba(c.color,.16)};color:${c.color}">${c.icon} ${l.category}</span>
-      <div class="body"><div class="t">${esc(l.title)}</div>
+      <div class="body"><div class="t">${l.starred?"⭐ ":""}${esc(l.title)}</div>
       ${l.notes?`<div class="n">${esc(l.notes)}</div>`:""}
+      ${l.link?`<div class="n"><a href="${escAttr(l.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🔗 ${esc(shortUrl(l.link))}</a></div>`:""}
       <div class="meta">${l.minutes||0} min</div></div>
+      <button class="starbtn ${l.starred?"on":""}" title="${l.starred?"Unstar":"Star"}">${l.starred?"★":"☆"}</button>
       <button class="del" title="delete">✕</button>`;
+    el.querySelector(".starbtn").onclick=e=>{ e.stopPropagation(); toggleStar(l.id); };
     el.querySelector(".del").onclick=()=>{ state.logs=state.logs.filter(x=>x.id!==l.id); render(); };
     box.appendChild(el);
   });
@@ -1001,9 +1102,74 @@ function renderFeed(){
     const d=new Date(l.date+"T00:00:00").toLocaleDateString(undefined,{month:"short",day:"numeric"});
     const el=document.createElement("div"); el.className="fitem";
     el.innerHTML=`<div class="fdate">${d}</div>
-      <div><span style="color:${c.color}">${c.icon}</span> ${esc(l.title)}
+      <div>${l.starred?"⭐ ":""}<span style="color:${c.color}">${c.icon}</span> ${esc(l.title)}
       <span style="color:var(--muted2)"> · ${l.minutes||0}m</span></div>`;
     box.appendChild(el);
+  });
+}
+
+let histCatInit=false;
+function renderHistory(){
+  const box=document.getElementById("histList");
+  const sel=document.getElementById("histCat");
+  if(!histCatInit){
+    Object.keys(CATS).forEach(c=>{
+      const o=document.createElement("option"); o.value=c; o.textContent=CATS[c].icon+" "+c; sel.appendChild(o);
+    });
+    histCatInit=true;
+  }
+  const q=(document.getElementById("histSearch").value||"").trim().toLowerCase();
+  const catF=sel.value;
+  let items=[...state.logs].sort((a,b)=>b.ts-a.ts);
+  if(state.histFilter==="starred") items=items.filter(l=>l.starred);
+  if(catF) items=items.filter(l=>l.category===catF);
+  if(q) items=items.filter(l=>
+    (l.title||"").toLowerCase().includes(q) ||
+    (l.notes||"").toLowerCase().includes(q) ||
+    (l.link||"").toLowerCase().includes(q)
+  );
+  document.getElementById("histCount").textContent =
+    state.histFilter==="starred" ? `${items.length} starred` : `${items.length} of ${state.logs.length}`;
+  document.getElementById("histAll").classList.toggle("active", state.histFilter==="all");
+  document.getElementById("histStarred").classList.toggle("active", state.histFilter==="starred");
+  if(!items.length){
+    box.innerHTML=`<div class="empty">${state.histFilter==="starred"?"No starred logs yet — star important entries from the dashboard.":"No logs match your filters."}</div>`;
+    return;
+  }
+  box.innerHTML="";
+  items.forEach(l=>{
+    const c=CATS[l.category]||{color:"#888",icon:"•"};
+    const d=new Date(l.date+"T00:00:00").toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});
+    const open=state.histOpenId===l.id;
+    const card=document.createElement("div");
+    card.className="hist-card"+(open?" open":"");
+    card.innerHTML=`
+      <div class="hrow">
+        <span class="pill" style="background:${hex2rgba(c.color,.16)};color:${c.color}">${c.icon} ${l.category}</span>
+        <div class="hbody">
+          <div class="htitle">${l.starred?"⭐ ":""}${esc(l.title)}</div>
+          <div class="hmeta"><span>${d}</span><span>${l.minutes||0} min</span></div>
+          <div class="hdetail">
+            <div class="lbl">What you studied / solved</div>
+            <div>${esc(l.title)}</div>
+            ${l.notes?`<div style="margin-top:10px"><div class="lbl">Notes / takeaways</div><div class="notes">${esc(l.notes)}</div></div>`:""}
+            ${l.link?`<div class="linkrow"><div class="lbl">Link</div><a class="linkpill" href="${escAttr(l.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🔗 ${esc(shortUrl(l.link))}</a></div>`:""}
+            <div style="margin-top:10px;font-size:11px;color:var(--muted2)">Logged ${new Date(l.ts).toLocaleString()}</div>
+          </div>
+        </div>
+        <div class="hactions">
+          <button class="starbtn ${l.starred?"on":""}" title="${l.starred?"Unstar":"Star"}">${l.starred?"★":"☆"}</button>
+          <button class="del" title="delete">✕</button>
+        </div>
+      </div>`;
+    card.querySelector(".starbtn").onclick=e=>{ e.stopPropagation(); toggleStar(l.id); };
+    card.querySelector(".del").onclick=e=>{ e.stopPropagation(); state.logs=state.logs.filter(x=>x.id!==l.id); if(state.histOpenId===l.id) state.histOpenId=null; render(); };
+    card.onclick=e=>{
+      if(e.target.closest("a,button")) return;
+      state.histOpenId=open?null:l.id;
+      renderHistory(); save();
+    };
+    box.appendChild(card);
   });
 }
 
@@ -1028,12 +1194,17 @@ function addLog(dateOverride){
   const title=document.getElementById("fTitle").value.trim();
   const min=+document.getElementById("fMin").value||0;
   const notes=document.getElementById("fNotes").value.trim();
+  const link=document.getElementById("fLink").value.trim();
+  const starred=document.getElementById("fStar").classList.contains("on");
   if(!title){ flash("fTitle"); return; }
   const date = dateOverride || todayISO();
-  state.logs.push({id:"l"+Date.now()+Math.random().toString(36).slice(2,6), date, category:cat, title, minutes:min, notes, ts:Date.now()});
+  state.logs.push({id:"l"+Date.now()+Math.random().toString(36).slice(2,6), date, category:cat, title, minutes:min, notes, link, starred, ts:Date.now()});
   document.getElementById("fTitle").value="";
   document.getElementById("fMin").value="";
   document.getElementById("fNotes").value="";
+  document.getElementById("fLink").value="";
+  document.getElementById("fStar").classList.remove("on");
+  document.getElementById("fStar").textContent="☆";
   render();
   checkNewAchievements();
 }
@@ -1047,6 +1218,27 @@ document.getElementById("addBackdate").onclick=()=>{
 };
 document.getElementById("fNotes").addEventListener("keydown",e=>{ if(e.metaKey&&e.key==="Enter") addLog(); });
 document.getElementById("fTitle").addEventListener("keydown",e=>{ if(e.key==="Enter") addLog(); });
+document.getElementById("fStar").onclick=()=>{
+  const b=document.getElementById("fStar");
+  b.classList.toggle("on");
+  b.textContent=b.classList.contains("on")?"★":"☆";
+};
+
+function setView(v){
+  state.view=v;
+  location.hash=v==="history"?"history":"";
+  render();
+}
+document.getElementById("navDash").onclick=()=>setView("dashboard");
+document.getElementById("navHist").onclick=()=>setView("history");
+document.getElementById("histAll").onclick=()=>{ state.histFilter="all"; renderHistory(); save(); };
+document.getElementById("histStarred").onclick=()=>{ state.histFilter="starred"; renderHistory(); save(); };
+document.getElementById("histCat").onchange=()=>renderHistory();
+document.getElementById("histSearch").oninput=()=>renderHistory();
+function syncViewFromHash(){
+  state.view=location.hash.replace("#","")==="history"?"history":"dashboard";
+}
+window.addEventListener("hashchange",()=>{ syncViewFromHash(); render(); });
 
 document.getElementById("sylToggleAll").onclick=(e)=>{
   const anyOpen=CURRICULUM.some(g=>expanded[g.id]);
@@ -1088,8 +1280,11 @@ document.getElementById("resetBtn").onclick=()=>{
 
 // ---------- utils ----------
 function esc(s){ return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function escAttr(s){ return esc(s).replace(/`/g,"&#96;"); }
+function shortUrl(u){ try{ const x=new URL(u); return x.hostname.replace(/^www\./,"")+x.pathname.replace(/\/$/,"").slice(0,36); }catch(e){ return u.slice(0,48); } }
 function hex2rgba(hex,a){ const n=parseInt(hex.slice(1),16); return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`; }
 
+syncViewFromHash();
 render();
 checkNewAchievements();
 </script>
