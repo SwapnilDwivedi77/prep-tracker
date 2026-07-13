@@ -113,7 +113,7 @@
   }
   .heat-panel::before{
     content:"";position:absolute;top:-40%;right:-8%;width:220px;height:220px;border-radius:50%;
-    background:radial-gradient(circle,rgba(251,146,60,.12) 0%,transparent 70%);pointer-events:none;
+    background:radial-gradient(circle,rgba(57,211,83,.1) 0%,transparent 70%);pointer-events:none;
   }
   .heat-panel h2{font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .heat-panel h2 .heat-sub{font-size:11px;color:var(--muted);font-weight:500;margin-left:auto}
@@ -139,10 +139,10 @@
     animation:heatIn .35s ease backwards;
   }
   .cell:hover{transform:scale(1.14) translateY(-2px);z-index:4;box-shadow:0 8px 20px rgba(0,0,0,.45);border-color:rgba(255,255,255,.15)}
-  .cell.l1{background:linear-gradient(145deg,#3d1a12,#5c2d18);border-color:rgba(251,146,60,.2)}
-  .cell.l2{background:linear-gradient(145deg,#9a3412,#ea580c);border-color:rgba(251,146,60,.35)}
-  .cell.l3{background:linear-gradient(145deg,#ea580c,#f472b6);border-color:rgba(244,114,182,.35)}
-  .cell.l4{background:linear-gradient(145deg,#f472b6,#a78bfa);border-color:rgba(167,139,250,.45);box-shadow:0 0 14px rgba(244,114,182,.25)}
+  .cell.l1{background:#0e4429;border-color:rgba(57,211,83,.18)}
+  .cell.l2{background:#006d32;border-color:rgba(57,211,83,.28)}
+  .cell.l3{background:#26a641;border-color:rgba(57,211,83,.38)}
+  .cell.l4{background:#39d353;border-color:rgba(57,211,83,.5);box-shadow:0 0 10px rgba(57,211,83,.2)}
   .cell.streak{box-shadow:inset 0 0 0 1px rgba(52,211,153,.55),0 0 10px rgba(52,211,153,.12)}
   .cell.today{
     outline:2px solid var(--accent);outline-offset:1px;
@@ -349,6 +349,39 @@
   </div>
 
   <div class="view active" id="viewDashboard">
+
+  <!-- STUDY TABS: Syllabus + Resume (moved up — was at page bottom) -->
+  <div class="panel">
+    <div class="tab-bar">
+      <button class="tab active" data-tab="syllabus" id="tabBtnSyllabus">📚 Syllabus <span class="tag" id="sylCountTab"></span></button>
+      <button class="tab" data-tab="resume" id="tabBtnResume">📄 Resume <span class="tag" id="resCountTab"></span></button>
+    </div>
+
+    <div class="tab-pane active" id="paneSyllabus">
+      <div class="syl-top">
+        <div class="pct" id="sylPct">0%</div>
+        <div class="sylbar"><div id="sylFill" style="width:0%"></div></div>
+        <button class="btn ghost sm" id="sylToggleAll">Expand all</button>
+      </div>
+      <div id="syllabus"></div>
+      <div class="syl-legend" style="margin-top:12px">
+        Tap an item to cycle:
+        <span><span class="dot" style="display:inline-block;vertical-align:middle"></span> <b>To-do</b></span>
+        <span><span class="dot d1" style="display:inline-block;vertical-align:middle"></span> <b>Learning</b></span>
+        <span><span class="dot d2" style="display:inline-block;vertical-align:middle"></span> <b>Done</b></span>
+      </div>
+    </div>
+
+    <div class="tab-pane" id="paneResume">
+      <div class="resume-head">
+        <div class="pct" id="resPct">0%</div>
+        <div class="resbar"><div id="resFill" style="width:0%"></div></div>
+      </div>
+      <div id="resList"></div>
+      <div class="mini">Learning · Solid · Bulletproof — click to set your depth on each</div>
+    </div>
+  </div>
+
   <div class="grid">
     <div class="col">
       <!-- LOG -->
@@ -389,38 +422,6 @@
         <div class="cats" id="cats"></div>
       </div>
 
-      <!-- STUDY TABS: Syllabus + Resume -->
-      <div class="panel">
-        <div class="tab-bar">
-          <button class="tab active" data-tab="syllabus" id="tabBtnSyllabus">📚 Syllabus <span class="tag" id="sylCountTab"></span></button>
-          <button class="tab" data-tab="resume" id="tabBtnResume">📄 Resume <span class="tag" id="resCountTab"></span></button>
-        </div>
-
-        <div class="tab-pane active" id="paneSyllabus">
-          <div class="syl-top">
-            <div class="pct" id="sylPct">0%</div>
-            <div class="sylbar"><div id="sylFill" style="width:0%"></div></div>
-            <button class="btn ghost sm" id="sylToggleAll">Expand all</button>
-          </div>
-          <div id="syllabus"></div>
-          <div class="syl-legend" style="margin-top:12px">
-            Tap an item to cycle:
-            <span><span class="dot" style="display:inline-block;vertical-align:middle"></span> <b>To-do</b></span>
-            <span><span class="dot d1" style="display:inline-block;vertical-align:middle"></span> <b>Learning</b></span>
-            <span><span class="dot d2" style="display:inline-block;vertical-align:middle"></span> <b>Done</b></span>
-          </div>
-        </div>
-
-        <div class="tab-pane" id="paneResume">
-          <div class="resume-head">
-            <div class="pct" id="resPct">0%</div>
-            <div class="resbar"><div id="resFill" style="width:0%"></div></div>
-          </div>
-          <div id="resList"></div>
-          <div class="mini">Learning · Solid · Bulletproof — click to set your depth on each</div>
-        </div>
-      </div>
-
       <!-- FEED -->
       <div class="panel panel-feed">
         <h2>⚡ Recent activity</h2>
@@ -442,10 +443,10 @@
       <div class="heat-legend">
         <div class="heat-legend-row">Less
           <span class="sw" style="background:#0e1424"></span>
-          <span class="sw" style="background:linear-gradient(145deg,#3d1a12,#5c2d18)"></span>
-          <span class="sw" style="background:linear-gradient(145deg,#9a3412,#ea580c)"></span>
-          <span class="sw" style="background:linear-gradient(145deg,#ea580c,#f472b6)"></span>
-          <span class="sw" style="background:linear-gradient(145deg,#f472b6,#a78bfa)"></span>More
+          <span class="sw" style="background:#0e4429"></span>
+          <span class="sw" style="background:#006d32"></span>
+          <span class="sw" style="background:#26a641"></span>
+          <span class="sw" style="background:#39d353"></span>More
         </div>
         <div class="heat-legend-row" style="color:var(--muted2);font-size:9px">🟢 ring = streak day</div>
       </div>
@@ -1005,15 +1006,14 @@ function renderHeat(){
       const d=new Date(start); d.setDate(d.getDate()+i); const iso=fmt(d);
       const mins=byDate[iso]||0;
       const lvl=heatLevel(mins);
-      const mood=heatMood(mins);
       if(iso<=t && mins>0){ activeDays++; sprintMins+=mins; }
 
       const cell=document.createElement("div");
       cell.className=`cell l${lvl}`+(iso===t?" today":"")+(iso>t?" future":"")+(streakSet.has(iso)?" streak":"");
       cell.style.animationDelay=`${i*18}ms`;
       const label=d.toLocaleDateString(undefined,{month:"short",day:"numeric"});
-      const detail=mins?`${mins} min · ${mood.label}`:"No log yet — your move!";
-      cell.innerHTML=`${lvl>=4?`<span class="cell-ico">${mood.ico}</span>`:""}<span class="cell-num">${i+1}</span><div class="tip"><strong>${mood.ico} Day ${i+1} · ${label}</strong>${detail}</div>`;
+      const detail=mins?`${mins} min logged`:"No log yet";
+      cell.innerHTML=`<span class="cell-num">${i+1}</span><div class="tip"><strong>Day ${i+1} · ${label}</strong>${detail}</div>`;
       cells.appendChild(cell);
     }
     box.appendChild(rowEl);
@@ -1041,13 +1041,6 @@ function heatLevel(m){
   if(m<60) return 2;
   if(m<120) return 3;
   return 4;
-}
-function heatMood(m){
-  if(m<=0) return {ico:"😴", label:"Rest day"};
-  if(m<30) return {ico:"🌱", label:"Light session"};
-  if(m<60) return {ico:"💪", label:"Solid grind"};
-  if(m<120) return {ico:"🔥", label:"Deep work"};
-  return {ico:"🚀", label:"Beast mode"};
 }
 function streakDateSet(s){
   const logged=new Set(s.logs.map(l=>l.date));
