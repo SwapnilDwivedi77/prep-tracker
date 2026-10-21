@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-<title>40-Day Progress Tracker</title>
+<title>Prep Quest — Winter Arc</title>
 <style>
   :root{
     --bg:#0b0f1a; --bg2:#111726; --card:#151c2e; --card2:#1b2438;
@@ -260,7 +260,7 @@
   .nav button{background:#0e1424;border:1px solid var(--line);color:var(--muted);border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
   .nav button:hover{color:var(--txt);border-color:#3a4a6a}
   .nav button.active{background:var(--card2);color:var(--txt);border-color:var(--accent);box-shadow:0 0 0 1px rgba(124,140,255,.25) inset}
-  .nav .badge{font-size:10px;background:rgba(250,204,21,.15);color:var(--yellow);padding:2px 7px;border-radius:999px;margin-left:4px}
+  .nav .navbadge{font-size:10px;background:rgba(250,204,21,.15);color:var(--yellow);padding:2px 7px;border-radius:999px;margin-left:4px}
 
   /* star */
   .starbtn{background:none;border:none;cursor:pointer;font-size:16px;line-height:1;padding:2px 4px;border-radius:6px;color:var(--muted2);transition:transform .12s,color .15s}
@@ -293,25 +293,186 @@
   .hist-card .hactions{display:flex;gap:4px;flex:none}
   .view{display:none}
   .view.active{display:block}
+
+  /* ===== APP BAR ===== */
+  body{padding-top:12px}
+  .appbar{position:sticky;top:10px;z-index:60;display:flex;align-items:center;gap:10px;padding:8px 10px;margin-bottom:18px;
+    background:rgba(21,28,46,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+  .ab-brand{font-weight:800;font-size:15px;color:var(--txt);text-decoration:none;display:flex;gap:6px;align-items:center;white-space:nowrap;padding-left:4px}
+  .ab-stats{display:flex;gap:6px;align-items:center;margin-left:auto;min-width:0}
+  .ab-chip{font-size:12px;font-weight:700;background:#0e1424;border:1px solid var(--line);border-radius:999px;padding:5px 10px;white-space:nowrap}
+  .ab-level{display:flex;flex-direction:column;gap:3px;padding:4px 12px}
+  .ab-xp{display:block;height:3px;background:#0b1120;border-radius:999px;overflow:hidden;min-width:80px}
+  .ab-xp span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--purple));transition:width .5s}
+  .ab-nav{display:flex;gap:3px;background:#0e1424;border:1px solid var(--line);border-radius:10px;padding:3px}
+  .ab-nav a{display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:7px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:700}
+  .ab-nav a:hover{color:var(--txt)}
+  .ab-nav a.active{background:var(--card2);color:var(--txt);box-shadow:0 0 0 1px rgba(124,140,255,.35) inset}
+  @media(max-width:720px){.ab-level{display:none}}
+  @media(max-width:520px){.ab-brand span,.ab-nav a span{display:none}.ab-nav a{padding:6px 9px;font-size:15px}.appbar{gap:6px}}
+  .qworldbar{display:flex;align-items:center;gap:12px;margin-top:16px;position:relative;flex-wrap:wrap}
+  .qwsegs{display:flex;gap:4px;flex:1;min-width:160px}
+  .qws{flex:1;height:6px;border-radius:999px;background:#0e1424;border:1px solid var(--line)}
+  .qws.on{background:var(--wc);border-color:transparent}
+  .qws.boss{flex:1.4}
+  .qws.here{box-shadow:0 0 0 2px var(--accent);background:color-mix(in srgb,var(--accent) 35%,#0e1424)}
+  .qwlink{font-size:11px;color:var(--muted);text-decoration:none;white-space:nowrap}
+  .qwlink:hover{color:var(--txt)}
+  details.qhow summary{cursor:pointer;font-weight:700;color:var(--txt)}
+  details.qhow[open] summary{margin-bottom:6px}
+  .qmaphead{display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .qmaphead h2{font-size:20px;margin:0}
+  .qmapstats{display:grid;grid-template-columns:repeat(4,minmax(70px,auto));gap:8px}
+  .qmapstats div{background:#0e1424;border:1px solid var(--line);border-radius:10px;padding:8px 10px;text-align:center}
+  .qmapstats b{display:block;font-size:17px}
+  .qmapstats span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+  @media(max-width:520px){.qmapstats{grid-template-columns:repeat(2,1fr);width:100%}}
+
+  /* ===== TODAY / QUEST ===== */
+  .qbanner{background:rgba(250,204,21,.07);border:1px solid rgba(250,204,21,.35);color:#fde68a;border-radius:12px;padding:12px 14px;font-size:13px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;line-height:1.45}
+  .qbanner-act{display:flex;gap:8px;margin-left:auto}
+  .qhero{position:relative;overflow:hidden;background:linear-gradient(140deg,var(--card2),var(--card) 60%);border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:var(--shadow)}
+  .qhero::before{content:"";position:absolute;right:-70px;bottom:-90px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--wc) 24%,transparent),transparent 70%);pointer-events:none}
+  .qhero.boss{border-color:rgba(244,114,182,.55);background:linear-gradient(140deg,#2a1730,#151c2e 65%)}
+  .qchips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;position:relative}
+  .qchip{font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;background:#0e1424;border:1px solid var(--line);color:var(--muted)}
+  .qchip.world{color:var(--wc);border-color:color-mix(in srgb,var(--wc) 45%,transparent)}
+  .qchip.boss{color:#f9a8d4;border-color:rgba(244,114,182,.5);background:rgba(244,114,182,.1)}
+  .qchip.carry{color:#fdba74;border-color:rgba(251,146,60,.45);background:rgba(251,146,60,.08)}
+  .qchip.ok{color:#6ee7b7;border-color:rgba(52,211,153,.45);background:rgba(52,211,153,.08)}
+  .qhero-main{display:flex;gap:18px;align-items:center;position:relative}
+  .qhero-text{flex:1;min-width:0}
+  .qhero h2{font-size:26px;letter-spacing:-.5px;line-height:1.2}
+  .qday{display:block;font-size:12px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px}
+  .qblurb{color:var(--muted);font-size:14px;margin-top:8px;line-height:1.5}
+  .qring{flex:none;position:relative;width:88px;height:88px}
+  .qring svg{transform:rotate(-90deg)}
+  .qrt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:19px;line-height:1.1}
+  .qrt small{font-size:10px;color:var(--muted);font-weight:600}
+  @media(max-width:640px){.qhero-main{align-items:flex-start;gap:8px}.qring{transform:scale(.7);transform-origin:top right;width:62px;height:62px}.qhero h2{font-size:21px}}
+  .qtasks{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+  .qtask{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;transition:border-color .2s,background .2s}
+  .qtask:hover{border-color:#3a4a6a}
+  .qtask.bonus{border-style:dashed}
+  .qtask.done{background:#0f1a1c;border-color:rgba(52,211,153,.35)}
+  .qtask.done .qtitle{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(52,211,153,.6)}
+  .qcheck{flex:none;width:32px;height:32px;border-radius:50%;border:2px solid var(--muted2);background:#0e1424;color:#04120a;font-weight:900;font-size:16px;cursor:pointer;transition:transform .15s,background .2s,border-color .2s;margin-top:1px;font-family:inherit;padding:0}
+  .qcheck:hover{border-color:var(--green);transform:scale(1.08)}
+  .qtask.done .qcheck{background:var(--green);border-color:var(--green);animation:qpop .35s ease}
+  @keyframes qpop{0%{transform:scale(.6)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+  .qbody{flex:1;min-width:0}
+  .qmeta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:7px}
+  .qtask.studying{border-color:rgba(251,146,60,.45);background:#1a1a22}
+  .qtask.studying .qcheck{background:rgba(251,146,60,.14);border-color:var(--orange);font-size:14px}
+  .qstudy{font-size:10px;font-weight:800;letter-spacing:.6px;color:var(--orange);border:1px solid rgba(251,146,60,.45);border-radius:6px;padding:2px 6px}
+  .qhow{font-size:12px;color:var(--muted);line-height:1.55;background:#0e1424;border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:10px}
+  .qhow b{color:var(--txt)}
+  .qbonus{font-size:10px;font-weight:800;letter-spacing:.6px;color:var(--yellow);border:1px solid rgba(250,204,21,.4);border-radius:6px;padding:2px 6px}
+  .qmin{font-size:11px;color:var(--muted2);margin-left:auto;white-space:nowrap}
+  .qtitle{font-size:15px;font-weight:700;line-height:1.35;overflow-wrap:anywhere}
+  .qdrill{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.5}
+  .qclaim{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+  .qclaim.ready{border-color:rgba(52,211,153,.6);box-shadow:0 0 0 1px rgba(52,211,153,.25) inset,0 10px 30px rgba(52,211,153,.1)}
+  .qclaim h3{font-size:15px;margin-bottom:4px}
+  .qclaim .qsub{font-size:12px;color:var(--muted);margin-bottom:10px}
+  .qstars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0 12px}
+  .qstar{background:#0e1424;border:1px solid var(--line);border-radius:12px;padding:10px 8px;text-align:center;font-size:11px;color:var(--muted2);line-height:1.35}
+  .qstar b{display:block;font-size:22px;color:var(--muted2);line-height:1.1}
+  .qstar.on{border-color:rgba(250,204,21,.5);color:var(--muted)}
+  .qstar.on b{color:var(--yellow);text-shadow:0 0 12px rgba(250,204,21,.45)}
+  .qsn{font-weight:700;color:var(--txt);font-size:12px;margin:3px 0 2px}
+  .btn.big{width:100%;padding:14px;font-size:15px}
+  .btn.glow{animation:qglow 1.6s ease-in-out infinite}
+  @keyframes qglow{0%,100%{box-shadow:0 0 0 0 rgba(124,140,255,.55)}50%{box-shadow:0 0 0 9px rgba(124,140,255,0)}}
+  .btn:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.5)}
+  .qnext{font-size:12px;color:var(--muted2);text-align:center;margin:0 0 16px}
+  .qcleared{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.35);border-radius:14px;padding:14px 16px;margin-bottom:14px;font-size:13px;color:#a7f3d0;line-height:1.5}
+  .qcleared .qnote{color:var(--muted);font-style:italic;margin-top:6px}
+  .qrecall{background:linear-gradient(140deg,#17183a,var(--card));border:1px solid rgba(167,139,250,.35);border-radius:16px;padding:16px;margin-bottom:14px}
+  .qrecall.muted{background:var(--card);border-color:var(--line);color:var(--muted2);font-size:13px}
+  .qrh{font-weight:800;font-size:14px;display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .qrh .tag{margin-left:auto;font-size:11px;color:var(--muted);font-weight:500}
+  .qrq{font-size:14px;line-height:1.5}
+  .qrecall details{margin-top:8px;font-size:12px;color:var(--muted)}
+  .qrecall summary{cursor:pointer;color:var(--purple)}
+  .qract{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .qrres{margin-top:12px;font-size:13px;color:#c4b5fd;font-weight:600}
+  .qrevisit{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+  .qrevisit .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+  .qrv{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:13px;color:var(--muted)}
+  .qrv span{flex:1;min-width:0}
+  .qmap .qworld{margin-bottom:16px}
+  .qmap .qworld:last-child{margin-bottom:0}
+  .qwhead{display:flex;justify-content:space-between;gap:10px;font-size:12px;font-weight:800;color:var(--wc);margin-bottom:8px}
+  .qwhead .tag{color:var(--muted);font-weight:500}
+  .qnodes{display:grid;grid-template-columns:repeat(7,minmax(0,78px));gap:8px}
+  
+  .qnode{aspect-ratio:1;border-radius:12px;border:1px solid var(--line);background:#0e1424;color:var(--muted2);font-weight:800;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:inherit;padding:0;transition:transform .15s;min-width:0}
+  .qnode:hover{transform:translateY(-2px)}
+  .qnode .qn{font-size:14px;line-height:1}
+  .qnode .qs{font-size:8px;color:var(--yellow);letter-spacing:-.5px;line-height:1}
+  .qnode.cleared{background:color-mix(in srgb,var(--wc) 16%,#0e1424);border-color:color-mix(in srgb,var(--wc) 55%,transparent);color:var(--txt)}
+  .qnode.current{border:2px solid var(--accent);color:var(--txt);animation:qnpulse 2s ease-in-out infinite}
+  @keyframes qnpulse{0%,100%{box-shadow:0 0 0 0 rgba(124,140,255,.5)}50%{box-shadow:0 0 0 6px rgba(124,140,255,0)}}
+  .qnode.locked{opacity:.38}
+  .qnode.boss{border-color:rgba(244,114,182,.45)}
+  .qnode.boss .qn{font-size:17px}
+  .qnode.viewing{outline:2px solid var(--pink);outline-offset:2px}
+  .qvictory{text-align:center;padding:30px 20px}
+  .qvictory .big{font-size:64px}
+  .qvictory h2{font-size:26px;margin:10px 0 6px}
+  .xpfloat{position:fixed;z-index:150;pointer-events:none;font-weight:800;font-size:13px;color:var(--yellow);text-shadow:0 2px 8px rgba(0,0,0,.7);animation:xpup 1.1s ease-out forwards}
+  @keyframes xpup{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-42px)}}
+  .confetti{position:fixed;inset:0;pointer-events:none;z-index:200}
+  @media (prefers-reduced-motion: reduce){.qnode.current,.btn.glow,.qtask.done .qcheck{animation:none}}
 </style>
 </head>
 <body>
 <div class="wrap">
 
+  <header class="appbar">
+    <a class="ab-brand" href="#/">🎯 <span>Prep Quest</span></a>
+    <div class="ab-stats">
+      <span class="ab-chip" id="abStreak" title="Current streak">🔥 0</span>
+      <span class="ab-chip" id="abStars" title="Stars collected">⭐ 0</span>
+      <span class="ab-chip ab-level" title="Level & XP"><span id="abLevel">🥚 Rookie</span><span class="ab-xp"><span id="abXpFill"></span></span></span>
+    </div>
+    <nav class="ab-nav">
+      <a href="#/" id="navToday" title="Today's bucket">🎯<span>Today</span></a>
+      <a href="#/map" id="navMap" title="Quest map & milestones">🗺️<span>Map</span></a>
+      <a href="#/stats" id="navStats" title="Stats, syllabus & logs">📊<span>Stats</span></a>
+    </nav>
+  </header>
+
+  <!-- ===== /  — today's bucket only ===== -->
+  <div class="view active" id="viewToday"><div id="todayView"></div></div>
+
+  <!-- ===== /map — journey + milestones ===== -->
+  <div class="view" id="viewMap">
+    <div id="mapView"></div>
+    <div class="panel">
+      <h2>🏆 Milestones <span class="tag" id="badgeCount"></span></h2>
+      <div class="badges" id="badges"></div>
+    </div>
+  </div>
+
+  <!-- ===== /stats — numbers, syllabus, logs, settings ===== -->
+  <div class="view" id="viewStats">
   <div class="topbar">
     <div class="brand">
-      <h1>📈 Progress Tracker <span style="color:var(--muted);font-weight:400;font-size:15px">· 40-Day Sprint</span></h1>
+      <h1>📊 Stats & Progress</h1>
       <div class="sub" id="dateline"></div>
       <div class="setter">
-        Start date: <input type="date" id="startDate" />
+        Sprint start: <input type="date" id="startDate" />
         <button class="btn ghost sm" id="saveStart">Set</button>
+        <span style="color:var(--muted2)">→ ends Dec 31</span>
       </div>
     </div>
     <div class="topbar-right">
       <div class="mini-stats">
         <div class="mstat">
           <span class="mk">Days Left</span>
-          <span class="mv" id="daysLeft">40</span>
+          <span class="mv" id="daysLeft">—</span>
           <span class="mf" id="dayProgress"></span>
         </div>
         <div class="mstat">
@@ -323,6 +484,11 @@
           <span class="mk">Total Hrs</span>
           <span class="mv" id="totalHours">0</span>
           <span class="mf" id="totalEntries"></span>
+        </div>
+        <div class="mstat">
+          <span class="mk">Quest</span>
+          <span class="mv" id="questStat">0</span>
+          <span class="mf" id="starStat">0 ★</span>
         </div>
         <div class="mstat">
           <span class="mk">Ready</span>
@@ -343,14 +509,6 @@
 
   <div class="quote" id="quote"></div>
 
-  <div class="nav">
-    <button class="active" id="navDash" data-view="dashboard">🏠 Dashboard</button>
-    <button id="navHist" data-view="history">📜 Log History <span class="badge" id="starCount" style="display:none"></span></button>
-  </div>
-
-  <div class="view active" id="viewDashboard">
-
-  <!-- STUDY TABS: Syllabus + Resume (moved up — was at page bottom) -->
   <div class="panel">
     <div class="tab-bar">
       <button class="tab active" data-tab="syllabus" id="tabBtnSyllabus">📚 Syllabus <span class="tag" id="sylCountTab"></span></button>
@@ -367,8 +525,8 @@
       <div class="syl-legend" style="margin-top:12px">
         Tap an item to cycle:
         <span><span class="dot" style="display:inline-block;vertical-align:middle"></span> <b>To-do</b></span>
-        <span><span class="dot d1" style="display:inline-block;vertical-align:middle"></span> <b>Learning</b></span>
-        <span><span class="dot d2" style="display:inline-block;vertical-align:middle"></span> <b>Done</b></span>
+        <span><span class="dot d1" style="display:inline-block;vertical-align:middle"></span> <b>Studying</b></span>
+        <span><span class="dot d2" style="display:inline-block;vertical-align:middle"></span> <b>Interview-ready</b></span>
       </div>
     </div>
 
@@ -384,45 +542,37 @@
 
   <div class="grid">
     <div class="col">
-      <!-- LOG -->
-      <div class="panel">
-        <h2>📝 Dump today's work <span class="tag" id="todayCount"></span></h2>
-        <div class="form-row">
-          <div><label>Category</label><select id="fCat"></select></div>
-          <div><label>Time (mins)</label><input type="number" id="fMin" min="0" step="5" placeholder="e.g. 45" /></div>
-        </div>
-        <div style="margin-bottom:10px"><label>What did you study / solve?</label>
-          <input id="fTitle" placeholder="e.g. Built autocomplete w/ keyboard nav + caching" /></div>
-        <div style="margin-bottom:10px"><label>Notes / takeaways (optional)</label>
-          <textarea id="fNotes" placeholder="Key insight, what to revise, things to revisit…"></textarea></div>
-        <div style="margin-bottom:10px"><label>Link (optional)</label>
-          <input id="fLink" type="url" placeholder="https://leetcode.com/… or repo / article URL" /></div>
-        <div class="star-toggle">
-          <button type="button" class="starbtn" id="fStar" title="Star this log">☆</button>
-          <label for="fStar">Star this log — save to revisit later</label>
-        </div>
-        <div style="display:flex;gap:10px">
-          <button class="btn" id="addBtn" style="flex:1">+ Log it</button>
-          <button class="btn ghost" id="addBackdate">Backdate…</button>
-        </div>
-        <div id="todayList" style="margin-top:14px"></div>
-      </div>
-
-      <!-- ACHIEVEMENTS -->
-      <div class="panel">
-        <h2>🏆 Milestones <span class="tag" id="badgeCount"></span></h2>
-        <div class="badges" id="badges"></div>
-      </div>
-    </div>
-
-    <div class="col">
-      <!-- CATEGORIES -->
       <div class="panel">
         <h2>📊 Track coverage</h2>
         <div class="cats" id="cats"></div>
       </div>
-
-      <!-- FEED -->
+      <div class="panel">
+        <details>
+          <summary style="cursor:pointer;font-weight:700;font-size:15px">📝 Log extra work <span class="tag" id="todayCount" style="color:var(--muted);font-weight:500;font-size:11px"></span></summary>
+          <div style="font-size:12px;color:var(--muted2);margin:8px 0 12px">Bucket tasks log themselves. Use this for anything outside the quest.</div>
+          <div class="form-row">
+            <div><label>Category</label><select id="fCat"></select></div>
+            <div><label>Time (mins)</label><input type="number" id="fMin" min="0" step="5" placeholder="e.g. 45" /></div>
+          </div>
+          <div style="margin-bottom:10px"><label>What did you study / solve?</label>
+            <input id="fTitle" placeholder="e.g. LeetCode 3-sum + 2 output questions" /></div>
+          <div style="margin-bottom:10px"><label>Notes / takeaways (optional)</label>
+            <textarea id="fNotes" placeholder="Key insight, what to revise, things to revisit…"></textarea></div>
+          <div style="margin-bottom:10px"><label>Link (optional)</label>
+            <input id="fLink" type="url" placeholder="https://leetcode.com/… or repo / article URL" /></div>
+          <div class="star-toggle">
+            <button type="button" class="starbtn" id="fStar" title="Star this log">☆</button>
+            <label for="fStar">Star this log — save to revisit later</label>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="btn" id="addBtn" style="flex:1">+ Log it</button>
+            <button class="btn ghost" id="addBackdate">Backdate…</button>
+          </div>
+          <div id="todayList" style="margin-top:14px"></div>
+        </details>
+      </div>
+    </div>
+    <div class="col">
       <div class="panel panel-feed">
         <h2>⚡ Recent activity</h2>
         <div class="feed" id="feed"></div>
@@ -430,10 +580,9 @@
     </div>
   </div>
 
-  <!-- HEATMAP — bottom, sprint calendar -->
   <div class="panel heat-panel">
     <div class="heat-block">
-      <h2>🗓️ 40-Day Consistency <span class="heat-sub" id="heatSub"></span></h2>
+      <h2>🗓️ Sprint Consistency <span class="heat-sub" id="heatSub"></span></h2>
       <div class="heat-meta" id="heatMeta"></div>
     </div>
     <div class="heat-wrap">
@@ -452,23 +601,20 @@
       </div>
     </div>
   </div>
-  </div><!-- /viewDashboard -->
 
-  <div class="view" id="viewHistory">
-    <div class="panel">
-      <h2>📜 Log History <span class="tag" id="histCount"></span></h2>
-      <div class="hist-toolbar">
-        <div class="filter-bar">
-          <button class="active" data-hist="all" id="histAll">All</button>
-          <button data-hist="starred" id="histStarred">⭐ Starred</button>
-        </div>
-        <select id="histCat" style="width:auto;min-width:160px">
-          <option value="">All categories</option>
-        </select>
-        <input class="hist-search" id="histSearch" placeholder="Search title, notes, link…" />
+  <div class="panel" id="historyPanel">
+    <h2>📜 Log History <span class="tag" id="histCount"></span></h2>
+    <div class="hist-toolbar">
+      <div class="filter-bar">
+        <button class="active" data-hist="all" id="histAll">All</button>
+        <button data-hist="starred" id="histStarred">⭐ Starred</button>
       </div>
-      <div class="hist-list" id="histList"></div>
+      <select id="histCat" style="width:auto;min-width:160px">
+        <option value="">All categories</option>
+      </select>
+      <input class="hist-search" id="histSearch" placeholder="Search title, notes, link…" />
     </div>
+    <div class="hist-list" id="histList"></div>
   </div>
 
   <div class="footer-actions">
@@ -477,21 +623,29 @@
     <input type="file" id="importFile" accept="application/json" style="display:none" />
     <button class="btn ghost sm" id="resetBtn" style="color:var(--red)">Reset all</button>
   </div>
-  <div class="mini">Everything is saved locally in this browser. Export a backup weekly. · Built for Swapnil's 40-day sprint.</div>
+  <div class="mini">Everything is saved locally in this browser. Export a backup weekly. · Built for Swapnil's winter arc.</div>
+  </div><!-- /viewStats -->
 </div>
-
 <div class="toast-wrap" id="toasts"></div>
 
 <script>
 "use strict";
 const LS_KEY = "fe_prep_tracker_v1";
-const todayISO = () => new Date().toISOString().slice(0,10);
+// Dates are LOCAL (not UTC) — a 4 AM IST study session belongs to today, not yesterday.
+const pad2 = n => String(n).padStart(2,"0");
+function fmt(d){ return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`; }
+function parseISO(s){ const [y,m,d]=String(s).split("-").map(Number); return new Date(y,(m||1)-1,d||1); }
+const todayISO = () => fmt(new Date());
 
+const C = {JS:"JS Core & Polyfills", MC:"Machine Coding", SD:"System Design", RN:"React & Next",
+           WEB:"Web, CSS & Testing", DSA:"DSA", BEH:"Behavioral"};
 const CATS = {
-  "Machine Coding":       {target:20, color:"#f472b6", icon:"🧩"},
-  "System Design":        {target:8,  color:"#60a5fa", icon:"🏛️"},
-  "JS Core & Polyfills":  {target:20, color:"#facc15", icon:"⚡"},
-  "DSA":                  {target:15, color:"#34d399", icon:"🧠"},
+  "Machine Coding":       {target:30, color:"#f472b6", icon:"🧩"},
+  "System Design":        {target:40, color:"#60a5fa", icon:"🏛️"},
+  "JS Core & Polyfills":  {target:28, color:"#facc15", icon:"⚡"},
+  "React & Next":         {target:40, color:"#22d3ee", icon:"⚛️"},
+  "Web, CSS & Testing":   {target:20, color:"#fb923c", icon:"🌐"},
+  "DSA":                  {target:12, color:"#34d399", icon:"🧠"},
   "Behavioral":           {target:10, color:"#a78bfa", icon:"🎯"},
 };
 
@@ -508,6 +662,10 @@ const RESUME_SEED = [
   {id:"nl-onboard",org:"Nineleaps",  label:"Property-onboarding flow (co-living startup admin)"},
 ];
 
+// CURRICULUM v4 — tuned to real 2025-26 frontend loops for ~6 YOE at product companies:
+// JS coding (output Qs + polyfills), machine coding (React AND vanilla JS), DSA (LeetCode medium + DOM trees),
+// frontend system design, product sense, hiring manager. Next.js trimmed to what actually gets asked.
+// Item text doubles as the progress key, so keep wording stable once you start.
 const CURRICULUM = [
   {id:"sd-concepts", title:"System Design — Concepts", icon:"🏛️", color:"#60a5fa", items:[
     "RADIO framework (Requirements→Architecture→Data→Interface→Optimizations)",
@@ -517,25 +675,24 @@ const CURRICULUM = [
     "Bundle optimization: code splitting, tree shaking, lazy loading",
     "Image & asset optimization (formats, responsive, CDN)",
     "List virtualization / windowing",
-    "Prefetching, preloading, resource hints",
     "REST vs GraphQL (over/under-fetching)",
     "Pagination: offset vs cursor + infinite scroll",
     "Real-time: polling vs SSE vs WebSockets",
     "Caching layers: HTTP, CDN, service worker, in-memory, normalized",
     "Stale-while-revalidate & React Query / SWR caching",
-    "Offline support: service workers + IndexedDB + background sync",
     "Optimistic UI & rollback",
     "State management: server vs client state, normalization",
     "Accessibility: semantic HTML, ARIA, keyboard, focus, WCAG",
     "Security: XSS, CSRF, CSP, sanitization, CORS",
     "Auth: cookies vs JWT, sessions, OAuth basics",
-    "i18n / l10n / RTL",
     "Error handling, retries, error boundaries",
     "Monitoring, logging, RUM, error tracking",
     "Micro-frontends (Module Federation) & monorepos",
     "Design systems, tokens, theming",
     "Feature flags, A/B testing, analytics/telemetry",
     "Component API design (compound, controlled/uncontrolled)",
+    "i18n / l10n / RTL",
+    "Offline support: service workers + IndexedDB + background sync",
   ]},
   {id:"sd-cases", title:"System Design — Case Studies", icon:"🗺️", color:"#818cf8", items:[
     "Typeahead / autocomplete (Google search)",
@@ -543,19 +700,19 @@ const CURRICULUM = [
     "Chat / messaging (WhatsApp)",
     "Photo sharing (Instagram)",
     "E-commerce listing + product page (Amazon)",
-    "Video streaming (YouTube)",
-    "Collaborative editor (Google Docs)",
-    "Email client (Gmail)",
-    "Analytics dashboard",
     "Nested comments (Reddit)",
-    "Kanban board (Trello)",
     "File / media uploader (chunked, resumable)",
-    "Infinite feed with ads & prefetch",
+    "Flight search & booking flow (MakeMyTrip)",
+    "Live ride tracking map (Uber)",
+    "Multi-brand design system & component library",
+    "AI chat assistant UI with streaming responses (ChatGPT)",
+    "Spreadsheet (Google Sheets)",
+    "Analytics dashboard",
     "Notification / activity center",
+    "Video streaming (YouTube)",
   ]},
   {id:"react", title:"React — Concepts", icon:"⚛️", color:"#22d3ee", items:[
     "Virtual DOM, reconciliation, diffing, keys",
-    "Fiber architecture (high level)",
     "useState & render batching",
     "useEffect: deps, cleanup, timing",
     "useEffect pitfalls: stale closures, race conditions",
@@ -565,37 +722,24 @@ const CURRICULUM = [
     "useContext & context performance",
     "useReducer & state machines",
     "Custom hooks patterns",
-    "forwardRef & useImperativeHandle",
     "Controlled vs uncontrolled components",
     "Composition: compound components, render props, HOCs",
     "Portals",
     "Error boundaries",
     "Suspense & lazy loading",
     "Concurrent: useTransition, useDeferredValue",
-    "useSyncExternalStore",
     "Derived state vs effects (avoid unnecessary effects)",
     "Rules of Hooks, StrictMode double-invoke",
     "State colocation & lifting state",
+    "React 19: use(), Actions, useOptimistic, useFormStatus",
+    "State libraries: Redux Toolkit vs Zustand vs Context vs React Query",
   ]},
-  {id:"next", title:"Next.js — Concepts", icon:"▲", color:"#e5e7eb", items:[
+  {id:"next", title:"Next.js — Essentials", icon:"▲", color:"#e5e7eb", items:[
     "App Router vs Pages Router",
     "Server vs Client Components (RSC)",
-    "Rendering: SSG, SSR, ISR, streaming",
-    "Data fetching in App Router (async components, fetch cache)",
-    "Data fetching in Pages (getServerSideProps / getStaticProps)",
-    "Server Actions",
-    "Route handlers / API routes",
     "Next caching: request memo, data cache, full route cache, router cache",
-    "Dynamic, catch-all, parallel & intercepting routes",
-    "Layouts, templates, loading & error UI",
-    "Metadata & SEO",
-    "next/image optimization",
-    "next/font optimization",
+    "Server Actions",
     "Middleware (edge)",
-    "Edge vs Node runtime",
-    "Link prefetching",
-    "Partial Prerendering (PPR)",
-    "Environment config & deployment",
   ]},
   {id:"js", title:"JavaScript & TypeScript", icon:"⚡", color:"#facc15", items:[
     "Event loop: microtasks vs macrotasks",
@@ -603,8 +747,7 @@ const CURRICULUM = [
     "this, call / apply / bind",
     "Prototypes & prototype chain",
     "Promises, async/await, error handling",
-    "Generators & iterators",
-    "Modules: ESM vs CommonJS",
+    "Types, coercion & equality (==, truthy/falsy, typeof)",
     "Debounce & throttle (implement)",
     "Currying, partial application, compose/pipe",
     "Deep clone / structuredClone",
@@ -615,9 +758,16 @@ const CURRICULUM = [
     "Custom Promise implementation",
     "EventEmitter / pub-sub",
     "LRU cache",
+    "Promise pool / concurrency limiter",
+    "Retry with exponential backoff + timeout",
+    "Flatten: Array.prototype.flat & nested objects",
+    "memoize / once / cache with TTL",
+    "Modules: ESM vs CommonJS",
+    "Vanilla DOM: build UI with createElement & events, no framework",
     "TS: generics & constraints",
     "TS: utility types (Partial, Pick, Omit, Record…)",
     "TS: discriminated unions & narrowing",
+    "Timers: clearAllTimeouts, setInterval via setTimeout",
   ]},
   {id:"mc", title:"Machine Coding — Build List", icon:"🧩", color:"#f472b6", items:[
     "Star rating",
@@ -633,29 +783,358 @@ const CURRICULUM = [
     "Toast notification system",
     "OTP input",
     "Nested comments (recursive)",
-    "Pagination",
-    "Multi-step progress bar",
     "Stopwatch / timer",
-    "Calendar / date picker",
     "Kanban drag-drop",
     "File explorer tree",
+    "Nested checkboxes (parent ↔ children sync)",
+    "Traffic light (state machine + timers)",
+    "Progress bars queue (max N concurrent)",
+    "Form with validation (sync + async)",
+    "Pagination",
+    "Multi-step progress bar",
+    "Calendar / date picker",
     "Chip / multi-select input",
     "Poll / quiz widget",
-    "Debounced search with API",
+    "Like button (optimistic + rollback)",
+    "Virtualized list (10k rows)",
+    "Undo / redo text editor",
+  ]},
+  {id:"web", title:"Browser, HTML & CSS", icon:"🌐", color:"#fb923c", items:[
+    "What happens when you type a URL (DNS → TCP → TLS → render)",
+    "Critical rendering path: DOM, CSSOM, render tree",
+    "Reflow vs repaint vs composite (layout thrashing)",
+    "Box model, display & positioning",
+    "Flexbox layout patterns",
+    "CSS Grid layout patterns",
+    "Specificity, cascade layers, inheritance, :is / :where",
+    "Stacking context & z-index",
+    "Responsive: media & container queries, units (rem/em/vw)",
+    "Storage: cookies vs localStorage vs sessionStorage vs IndexedDB",
+    "Observers: Intersection, Resize, Mutation",
+    "Semantic HTML, forms & native elements",
+    "CSS animations vs JS — transform/opacity, FLIP, will-change",
+    "Web Workers & off-main-thread work",
+  ]},
+  {id:"test", title:"Testing & Quality", icon:"🧪", color:"#a3e635", items:[
+    "Test pyramid & what to test in frontend",
+    "React Testing Library: queries, user-event, a11y-first",
+    "E2E with Playwright (flows, flakiness)",
+  ]},
+  {id:"dsa", title:"DSA — Problem Solving", icon:"🧠", color:"#34d399", items:[
+    "Arrays: prefix sums & Kadane (max subarray)",
+    "Hash maps: two-sum, group anagrams",
+    "Two pointers & sliding window",
+    "Stack: valid brackets, min stack",
+    "Recursion: permutations, subsets, nested structures",
+    "Binary search & lower bound",
+    "Trees: DOM traversal, getElementsByClassName",
+    "BFS / DFS: islands, topological sort",
+    "Intervals: merge / insert",
+    "Heap / top-K frequent",
+    "Linked list: reverse, detect cycle",
+    "DP intro: climbing stairs, coin change",
+  ]},
+  {id:"beh", title:"Behavioral & Product Sense", icon:"🎯", color:"#a78bfa", items:[
+    "Tell me about yourself (2-minute version)",
+    "Why are you leaving / why this company",
+    "STAR: micro-frontend migration (Module Federation)",
+    "STAR: Core Web Vitals / conversion-lift win",
+    "STAR: disagreement with a stakeholder",
+    "STAR: failure, mistake or production incident",
+    "STAR: mentoring / leading without authority",
+    "Product sense: prioritise features (P0/P1/P2), metrics & A/B",
+    "Questions to ask the interviewer",
+    "Compensation & negotiation script",
   ]},
 ];
 
+// =====================================================================
+// QUEST — 34 buckets, ~2 days each, done by Dec 31. Each task points at a syllabus item
+// (group, index), so ticking it here also ticks it in the Syllabus. "x" tasks are boss-only drills.
+// =====================================================================
+const GROUPS = Object.fromEntries(CURRICULUM.map(g=>[g.id,g]));
+const GROUP_CAT = {"sd-concepts":C.SD,"sd-cases":C.SD,react:C.RN,next:C.RN,js:C.JS,mc:C.MC,web:C.WEB,test:C.WEB,dsa:C.DSA,beh:C.BEH};
+// realistic minutes per topic: learn → practise → explain out loud
+const EST = {"sd-concepts":35,"sd-cases":70,react:30,next:30,js:35,mc:55,web:30,test:30,dsa:45,beh:30};
+const T = (g,i,d,o) => Object.assign({g,i,d}, o||{});
+const B = (g,i,d,o) => T(g,i,d,Object.assign({b:1},o||{}));          // bonus (optional) task
+const X = (t,d,c,m) => ({g:"x",t,d,c,m});                             // boss drill, not a syllabus item
+
+const TARGET_END = "2026-12-31";
+const WORLDS = [
+  {n:1, name:"Runtime Village",     ico:"🌱", color:"#34d399", from:1,  to:7,  blurb:"How JavaScript, the browser and CSS actually work."},
+  {n:2, name:"Render Forest",       ico:"⚛️", color:"#22d3ee", from:8,  to:14, blurb:"React internals, state and rendering performance."},
+  {n:3, name:"Network Canyon",      ico:"🌐", color:"#60a5fa", from:15, to:21, blurb:"Bundles, data, caching, real-time and security — finishing the SD concepts."},
+  {n:4, name:"Architect's Citadel", ico:"🏛️", color:"#a78bfa", from:22, to:28, blurb:"Next.js essentials and the classic system design case studies."},
+  {n:5, name:"Dragon's Peak",       ico:"🐉", color:"#f472b6", from:29, to:34, blurb:"Your home-turf designs, TypeScript, revision and the full loop."},
+];
+
+const QUEST = [
+/* 1 */ {t:"Boot Sequence", e:"🔌", b:"How code actually runs — from URL to event loop — plus the JS basics every screen starts with.", k:[
+  T("js",0,"Predict the output of 6 snippets mixing setTimeout, Promise.then, queueMicrotask and async/await. Explain each in one line."),
+  T("js",5,"Predict 8 outputs: [] + {}, '5' - 2, null == undefined, NaN === NaN, typeof null… then state the coercion rules from memory."),
+  T("web",0,"Narrate URL → DNS → TCP → TLS → HTTP (and why HTTP/2 multiplexing matters) → parse → render in under 3 minutes."),
+  T("sd-concepts",0,"Write the RADIO skeleton from memory, plus the 3 questions you'd always ask in Requirements."),
+  T("mc",0,"Hover preview, click to set, keyboard support, configurable max. Build it in plain JS first, then in React.",{m:45}),
+  B("js",25,"clearAllTimeouts() by wrapping setTimeout, and setInterval built from recursive setTimeout — asked in a recent LinkedIn loop.",{m:30}),
+]},
+/* 2 */ {t:"Closure Cove", e:"🐚", b:"Closures power debounce and timers — and cause React's sneakiest bug.", k:[
+  T("js",1,"Explain closures with a counter factory. Predict the classic for-var-setTimeout loop, then fix it two ways."),
+  T("js",6,"Write debounce (leading/trailing options) and throttle from scratch. When would you pick each?",{m:45}),
+  T("react",3,"Reproduce a stale-closure bug in a setInterval effect; fix it with a functional update and with a ref."),
+  T("mc",13,"Start / pause / lap / reset driven by rAF + performance.now() so it never drifts.",{m:45}),
+  T("dsa",0,"Kadane (max subarray) + 'subarray sum equals K' with prefix sums. 2–3 LeetCode mediums, say the complexity out loud."),
+]},
+/* 3 */ {t:"The Render Tree", e:"🌳", b:"Follow a frame from HTML to pixels — and the metrics that catch you when it's slow.", k:[
+  T("web",1,"Draw DOM + CSSOM → render tree → layout → paint → composite. What is render-blocking? Where does rAF fit in the 16 ms frame?"),
+  T("web",2,"Write code that causes layout thrashing, then fix it by batching reads and writes."),
+  T("sd-concepts",3,"LCP, CLS, INP: what each measures, the 'good' threshold, 2 fixes each. Tie one to your MMT listing revamp."),
+  T("sd-concepts",5,"AVIF vs WebP vs JPEG, srcset/sizes, lazy loading, fetchpriority for the LCP image."),
+  T("dsa",1,"Two-sum, group anagrams, longest consecutive sequence — and why hash maps make them O(n)."),
+]},
+/* 4 */ {t:"This & That Bay", e:"🧭", b:"The JS-round favourite: this, prototypes and the polyfills built on them.", k:[
+  T("js",2,"Predict `this` in 6 cases: method, detached method, arrow, class field, setTimeout, bind. State the rules in order."),
+  T("js",3,"Draw the prototype chain of a class instance. Implement inheritance without the class keyword."),
+  T("js",12,"myBind / myCall / myApply + map / filter / reduce polyfills with edge cases (thisArg, sparse arrays, no initial value).",{m:50}),
+  T("mc",3,"Single vs multi-open, keyboard nav, aria-expanded/controls — with ONE delegated click listener.",{m:45}),
+]},
+/* 5 */ {t:"Vanilla Valley", e:"🍦", b:"Some machine-coding rounds ban frameworks. Prove you can build without React.", k:[
+  T("js",9,"Explain capture → target → bubble. Delegation for a 1,000-item list. When does stopPropagation hurt?"),
+  T("js",21,"Render a list from data with createElement + DocumentFragment, wire events via delegation, re-render on state change — no framework.",{m:45}),
+  T("web",11,"A signup form with only native elements: label/for, fieldset, input types, required/pattern, button types. Why native beats div-soup."),
+  T("sd-concepts",14,"The 8 a11y checks you'd run in a design review: semantics, labels, focus order, contrast, ARIA roles, keyboard…"),
+  T("mc",1,"In plain HTML/CSS/JS (a recent Flipkart round did exactly this): add, edit, delete, filter, localStorage. Then review your own folder structure.",{m:50}),
+]},
+/* 6 */ {t:"Flex & Grid Gardens", e:"🌻", b:"Layout day. Interviewers love 'centre this' and 'build this grid' from memory.", k:[
+  T("web",3,"content-box vs border-box, block vs inline-block, relative / absolute / fixed / sticky — a mini demo of each."),
+  T("web",4,"Holy-grail, sticky footer and 'centre anything' with flexbox. Explain the grow / shrink / basis maths."),
+  T("web",5,"Responsive card grid with auto-fill + minmax and named template areas. Grid vs flex — when each?"),
+  T("web",8,"Mobile-first breakpoints, a real container-query use, and when rem vs em vs vw."),
+  T("mc",4,"Winner detection, then generalise to N×N with O(1) checks per move using row/col/diagonal counters.",{m:50}),
+  B("sd-concepts",23,"ICU plurals, date/number formats, logical CSS properties for RTL, lazy-loading locale bundles."),
+]},
+/* 7 */ {t:"Village Warden", e:"👹", boss:true, b:"Mock round 1. No notes, timer on. Find out what actually stuck.", k:[
+  X("Output gauntlet: 10 event-loop / closure / this / coercion snippets in 20 min","Have someone (or an AI) pick them. Score yourself out of 10.",C.JS,25),
+  X("Polyfill sprint: debounce + Promise.all + bind in 40 min","From memory, no peeking. Run your own test cases at the end.",C.JS,40),
+  T("mc",2,"TIMED 45 min, vanilla JS: full WAI-ARIA tabs — roles, arrow keys, Home/End, roving tabindex.",{m:45}),
+  T("beh",0,"Present → past → why next, in 2 minutes. Record 3 takes and keep the best one."),
+]},
+/* 8 */ {t:"Promise Land", e:"🤝", b:"Async JS from first principles — and where React effects meet async.", k:[
+  T("js",4,"Promise states, chaining, error propagation in .then vs try/catch with await. Predict 4 outputs."),
+  T("js",11,"Promise.all / race / allSettled / any — handle empty arrays and non-promise values.",{m:50}),
+  T("react",2,"When effects run (render → commit → paint → effect), cleanup order, and fixing a fetch race with an ignore flag."),
+  T("sd-concepts",7,"REST vs GraphQL: over/under-fetching, caching, tooling. Which for a travel app — and why?"),
+  T("dsa",2,"Longest substring without repeats, container with most water, 3-sum. Spot when a window or two pointers apply."),
+]},
+/* 9 */ {t:"Diff & Keys", e:"🔑", b:"How React decides what to re-render — and why keys matter more than you think.", k:[
+  T("react",0,"Reconciliation in 2 minutes, plus Fiber at a high level (interruptible work, render vs commit). Show an index-key bug in a reorderable list."),
+  T("react",1,"Predict setCount(c+1) ×3 vs the functional form, and batching inside setTimeout in React 18+."),
+  T("react",17,"Why hooks can't be conditional (the linked list), and what StrictMode's double-invoke is catching."),
+  T("sd-concepts",1,"Table: CSR / SSR / SSG / ISR / streaming vs TTFB, FCP, SEO, server cost — and when to use each."),
+  T("dsa",3,"Valid brackets, min stack, next greater element (monotonic stack)."),
+]},
+/* 10 */ {t:"Memo Mountain", e:"⛰️", b:"Memoisation all the way down — in JS, in React, and how to prove it helped.", k:[
+  T("react",5,"3 cases where useMemo/useCallback help, 3 where they're pure overhead. What does the React Compiler change?"),
+  T("react",6,"Re-render rules (parent, context, state). Break React.memo with an inline object prop, then use the DevTools Profiler to prove the fix."),
+  T("react",7,"Show context causing whole-tree re-renders; fix it with split contexts / memoised values."),
+  T("js",19,"memoize (with a key resolver), once, and a cache with TTL."),
+  T("mc",9,"Sortable, filterable, paginated table from a JSON API — then stop needless row re-renders.",{m:60}),
+]},
+/* 11 */ {t:"Ref & Portal Pass", e:"🌀", b:"Escaping the component tree properly: refs, portals and stacking contexts.", k:[
+  T("react",4,"useRef as a mutable box vs DOM refs. Build usePrevious. React 19: ref as a regular prop, no forwardRef needed."),
+  T("react",12,"Why portals exist (overflow / z-index traps), and prove events still bubble through the React tree."),
+  T("web",7,"Name 5 things that create a stacking context. Debug 'z-index: 9999 doesn't work'."),
+  T("web",6,"Calculate specificity for 5 selectors. Explain cascade layers, :is() vs :where(), inheritance."),
+  T("mc",7,"Modal in a portal: focus trap, Esc to close, return focus to the trigger, scroll lock."),
+]},
+/* 12 */ {t:"Reducer Ridge", e:"🏔️", b:"State machines, reducers and the hooks you build on top of them.", k:[
+  T("react",8,"Turn a messy multi-useState form into useReducer with explicit states (idle / loading / success / error)."),
+  T("react",9,"Extract useDebounce, useLocalStorage, useFetch. Talk through naming and API design."),
+  T("react",16,"Find 3 'useEffect to sync state' smells and rewrite them as derived values or key resets."),
+  T("js",7,"Variadic curry (sum(2)(3)(4)() — asked at Flipkart), compose and pipe."),
+  T("mc",17,"Red → green → yellow with configurable durations. One timer + a state map, no nested setTimeouts.",{m:45}),
+  B("mc",27,"past / present / future stacks, keyboard shortcuts, capped history."),
+]},
+/* 13 */ {t:"Form & State Crossroads", e:"🚦", b:"Where state should live — and the forms that test it hardest.", k:[
+  T("react",10,"The same input controlled and uncontrolled; react-hook-form vs controlled re-render cost; zod validation."),
+  T("react",18,"Refactor a tree: move state down (colocate), then up (lift). Explain the trade-off."),
+  T("sd-concepts",13,"Server state vs client state. Normalise a nested API response (posts → authors) and say why."),
+  T("mc",16,"Parent is checked / unchecked / indeterminate from its children, to any depth."),
+  T("dsa",4,"Permutations, subsets, flatten a nested array — recursion and backtracking templates."),
+]},
+/* 14 */ {t:"Forest Guardian", e:"🐲", boss:true, b:"Mock round 2: React, performance and a DSA screen under a clock.", k:[
+  T("mc",11,"TIMED 45 min: auto-advance, backspace to previous, paste the whole code, numeric only.",{m:45}),
+  X("Whiteboard: how React renders, trigger → commit (20 min)","State update → render → reconcile → commit, and where memo, context and keys change the outcome.",C.RN,20),
+  X("DSA screen: 2 LeetCode mediums in 45 min","Arrays / hash maps / sliding window. Talk through brute force → optimal, with complexity.",C.DSA,45),
+  T("beh",3,"STAR on the listing revamp / CWV work: real numbers, your exact part, 2 minutes max."),
+]},
+/* 15 */ {t:"Bundle Bay", e:"📦", b:"What ships to the browser, how it hydrates — and how to ship less of it.", k:[
+  T("react",14,"Route-level splitting with React.lazy + Suspense. Where do boundaries go, and why?"),
+  T("sd-concepts",4,"Code splitting, tree shaking (and why side effects break it), bundle analysis, preload vs prefetch vs preconnect."),
+  T("js",20,"ESM vs CommonJS: static vs dynamic, live bindings, why ESM enables tree shaking, dynamic import()."),
+  T("sd-concepts",19,"Walk through your Module Federation setup: shared deps, versioning, runtime vs build-time integration, pitfalls."),
+  T("sd-concepts",2,"RSC vs SSR, what hydration costs, hydration mismatches, islands, partial prerendering."),
+]},
+/* 16 */ {t:"Scroll Sea", e:"🌊", b:"Endless lists without endless DOM nodes.", k:[
+  T("web",10,"IntersectionObserver for lazy images + an infinite-scroll sentinel. Where do Resize / MutationObserver fit?"),
+  T("sd-concepts",8,"Offset vs cursor pagination: consistency under inserts, deep pages, API design."),
+  T("sd-concepts",6,"Windowing: fixed vs variable heights, overscan, mapping scroll position to rendered rows."),
+  T("mc",6,"Feed with IntersectionObserver, loading / error / end states, no duplicate fetches."),
+  T("dsa",5,"Binary search + lower bound, search in rotated array — the same maths as variable-height virtualisation."),
+  B("mc",26,"10k fixed-height rows — render only the visible rows plus overscan."),
+  B("mc",20,"Ellipsis logic (1 … 4 5 6 … 20), controlled page, keyboard accessible.",{m:40}),
+]},
+/* 17 */ {t:"Fetch Falls", e:"💦", b:"Data that feels instant because it's cached in the right layers.", k:[
+  T("sd-concepts",10,"Walk a request through HTTP cache → service worker → CDN → app memory → normalised store. What invalidates each?"),
+  T("sd-concepts",11,"Stale-while-revalidate, query keys, staleTime vs gcTime, invalidation after a mutation."),
+  T("js",15,"O(1) get/put LRU — with Map, then with hashmap + doubly linked list.",{m:45}),
+  T("react",20,"Redux Toolkit vs Zustand vs Context vs React Query: pick for 3 scenarios and defend each."),
+  T("js",16,"runWithLimit(tasks, n): at most n in flight, results in order. Then run promise-returning fns sequentially without async/await (Flipkart asked both).",{m:45}),
+  B("dsa",10,"Reverse a linked list + detect a cycle — the structure behind the LRU."),
+]},
+/* 18 */ {t:"Optimist's Outpost", e:"⚡", b:"Instant-feeling UIs, live updates — and recovering when things fail.", k:[
+  T("sd-concepts",12,"Optimistic update: snapshot, apply, rollback on error, reconcile with server truth. Concurrent edits?"),
+  T("react",19,"React 19's use(), Actions, useOptimistic, useFormStatus — rebuild a like button with useOptimistic."),
+  T("sd-concepts",9,"Polling vs long-polling vs SSE vs WebSockets: direction, reconnection, proxies, cost. Pick for cab tracking and for chat."),
+  T("js",14,"EventEmitter with on / off / once / emit. Handle removing a listener during emit."),
+  T("mc",10,"Imperative toast() API via a pub-sub store, stacking, auto-dismiss, pause on hover, max visible."),
+  B("js",17,"retry(fn, {retries, backoff, jitter}) + timeout via Promise.race. When NOT to retry (4xx)."),
+  B("mc",25,"Optimistic toggle, rollback + toast on failure, dedupe in-flight taps."),
+]},
+/* 19 */ {t:"Firewall & Vault", e:"🛡️", b:"Keep users safe, keep their data in the right place, and fail gracefully.", k:[
+  T("sd-concepts",15,"Show an XSS via dangerouslySetInnerHTML and fix it. CSRF + SameSite, a CSP header, CORS preflight."),
+  T("sd-concepts",16,"Cookie sessions vs JWT in localStorage (XSS/CSRF exposure). Refresh-token flow and OAuth PKCE."),
+  T("web",9,"Cookies (HttpOnly/Secure/SameSite) vs localStorage vs sessionStorage vs IndexedDB: size, sync/async, access."),
+  T("sd-concepts",17,"Error layers: boundary, query error, global handler, user-facing retry. Retryable vs non-retryable."),
+  T("react",13,"ErrorBoundary with reset keys. What can't it catch (event handlers, async)?"),
+  B("sd-concepts",24,"Offline-first draft editor: SW caching strategies, IndexedDB queue, background sync, conflicts."),
+]},
+/* 20 */ {t:"Design System Workshop", e:"🎨", b:"Components other teams love — and how you measure and roll them out. SD concepts: complete.", k:[
+  T("sd-concepts",20,"Token tiers (primitive → semantic → component), multi-brand theming via CSS variables, versioning; CSS Modules vs CSS-in-JS vs Tailwind."),
+  T("sd-concepts",22,"Design a Select API: controlled/uncontrolled, slots vs props, polymorphic 'as', escape hatches."),
+  T("react",11,"Tabs as compound components (Tabs.List / Tabs.Panel) with context. Compare render props and HOCs."),
+  T("sd-concepts",18,"RUM vs synthetic, what to log, sourcemaps + Sentry, alerting on a CWV regression."),
+  T("sd-concepts",21,"Feature flags, stable A/B assignment, which metrics to track — tie it to your Adobe XDM migration. (LinkedIn's product round asked exactly this.)"),
+]},
+/* 21 */ {t:"Canyon Colossus", e:"🗿", boss:true, b:"Mock round 3: your first full system design, a recursive build and an async gauntlet.", k:[
+  T("sd-cases",0,"MOCK, 40 min, no notes: RADIO end-to-end — debounce, cache, race handling, keyboard a11y, ranking. Record, then compare with a reference answer.",{m:50}),
+  T("mc",12,"TIMED 60 min: recursive comments with reply / edit / delete / collapse on normalised state.",{m:60}),
+  X("Async gauntlet: allSettled + promise pool + retry in 30 min","From memory, 3 tests each.",C.JS,30),
+  T("beh",2,"The MFE migration story: why, the hard parts (shared deps, routing), outcome, what you'd change."),
+]},
+/* 22 */ {t:"Server Side Story", e:"🖥️", b:"Next.js — only the parts interviews actually probe — then an e-commerce design that uses them.", k:[
+  T("next",0,"File conventions, layouts, loading/error UI, data fetching — and when you'd still pick the Pages Router."),
+  T("next",1,"Where the 'use client' boundary goes; server ↔ client import rules; what gets serialised."),
+  T("next",2,"Draw the 4 caches and how revalidatePath / revalidateTag clear each; static vs dynamic vs streaming routes."),
+  T("next",3,"A Server Action form with progressive enhancement, validation, revalidation — and auth checks inside the action."),
+  T("sd-cases",4,"Filters in the URL, SSR/PPR for SEO, image gallery, cart state, a CWV budget."),
+  B("next",4,"Auth redirects, geo/locale routing, A/B bucketing — and what Middleware can't do."),
+]},
+/* 23 */ {t:"Feed Factory", e:"📰", b:"The most-asked design prompt, plus a carousel and smooth scrolling.", k:[
+  T("sd-cases",1,"Pagination, real-time inserts, virtualisation, optimistic likes, image loading, ad slots without CLS."),
+  T("mc",8,"Prev / next, dots, autoplay with pause on hover, swipe, lazy-load neighbours."),
+  T("react",15,"Keep an input responsive while filtering 10k items — useTransition, then useDeferredValue. The difference?"),
+  B("web",12,"Why transform/opacity are cheap, FLIP for list reorders, prefers-reduced-motion."),
+  B("dsa",9,"Top-K frequent elements with a heap — trending posts."),
+  B("mc",24,"Vote once, animated result bars, optimistic counts."),
+]},
+/* 24 */ {t:"Chat Channel", e:"💬", b:"WhatsApp Web and a ChatGPT-style UI — and the Promise you build under both.", k:[
+  T("sd-cases",2,"Transport, message ordering/ids, delivery receipts, offline queue, upward pagination, unread counts."),
+  T("sd-cases",10,"Stream tokens over SSE / fetch ReadableStream, render incrementally without jank, stop / regenerate, markdown + code blocks, history, retries."),
+  T("js",13,"MyPromise with then-chaining, async resolution, error propagation, catch and finally (asked in a recent Flipkart senior loop).",{m:50}),
+]},
+/* 25 */ {t:"Upload Express", e:"📤", b:"Big files, flaky networks, many at once — and the 'why leaving' answer.", k:[
+  T("sd-cases",6,"Chunking + hashing, parallel limit, per-chunk retry, pause / resume, progress reporting."),
+  T("mc",18,"'Add' starts a bar; max 3 fill at once, the rest wait in a queue.",{m:50}),
+  T("beh",1,"Positive, growth-focused, specific to the company. Under 60 seconds."),
+  B("web",13,"Hash file chunks in a Web Worker. postMessage cost, transferables, Comlink."),
+  B("sd-cases",12,"Widget layout, chart library choice, polling vs push, aggregating large datasets, export."),
+]},
+/* 26 */ {t:"Tree House", e:"🌲", b:"Recursion everywhere: comment threads, file trees and DOM traversal.", k:[
+  T("sd-cases",5,"Data model (adjacency list vs path), lazy-loading deep threads, collapse, voting."),
+  T("mc",15,"Recursive folders, expand / collapse, add / rename / delete, keyboard navigation.",{m:60}),
+  T("dsa",6,"Is node A inside node B? (walk up parentNode — asked at LinkedIn), getElementsByClassName via DFS, one n-ary tree medium."),
+]},
+/* 27 */ {t:"Test Lab", e:"🧪", b:"Prove your code works — and the utility functions interviewers love.", k:[
+  T("test",0,"Pyramid vs trophy for a frontend app: what's unit vs integration vs E2E, and why."),
+  T("test",1,"Query priority (role → label → text), user-event vs fireEvent. Write 5 tests for your Modal or OTP build."),
+  T("js",18,"flat(depth) recursive + iterative; flattenObject({a:{b:1}}) → {'a.b':1}; lodash-style get(obj, 'a.b[0].c').",{m:45}),
+  T("mc",19,"Signup form: sync rules, async 'username taken' (debounced), error display, accessible submit."),
+  B("test",2,"Playwright E2E for login → booking; causes of flakiness and fixes."),
+  B("mc",21,"Multi-step form: progress bar, per-step validation, back/next, survives refresh."),
+]},
+/* 28 */ {t:"Citadel Keeper", e:"🏯", boss:true, b:"Mock round 4 at senior bar — unseen prompts, and an AI-era review drill.", k:[
+  X("SD mock, unseen prompt: Google Calendar week view (45 min)","Overlapping-event layout, drag to create, time zones, recurring events, performance.",C.SD,45),
+  T("mc",14,"TIMED 60 min: drag between columns (native DnD or pointer events), reorder, persist.",{m:60}),
+  X("AI-assisted round drill: review AI-written code like an interviewer","Have an AI generate a component, then find 3 bugs / a11y gaps, fix them and explain the trade-offs. Some companies now run rounds like this.",C.RN,30),
+  T("beh",5,"What broke, how you found it, the fix, and what you changed in the process afterwards."),
+]},
+/* 29 */ {t:"Home Turf", e:"✈️", b:"Travel booking and live tracking — designs you've literally shipped. Plus the product-sense round.", k:[
+  T("sd-cases",7,"Search params in the URL, filter/sort on big results, fare holds, seat map, payment-failure recovery."),
+  T("sd-cases",8,"Location stream, map rendering, interpolation between pings, battery / network, ETA. Use your MMT cab-tracking work."),
+  T("beh",7,"Pick an app you use daily: P0/P1/P2 for an MVP, 3 success metrics, one A/B test. Flipkart and LinkedIn both run product-sense rounds."),
+  B("mc",22,"Date-range picker: month grid, disabled dates, range hover preview, keyboard nav."),
+  B("dsa",8,"Merge intervals + insert interval — the same logic as booking overlap checks."),
+]},
+/* 30 */ {t:"Type Temple", e:"🛕", b:"TypeScript depth and a typed, multi-brand component library.", k:[
+  T("js",22,"Generic useFetch<T>, typed groupBy<T, K>, constraints with extends keyof; type a polymorphic Button."),
+  T("js",23,"Partial, Required, Pick, Omit, Record, ReturnType on real API types. Implement MyPick / MyOmit."),
+  T("js",24,"Model API states / notification kinds as discriminated unions; exhaustive switch with never; type guards."),
+  T("sd-cases",9,"Tokens, theming (MMT + Goibibo style), versioning, docs, a11y, driving adoption across teams."),
+]},
+/* 31 */ {t:"Graph Gallery", e:"📸", b:"Instagram, graph traversal and the tricky object utilities.", k:[
+  T("sd-cases",3,"Feed, upload flow, image CDN + variants, stories, like counts at scale."),
+  T("dsa",7,"Number of islands, rotting oranges, course schedule (topological sort)."),
+  T("js",8,"deepClone with cycles (WeakMap), Dates, Maps, Sets — then isEqual. Compare with structuredClone."),
+  T("js",10,"4 leak sources (listeners, timers, closures, detached DOM), WeakMap for metadata, finding a leak in DevTools."),
+  B("dsa",11,"Climbing stairs + coin change — learn to spot overlapping subproblems."),
+  B("sd-cases",14,"Adaptive bitrate (HLS/DASH), buffering, accessible player controls, watch-progress sync."),
+]},
+/* 32 */ {t:"Final Polish", e:"💎", b:"The most-asked build, done properly — and your last two stories.", k:[
+  T("mc",5,"Debounce, keyboard nav, highlighted match, result cache, race handling, listbox/option a11y — interview-grade.",{m:60}),
+  T("beh",4,"How you aligned them, what you conceded, the outcome."),
+  T("beh",6,"Who, what you did, how you measured their growth."),
+  B("mc",23,"Recipient chips: add on Enter/comma, backspace removes, validation, paste a list."),
+  B("sd-cases",11,"Virtualised grid, cell dependency graph, recalculation order, collaborative edits."),
+  B("sd-cases",13,"Fan-in via WebSocket/SSE, unread counts across tabs (BroadcastChannel), batching, preferences."),
+]},
+/* 33 */ {t:"Revision Run", e:"🔁", b:"Lock it in before the dragon: rebuild, re-explain, re-design.", k:[
+  X("Cold rebuild: redo your 2 slowest builds, 45 min each","Pick them from Log History. No notes; compare with your first attempt.",C.MC,90),
+  X("Empty your revisit queue — explain each topic out loud","2 minutes per topic. Anything still shaky → re-read and try again tomorrow.",C.JS,30),
+  X("SD speed round: outline feed, chat and uploader in 15 min each","Requirements, components, data, API, top 3 trade-offs. Speed is the skill here.",C.SD,45),
+]},
+/* 34 */ {t:"The Interview Dragon", e:"🐉", boss:true, b:"The full loop. Spread it over 2–3 evenings — then go book real interviews.", k:[
+  X("Round 1 — JS round (45 min)","A friend or an AI interviewer gives 2 polyfills + 5 output questions. No notes.",C.JS,45),
+  X("Round 2 — Machine coding (75 min)","One you haven't repeated (date picker, chip input or traffic light). Talk throughout.",C.MC,75),
+  X("Round 3 — System design (45 min)","A travel app's hotel listing + details page, end-to-end with RADIO. Record and self-review.",C.SD,45),
+  X("Round 4 — DSA (45 min)","Two LeetCode mediums, explaining complexity as you go.",C.DSA,45),
+  B("beh",8,"5 sharp questions: team, tech debt, on-call, growth, what success looks like at 90 days."),
+  B("beh",9,"Anchor, range, framing a competing offer, non-cash asks — rehearse out loud."),
+]},
+];
+const QN = QUEST.length;
+const TASK_BY_KEY = {};
+QUEST.forEach((q,n)=>{
+  q.n=n;
+  q.k.forEach(k=>{
+    k.n=n;
+    if(k.g==="x"){ k.key="x#"+(n+1)+"#"+slug(k.t); }
+    else { k.t=GROUPS[k.g].items[k.i]; k.key=itemId(k.g,k.t); k.c=GROUP_CAT[k.g]; k.m = k.m || EST[k.g]; }
+    TASK_BY_KEY[k.key]=k;
+  });
+});
+
 const LEVELS = [
   {xp:0,    name:"🥚 Rookie"},
-  {xp:300,  name:"🐣 Warming Up"},
-  {xp:800,  name:"⚙️ Grinder"},
-  {xp:1600, name:"🔧 Builder"},
-  {xp:2800, name:"🧭 Navigator"},
-  {xp:4400, name:"🎨 Craftsman"},
-  {xp:6500, name:"🏗️ Systems Thinker"},
-  {xp:9200, name:"🧠 Senior Mode"},
-  {xp:12500,name:"🛡️ Interview-Proof"},
-  {xp:16500,name:"🏆 FE Architect"},
+  {xp:600,  name:"🐣 Warming Up"},
+  {xp:1800, name:"⚙️ Grinder"},
+  {xp:3800, name:"🔧 Builder"},
+  {xp:6800, name:"🧭 Navigator"},
+  {xp:10500,name:"🎨 Craftsman"},
+  {xp:15500,name:"🏗️ Systems Thinker"},
+  {xp:22000,name:"🧠 Senior Mode"},
+  {xp:30000,name:"🛡️ Interview-Proof"},
+  {xp:40000,name:"🏆 FE Architect"},
 ];
 
 const QUOTES = [
@@ -666,6 +1145,9 @@ const QUOTES = [
   "Small daily reps compound into an unfair advantage.",
   "Done today > perfect someday.",
   "The best time to log was after studying. The second best is now.",
+  "One bucket. That's the whole job today.",
+  "Didn't finish yesterday's bucket? Good — it's still there waiting. Pick it back up.",
+  "Bosses are just mock interviews wearing a costume.",
 ];
 
 const ACHIEVEMENTS = [
@@ -691,8 +1173,8 @@ const ACHIEVEMENTS = [
   {id:"dsa5",   ico:"🧠", name:"Problem Solver", desc:"5 DSA sessions",             check:s=>catCount(s,"DSA")>=5},
   {id:"dsa10",  ico:"🎯", name:"Pattern Hunter", desc:"10 DSA sessions",            check:s=>catCount(s,"DSA")>=10},
   {id:"beh5",   ico:"🎤", name:"Storyteller",    desc:"5 behavioral preps",         check:s=>catCount(s,"Behavioral")>=5},
-  {id:"half",   ico:"🌓", name:"Halfway There",  desc:"Reach day 20",               check:s=>dayNumber(s)>=20},
-  {id:"day40",  ico:"🏁", name:"Finish Line",    desc:"Reach day 40",               check:s=>dayNumber(s)>=40},
+  {id:"half",   ico:"🌓", name:"Halfway There",  desc:"Reach the sprint's halfway day", check:s=>dayNumber(s)>=Math.ceil(s.totalDays/2)},
+  {id:"day40",  ico:"🏁", name:"Finish Line",    desc:"Reach the sprint's last day", check:s=>dayNumber(s)>=s.totalDays},
   {id:"res50",  ico:"📄", name:"Story Ready",     desc:"50% resume depth",           check:s=>resumePct(s)>=50},
   {id:"res100", ico:"🛡️", name:"Bulletproof",    desc:"100% resume depth",          check:s=>resumePct(s)>=100},
   {id:"syl25",  ico:"📚", name:"Bookworm",       desc:"25% of syllabus covered",    check:s=>syllabusPct(s)>=25},
@@ -709,20 +1191,36 @@ const ACHIEVEMENTS = [
   {id:"lvl6",   ico:"🏗️", name:"Systems Rank",   desc:"Reach Systems Thinker",      check:s=>levelIdx(s)>=6},
   {id:"ready",  ico:"🎓", name:"Interview Ready", desc:"80% overall readiness",      check:s=>readiness(s)>=80},
   {id:"perfect",ico:"💎", name:"Diamond Ready",  desc:"95% overall readiness",      check:s=>readiness(s)>=95},
+  // ---- quest ----
+  {id:"q1",     ico:"🗝️", name:"Quest Begun",    desc:"Clear your first bucket",    check:s=>clearedCount(s)>=1},
+  {id:"q5",     ico:"🎒", name:"Adventurer",     desc:"Clear 5 buckets",            check:s=>clearedCount(s)>=5},
+  ...WORLDS.map(w=>({id:"w"+w.n, ico:w.ico, name:w.name+" Cleared", desc:`Beat the World ${w.n} boss`, check:s=>!!s.quest.cleared[w.to-1]})),
+  {id:"q25",    ico:"🌗", name:"Halfway Hero",   desc:"Clear half the buckets",     check:s=>clearedCount(s)>=Math.ceil(QN/2)},
+  {id:"q50",    ico:"🛡️", name:"Iron-Clad",      desc:"Clear every bucket",       check:s=>clearedCount(s)>=QN},
+  {id:"star3",  ico:"🌟", name:"Triple Star",    desc:"Earn 3★ on a bucket",        check:s=>Object.values(s.quest.cleared).some(c=>c.stars>=3)},
+  {id:"st50",   ico:"✨", name:"Star Collector", desc:"Collect 30 stars",           check:s=>starsTotal(s)>=30},
+  {id:"st100",  ico:"🌌", name:"Constellation",  desc:"Collect 75 stars",           check:s=>starsTotal(s)>=75},
+  {id:"st150",  ico:"☀️", name:"Full Sky",       desc:"Collect every star",      check:s=>starsTotal(s)>=QN*3},
+  {id:"rec10",  ico:"🧠", name:"Memory Palace",  desc:"Nail 10 flash recalls",      check:s=>recallNailed(s)>=10},
+  {id:"comeback",ico:"🦾",name:"Comeback Kid",   desc:"Clear a bucket you carried 5+ days", check:s=>Object.values(s.quest.cleared).some(c=>c.days>=5)},
 ];
 
 // ---------- state ----------
 function defaultState(){
   return {
+    v: 4,
     startDate: todayISO(),
-    totalDays: 40,
+    totalDays: daysToTarget(todayISO()),
     logs: [],
     resume: RESUME_SEED.map(r=>({...r, conf:0})),
     syllabus: {},
     seen: [],
     activeTab: "syllabus",
+    quest: defaultQuest(),
   };
 }
+function daysToTarget(start){ return Math.max(14, daysBetween(start, TARGET_END)+1); }   // sprint always ends Dec 31
+function defaultQuest(){ return {cur:0, opened:{}, cleared:{}, extra:{}, recall:{}, revisit:[], clockAck:false}; }
 function load(){
   try{
     const raw = localStorage.getItem(LS_KEY);
@@ -739,6 +1237,15 @@ function load(){
     s.histFilter = s.histFilter||"all";
     s.histOpenId = s.histOpenId||null;
     s.logs.forEach(l=>{ if(l.starred==null) l.starred=false; if(l.link==null) l.link=""; });
+    // v2: 50-day quest
+    if(!s.v || s.v<4){
+      // v4: 34-bucket winter arc ending Dec 31. Bucket order changed, so quest progress restarts —
+      // syllabus ticks are kept, so anything already done shows as done inside its new bucket.
+      s.v=4; s.totalDays=daysToTarget(s.startDate||todayISO()); s.quest=defaultQuest();
+      s.seen=(s.seen||[]).filter(id=>!/^(q\d|w\d|st\d|star3|rec10|comeback)/.test(id));
+    }
+    s.quest = Object.assign(defaultQuest(), s.quest||{});
+    s.quest.cur = Math.min(Math.max(0, +s.quest.cur||0), QN);
     return s;
   }catch(e){ return defaultState(); }
 }
@@ -750,12 +1257,12 @@ const totalMin = s => s.logs.reduce((a,l)=>a+(+l.minutes||0),0);
 const catCount = (s,c) => s.logs.filter(l=>l.category===c).length;
 const catMin   = (s,c) => s.logs.filter(l=>l.category===c).reduce((a,l)=>a+(+l.minutes||0),0);
 function logDates(s){ return [...new Set(s.logs.map(l=>l.date))].sort(); }
-function daysBetween(a,b){ return Math.round((new Date(b)-new Date(a))/86400000); }
+function daysBetween(a,b){ return Math.round((parseISO(b)-parseISO(a))/86400000); }
 function dayNumber(s){ return daysBetween(s.startDate, todayISO())+1; }
 
 function currentStreak(s){
   const set = new Set(s.logs.map(l=>l.date));
-  let streak=0; let d=new Date(todayISO());
+  let streak=0; let d=parseISO(todayISO());
   // allow streak to count from today or yesterday
   if(!set.has(fmt(d))){ d.setDate(d.getDate()-1); if(!set.has(fmt(d))) return 0; }
   while(set.has(fmt(d))){ streak++; d.setDate(d.getDate()-1); }
@@ -782,7 +1289,6 @@ function entriesByDate(s){
 }
 function maxMinDay(s){ return Math.max(0,...Object.values(minsByDate(s))); }
 function maxEntriesDay(s){ return Math.max(0,...Object.values(entriesByDate(s))); }
-function fmt(d){ return d.toISOString().slice(0,10); }
 
 function catPct(s,c){ return Math.min(100, Math.round(catCount(s,c)/CATS[c].target*100)); }
 function avgCatPct(s){ const ks=Object.keys(CATS); return ks.reduce((a,c)=>a+catPct(s,c),0)/ks.length; }
@@ -791,7 +1297,7 @@ function resumePct(s){ const max=s.resume.length*3; const got=s.resume.reduce((a
 function slug(t){ return t.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"").slice(0,44); }
 function itemId(gid,text){ return gid+"#"+slug(text); }
 function syllabusTotal(){ return CURRICULUM.reduce((a,g)=>a+g.items.length,0); }
-function syllabusSum(s){ return Object.values(s.syllabus||{}).reduce((a,v)=>a+(+v||0),0); }
+function syllabusSum(s){ return CURRICULUM.reduce((a,g)=>a+g.items.reduce((b,t)=>b+(+(s.syllabus||{})[itemId(g.id,t)]||0),0),0); }
 function syllabusPct(s){ const tot=syllabusTotal()*2; return tot?Math.round(syllabusSum(s)/tot*100):0; }
 function groupPct(s,g){ const got=g.items.reduce((a,t)=>a+(s.syllabus[itemId(g.id,t)]||0),0); return Math.round(got/(g.items.length*2)*100); }
 function groupDoneCount(s,g){ return g.items.filter(t=>(s.syllabus[itemId(g.id,t)]||0)===2).length; }
@@ -803,7 +1309,17 @@ function baseXp(s){
   return totalMin(s)
        + s.logs.length*20
        + s.resume.reduce((a,r)=>a+r.conf,0)*30
-       + syllabusSum(s)*15;
+       + syllabusSum(s)*15
+       + questXp(s);
+}
+// quest stats (take state param so achievements can use them)
+const clearedCount = s => Object.keys(s.quest.cleared).length;
+const starsTotal   = s => Object.values(s.quest.cleared).reduce((a,c)=>a+(c.stars||0),0);
+const recallNailed = s => Object.values(s.quest.recall).filter(r=>r.res==="nailed").length;
+function questXp(s){
+  let x=0;
+  Object.values(s.quest.cleared).forEach(c=>{ x += 100 + (c.stars||0)*40 + (c.boss?200:0); });
+  return x + recallNailed(s)*15;
 }
 function nonLevelAchievements(s){
   return ACHIEVEMENTS.filter(a=>a.id!=="lvl3"&&a.id!=="lvl6"&&a.check(s));
@@ -853,6 +1369,8 @@ function render(){
   document.getElementById("totalHours").textContent = (totalMin(state)/60).toFixed(1);
   document.getElementById("totalEntries").textContent = state.logs.length + " entries logged";
   document.getElementById("readiness").textContent = readiness(state) + "%";
+  document.getElementById("questStat").textContent = `${clearedCount(state)}/${QN}`;
+  document.getElementById("starStat").textContent = `${starsTotal(state)} ★`;
 
   // level
   const L = levelInfo(state);
@@ -874,7 +1392,10 @@ function render(){
   renderFeed();
   renderTabs();
   renderNav();
-  if(state.view==="history") renderHistory();
+  renderAppbar();
+  if(state.view==="stats") renderHistory();
+  if(state.view==="today") renderToday();
+  if(state.view==="map") renderMapView();
   save();
 }
 
@@ -885,10 +1406,10 @@ function renderNav(){
     if(stars){ badge.style.display="inline"; badge.textContent=stars; }
     else badge.style.display="none";
   }
-  document.getElementById("navDash").classList.toggle("active", state.view==="dashboard");
-  document.getElementById("navHist").classList.toggle("active", state.view==="history");
-  document.getElementById("viewDashboard").classList.toggle("active", state.view==="dashboard");
-  document.getElementById("viewHistory").classList.toggle("active", state.view==="history");
+  [["navToday","viewToday","today"],["navMap","viewMap","map"],["navStats","viewStats","stats"]].forEach(([nav,view,v])=>{
+    document.getElementById(nav).classList.toggle("active", state.view===v);
+    document.getElementById(view).classList.toggle("active", state.view===v);
+  });
 }
 
 function renderTabs(){
@@ -989,15 +1510,15 @@ function renderCats(){
 function renderHeat(){
   const box=document.getElementById("heat"); box.innerHTML="";
   const byDate=minsByDate(state);
-  const start=new Date(state.startDate);
+  const start=parseISO(state.startDate);
   const t=todayISO();
   const streakSet=streakDateSet(state);
   let activeDays=0, sprintMins=0;
 
-  for(let row=0;row<4;row++){
+  for(let row=0;row<Math.ceil(state.totalDays/10);row++){
     const rowEl=document.createElement("div"); rowEl.className="heat-row";
     const cells=document.createElement("div"); cells.className="heat-row-cells";
-    rowEl.innerHTML=`<div class="heat-row-label">W${row+1}</div>`;
+    rowEl.innerHTML=`<div class="heat-row-label">${row*10+1}</div>`;
     rowEl.appendChild(cells);
 
     for(let col=0;col<10;col++){
@@ -1045,7 +1566,7 @@ function heatLevel(m){
 function streakDateSet(s){
   const logged=new Set(s.logs.map(l=>l.date));
   const out=new Set();
-  let d=new Date(todayISO());
+  let d=parseISO(todayISO());
   if(!logged.has(fmt(d))){ d.setDate(d.getDate()-1); if(!logged.has(fmt(d))) return out; }
   while(logged.has(fmt(d))){ out.add(fmt(d)); d.setDate(d.getDate()-1); }
   return out;
@@ -1172,6 +1693,9 @@ function checkNewAchievements(){
   const fresh=got.filter(id=>!state.seen.includes(id));
   fresh.forEach(id=>{ const a=ACHIEVEMENTS.find(x=>x.id===id); toast(a.ico,"Achievement unlocked!",a.name); });
   if(fresh.length){ state.seen=got; save(); }
+  const li=levelInfo(state).i;
+  if(state.lastLevel!=null && li>state.lastLevel) toast("🆙","Level up!",LEVELS[li].name);
+  if(state.lastLevel!==li){ state.lastLevel=li; save(); }
 }
 function toast(ico,title,desc){
   const w=document.getElementById("toasts");
@@ -1217,21 +1741,23 @@ document.getElementById("fStar").onclick=()=>{
   b.textContent=b.classList.contains("on")?"★":"☆";
 };
 
+// Routes: #/ = today's bucket · #/map = journey + milestones · #/stats = numbers, syllabus, logs
+const ROUTES = {today:"#/", map:"#/map", stats:"#/stats"};
 function setView(v){
-  state.view=v;
-  location.hash=v==="history"?"history":"";
-  render();
+  if(location.hash!==ROUTES[v]) location.hash=ROUTES[v];   // hashchange re-renders
+  else { state.view=v; render(); }
+  window.scrollTo({top:0});
 }
-document.getElementById("navDash").onclick=()=>setView("dashboard");
-document.getElementById("navHist").onclick=()=>setView("history");
 document.getElementById("histAll").onclick=()=>{ state.histFilter="all"; renderHistory(); save(); };
 document.getElementById("histStarred").onclick=()=>{ state.histFilter="starred"; renderHistory(); save(); };
 document.getElementById("histCat").onchange=()=>renderHistory();
 document.getElementById("histSearch").oninput=()=>renderHistory();
 function syncViewFromHash(){
-  state.view=location.hash.replace("#","")==="history"?"history":"dashboard";
+  const h=location.hash.replace(/^#\/?/,"");
+  state.view = h==="map" ? "map" : (h==="stats"||h==="dashboard"||h==="history") ? "stats" : "today";
+  if(state.view!=="today") viewIdx=null;     // leaving Today always brings you back to the current bucket
 }
-window.addEventListener("hashchange",()=>{ syncViewFromHash(); render(); });
+window.addEventListener("hashchange",()=>{ syncViewFromHash(); render(); window.scrollTo({top:0}); });
 
 document.getElementById("sylToggleAll").onclick=(e)=>{
   const anyOpen=CURRICULUM.some(g=>expanded[g.id]);
@@ -1250,7 +1776,7 @@ document.querySelectorAll(".tab").forEach(btn=>{
 
 document.getElementById("saveStart").onclick=()=>{
   const v=document.getElementById("startDate").value;
-  if(v){ state.startDate=v; render(); }
+  if(v){ state.startDate=v; state.totalDays=daysToTarget(v); render(); }
 };
 
 document.getElementById("exportBtn").onclick=()=>{
@@ -1262,7 +1788,9 @@ document.getElementById("importBtn").onclick=()=>document.getElementById("import
 document.getElementById("importFile").onchange=e=>{
   const f=e.target.files[0]; if(!f) return;
   const r=new FileReader();
-  r.onload=()=>{ try{ state=JSON.parse(r.result); load(); state=Object.assign(defaultState(),state); render(); toast("✅","Restored","Backup loaded"); }catch(err){ alert("Invalid file"); } };
+  // Write the backup to storage, then run it through load() so migrations/defaults apply.
+  r.onload=()=>{ try{ const data=JSON.parse(r.result); if(!data||!Array.isArray(data.logs)) throw 0;
+    localStorage.setItem(LS_KEY, JSON.stringify(data)); state=load(); syncViewFromHash(); render(); checkNewAchievements(); toast("✅","Restored","Backup loaded"); }catch(err){ alert("Invalid file"); } };
   r.readAsText(f);
 };
 document.getElementById("resetBtn").onclick=()=>{
@@ -1270,6 +1798,328 @@ document.getElementById("resetBtn").onclick=()=>{
     localStorage.removeItem(LS_KEY); state=defaultState(); render();
   }
 };
+
+// =====================================================================
+// TODAY / QUEST VIEW
+// =====================================================================
+let viewIdx = null;      // which bucket is on screen (null = current)
+let noteDraft = "";      // takeaway text, kept across re-renders
+let howOpen = null;      // remembers whether the how-to box is open (null = auto)
+
+const qTaskDone = k => k.g==="x" ? !!state.quest.extra[k.key] : (state.syllabus[k.key]||0)===2;
+const qCore  = q => q.k.filter(k=>!k.b);
+const qBonus = q => q.k.filter(k=>k.b);
+const qCoreDone = q => qCore(q).every(qTaskDone);
+const worldOf = n => WORLDS.find(w=>n+1>=w.from && n+1<=w.to);
+const fmtDate = iso => parseISO(iso).toLocaleDateString(undefined,{month:"short",day:"numeric"});
+function strHash(s){ let x=0; for(const ch of s) x=(x*31+ch.charCodeAt(0))|0; return Math.abs(x); }
+
+// 0 = to-do, 1 = 📖 studying, 2 = ✓ interview-ready  (boss drills are just 0 / 2)
+const qLevel = k => k.g==="x" ? (state.quest.extra[k.key]?2:0) : (state.syllabus[k.key]||0);
+const qNextLevel = k => k.g==="x" ? (qLevel(k)?0:2) : (qLevel(k)+1)%3;
+const fmtMin = m => m<60 ? `${m} min` : `${Math.floor(m/60)}h${m%60?` ${m%60}m`:""}`;
+
+function setQuestTask(k, lvl){
+  if(k.g==="x") state.quest.extra[k.key]=lvl===2;
+  else state.syllabus[k.key]=lvl;
+  if(lvl>0 && k.n===state.quest.cur && !state.quest.opened[k.n]) state.quest.opened[k.n]=todayISO();
+  // Auto-log time so the streak/heatmap keep moving even on study-only evenings:
+  // half the estimate when you start studying, the rest when you mark it ready.
+  const SK=k.key+"~s", half=Math.round(k.m/2/5)*5;
+  const addLog=(tk,mins,prefix)=>{ if(state.logs.some(l=>l.taskKey===tk)) return;
+    state.logs.push({id:"l"+Date.now()+Math.random().toString(36).slice(2,6), date:todayISO(), category:k.c,
+      title:prefix+k.t, minutes:mins, notes:`Quest Bucket ${k.n+1} · ${QUEST[k.n].t}`, link:"", starred:false, ts:Date.now(), taskKey:tk}); };
+  if(lvl===0) state.logs=state.logs.filter(l=>l.taskKey!==k.key && l.taskKey!==SK);
+  if(lvl===1) addLog(SK, half, "📖 ");
+  if(lvl===2) addLog(k.key, state.logs.some(l=>l.taskKey===SK) ? k.m-half : k.m, "");
+}
+
+// Target pace: one bucket every 2 days on the sprint clock.
+function paceChip(){
+  const dn=dayNumber(state); if(dn<1) return "";
+  const expected=Math.min(QN, Math.max(1, Math.ceil(dn*QN/state.totalDays)));   // where an even pace to Dec 31 would put you
+  const diff=(state.quest.cur+1)-expected;
+  if(diff>0) return `<span class="qchip ok">🚀 ${diff} bucket${diff>1?"s":""} ahead of pace</span>`;
+  if(diff===0) return `<span class="qchip ok">🟢 On pace</span>`;
+  return `<span class="qchip carry">🟡 ${-diff} behind pace — a weekend catches you up</span>`;
+}
+
+function starParts(n){
+  const q=QUEST[n], opened=state.quest.opened[n]||todayISO();
+  const momentum = daysBetween(opened, todayISO()) <= 2;
+  const bonus=qBonus(q), bonusOk=bonus.every(qTaskDone), noteOk=!!noteDraft.trim();
+  return [
+    {on:true, name:"Clear", why:"All core tasks done"},
+    {on:momentum, name:"Momentum", why: momentum ? "Cleared within 3 days of starting" : "Took 4+ days — still counts as a clear"},
+    {on:bonusOk&&noteOk, name:"Mastery", why:(bonus.length?(bonusOk?"Bonus ✓":"Finish the bonus")+" + ":"")+(noteOk?"takeaway ✓":"write a takeaway")},
+  ];
+}
+function starsHTML(n){
+  return starParts(n).map(p=>`<div class="qstar ${p.on?"on":""}"><b>${p.on?"★":"☆"}</b><div class="qsn">${p.name}</div>${esc(p.why)}</div>`).join("");
+}
+
+function claimBucket(){
+  const n=state.quest.cur, q=QUEST[n];
+  if(!q || !qCoreDone(q)) return;
+  const parts=starParts(n), stars=parts.filter(p=>p.on).length;
+  const opened=state.quest.opened[n]||todayISO();
+  state.quest.opened[n]=opened;
+  state.quest.cleared[n]={date:todayISO(), stars, note:noteDraft.trim(), days:daysBetween(opened,todayISO())+1, boss:!!q.boss};
+  noteDraft=""; viewIdx=null;
+  state.quest.cur=Math.min(n+1, QN);
+  const xpGain=100+stars*40+(q.boss?200:0);
+  confetti();
+  toast("⭐".repeat(stars), `Bucket ${n+1} cleared!`, `+${xpGain} XP · ${q.t}`);
+  const w=worldOf(n);
+  if(q.boss && w) setTimeout(()=>toast(w.ico, `World ${w.n} conquered!`, w.name), 600);
+  render(); checkNewAchievements();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function recallPick(){
+  const t=todayISO(), rec=state.quest.recall[t];
+  if(rec && TASK_BY_KEY[rec.key]) return {k:TASK_BY_KEY[rec.key], rec};
+  const rv=state.quest.revisit.map(key=>TASK_BY_KEY[key]).filter(Boolean);
+  const pool=[];
+  for(let n=0;n<state.quest.cur-1;n++){
+    if(!state.quest.cleared[n]) continue;
+    QUEST[n].k.forEach(k=>{ if(!["x","mc","beh"].includes(k.g) && qTaskDone(k)) pool.push(k); });
+  }
+  const src = rv.length ? rv : pool;
+  if(!src.length) return null;
+  return {k:src[strHash(t)%src.length], rec:null};
+}
+
+function taskHTML(k){
+  const lvl=qLevel(k), g=GROUPS[k.g], cat=CATS[k.c]||{color:"#888",icon:"•"};
+  const color=g?g.color:cat.color, icon=g?g.icon:cat.icon, label=g?g.title:k.c;
+  const cls=lvl===2?"done":lvl===1?"studying":"";
+  const tip=k.g==="x" ? (lvl?"Mark not done":"Mark done") : ["Tap: start studying","Tap: mark interview-ready","Tap: reset to to-do"][lvl];
+  return `<div class="qtask ${cls} ${k.b?"bonus":""}">
+    <button class="qcheck" data-act="toggle" data-key="${escAttr(k.key)}" aria-label="${tip}" title="${tip}">${lvl===2?"✓":lvl===1?"📖":""}</button>
+    <div class="qbody">
+      <div class="qmeta"><span class="pill" style="background:${hex2rgba(color,.15)};color:${color}">${icon} ${esc(label)}</span>${k.b?'<span class="qbonus">BONUS</span>':""}${lvl===1?'<span class="qstudy">STUDYING</span>':""}<span class="qmin">~${fmtMin(k.m)}</span></div>
+      <div class="qtitle">${esc(k.t)}</div>
+      <div class="qdrill">🎯 ${esc(k.d)}</div>
+    </div>
+  </div>`;
+}
+
+function recallHTML(){
+  const r=recallPick();
+  if(!r) return `<div class="qrecall muted">🧠 <b>Flash Recall</b> unlocks once you've cleared a couple of days. Each day it quizzes you on one older topic so it sticks.</div>`;
+  const {k,rec}=r;
+  const revisit=state.quest.revisit.map(key=>TASK_BY_KEY[key]).filter(Boolean);
+  return `<div class="qrecall">
+    <div class="qrh">🧠 Flash Recall <span class="tag">${revisit.some(x=>x.key===k.key)?"from your revisit queue":"from Bucket "+(k.n+1)}</span></div>
+    <div class="qrq">Explain out loud in 60 seconds: <b>${esc(k.t)}</b></div>
+    <details><summary>Peek at the drill</summary><div class="qdrill">${esc(k.d)}</div></details>
+    ${rec ? `<div class="qrres">${rec.res==="nailed"?"✅ Nailed it today · +15 XP":"🔁 Added to your revisit queue — it'll come back"}</div>`
+          : `<div class="qract"><button class="btn sm" data-act="recall" data-res="nailed" data-key="${escAttr(k.key)}">💪 Nailed it</button><button class="btn ghost sm" data-act="recall" data-res="shaky" data-key="${escAttr(k.key)}">😬 Shaky — revisit</button></div>`}
+    ${revisit.length?`<div class="qrevisit"><div class="lbl">🔁 Revisit queue (${revisit.length})</div>${revisit.map(x=>`<div class="qrv"><span>${esc(x.t)}</span><button class="btn ghost sm" data-act="revisit-done" data-key="${escAttr(x.key)}">Got it now</button></div>`).join("")}</div>`:""}
+  </div>`;
+}
+
+function mapHTML(){
+  const cur=state.quest.cur, viewing=viewIdx!=null?viewIdx:cur;
+  return `<div class="panel qmap"><h2>🗺️ Quest Map <span class="tag">${clearedCount(state)}/${QN} cleared · ${starsTotal(state)}/${QN*3} ★</span></h2>`+
+  WORLDS.map(w=>{
+    let wc=0; const nodes=[];
+    for(let n=w.from-1;n<w.to;n++){
+      const q=QUEST[n], c=state.quest.cleared[n]; if(c) wc++;
+      const st=c?"cleared":n===cur?"current":"locked";
+      const known=c||n<=cur+1;
+      nodes.push(`<button class="qnode ${st} ${q.boss?"boss":""} ${n===viewing?"viewing":""}" data-act="node" data-n="${n}" title="Bucket ${n+1} · ${known?escAttr(q.t):"???"}">
+        <span class="qn">${q.boss||c?q.e:n+1}</span>${c?`<span class="qs">${"★".repeat(c.stars)}${"☆".repeat(3-c.stars)}</span>`:""}</button>`);
+    }
+    return `<div class="qworld" style="--wc:${w.color}"><div class="qwhead"><span>${w.ico} World ${w.n} · ${w.name}</span><span class="tag">${wc}/${w.to-w.from+1}</span></div><div class="qnodes">${nodes.join("")}</div></div>`;
+  }).join("")+`</div>`;
+}
+
+function showClockBanner(){
+  if(state.quest.clockAck) return false;
+  const dn=dayNumber(state);
+  return dn>state.totalDays || (clearedCount(state)===0 && dn>3);
+}
+
+function renderToday(){
+  const box=document.getElementById("todayView"); if(!box) return;
+  const Q=state.quest, cur=Q.cur;
+  let html="";
+  if(showClockBanner()){
+    html+=`<div class="qbanner">⏰ Your sprint clock started on <b>${fmtDate(state.startDate)}</b> (it's day ${dayNumber(state)} on that clock). Restart it from today, with the finish line on Dec 31?
+      <span class="qbanner-act"><button class="btn sm" data-act="clock-restart">Start today</button><button class="btn ghost sm" data-act="clock-keep">Keep it</button></span></div>`;
+  }
+  if(cur>=QN && viewIdx==null){
+    html+=`<div class="panel qvictory"><div class="big">🏆</div><h2>All ${QN} days cleared.</h2>
+      <div class="qblurb">${starsTotal(state)}/${QN*3} stars collected. You're iron-clad — go book those interviews.</div></div>`;
+    box.innerHTML=html; return;
+  }
+  const n=viewIdx!=null?viewIdx:cur, q=QUEST[n], w=worldOf(n);
+  const core=qCore(q), doneCore=core.filter(qTaskDone).length;
+  const pct=Math.round(doneCore/core.length*100);
+  const left=core.filter(k=>!qTaskDone(k)).reduce((a,k)=>a+k.m,0);
+  const cleared=Q.cleared[n];
+  const opened=Q.opened[n], daysOn=opened?daysBetween(opened,todayISO())+1:1;
+  const R=38, CIRC=2*Math.PI*R;
+
+  const chips=[`<span class="qchip world">${w.ico} World ${w.n} · ${w.name}</span>`];
+  if(q.boss) chips.push(`<span class="qchip boss">⚔️ BOSS ROUND</span>`);
+  const studying=q.k.filter(k=>qLevel(k)===1).length;
+  if(cleared) chips.push(`<span class="qchip ok">✅ Cleared ${"★".repeat(cleared.stars)}${"☆".repeat(3-cleared.stars)}</span>`);
+  else if(n===cur){
+    chips.push(`<span class="qchip">⏱ ${left?`~${fmtMin(left)} left`:"ready to clear"}</span>`);
+    if(studying) chips.push(`<span class="qchip carry">📖 ${studying} in progress</span>`);
+    if(daysOn>1) chips.push(`<span class="qchip">📌 Evening ${daysOn} on this bucket${daysOn<=3?" · Momentum ★ still possible":""}</span>`);
+    chips.push(paceChip());
+  }
+
+  html+=`<div class="qhero ${q.boss?"boss":""}" style="--wc:${w.color}">
+    <div class="qchips">${chips.join("")}</div>
+    <div class="qhero-main">
+      <div class="qhero-text">
+        <span class="qday">Bucket ${n+1} of ${QN}</span>
+        <h2>${q.e} ${esc(q.t)}</h2>
+        <div class="qblurb">${esc(q.b)}</div>
+      </div>
+      <div class="qring"><svg width="88" height="88">
+        <circle cx="44" cy="44" r="${R}" stroke="#0e1424" stroke-width="8" fill="none"/>
+        <circle cx="44" cy="44" r="${R}" stroke="${w.color}" stroke-width="8" fill="none" stroke-linecap="round"
+          stroke-dasharray="${CIRC}" stroke-dashoffset="${CIRC-(pct/100)*CIRC}" style="transition:stroke-dashoffset .6s"/></svg>
+        <div class="qrt">${doneCore}/${core.length}<small>core</small></div></div>
+    </div>
+    ${worldBarHTML(w,n)}
+  </div>`;
+
+  if(n!==cur) html+=`<div style="margin-bottom:12px"><button class="btn ghost sm" data-act="back">← Back to today's bucket (Bucket ${cur+1})</button></div>`;
+  if(cleared) html+=`<div class="qcleared">✅ Cleared on ${fmtDate(cleared.date)} in ${cleared.days} day${cleared.days>1?"s":""} · ${cleared.stars}/3 stars${cleared.note?`<div class="qnote">“${esc(cleared.note)}”</div>`:""}</div>`;
+
+  if(!q.boss) html+=`<details class="qhow" id="qHow" ${(howOpen ?? (clearedCount(state)===0 && !q.k.some(k=>qLevel(k)>0)))?"open":""}><summary>How to cover a topic — and when it counts as ready</summary>
+    📖 Learn it (docs, article, video) → 🎯 do the drill → 🗣 explain it out loud. Tap once when you start studying, again when it's <b>interview-ready</b>:
+    you can do the drill and explain it in 2 minutes without notes. Aim for about 2 evenings per bucket.</details>`;
+  html+=`<div class="qtasks">${q.k.map(taskHTML).join("")}</div>`;
+
+  if(n===cur && !cleared){
+    const ready=qCoreDone(q), remaining=core.length-doneCore;
+    html+=`<div class="qclaim ${ready?"ready":""}">
+      <h3>${ready?"🎉 Bucket complete — claim your stars":"🔒 Clear this bucket"}</h3>
+      <div class="qsub">${ready?"Write one line you'd say in an interview about today's topics — it earns the Mastery star."
+        :`${remaining} core task${remaining>1?"s":""} to go. Not done tonight? It'll be right here tomorrow.`}</div>
+      <div class="qstars" id="qStars">${starsHTML(n)}</div>
+      ${ready?`<textarea id="qNote" placeholder="Today's takeaway, in one line…" style="margin-bottom:10px">${esc(noteDraft)}</textarea>`:""}
+      <button class="btn big ${ready?"glow":""}" data-act="claim" ${ready?"":"disabled"}>${ready?`⚔️ Clear Bucket ${n+1}`:`Clear Bucket ${n+1}`}</button>
+    </div>`;
+    if(n+1<QN) html+=`<div class="qnext">Up next: Bucket ${n+2} · ${QUEST[n+1].e} ${esc(QUEST[n+1].t)} 🔒</div>`;
+  }
+
+  html+=recallHTML();
+  box.innerHTML=html;
+}
+
+function worldBarHTML(w,n){
+  let segs="";
+  for(let i=w.from-1;i<w.to;i++){
+    const c=state.quest.cleared[i];
+    segs+=`<span class="qws ${c?"on":""} ${i===n?"here":""} ${QUEST[i].boss?"boss":""}" title="Bucket ${i+1}${c?" · "+"★".repeat(c.stars):""}"></span>`;
+  }
+  const done=Object.keys(state.quest.cleared).filter(i=>i>=w.from-1&&i<w.to).length;
+  return `<div class="qworldbar"><div class="qwsegs">${segs}</div><a href="#/map" class="qwlink">${done}/${w.to-w.from+1} in this world · map →</a></div>`;
+}
+
+function renderAppbar(){
+  const L=levelInfo(state);
+  document.getElementById("abStreak").textContent="🔥 "+currentStreak(state);
+  document.getElementById("abStars").textContent="⭐ "+starsTotal(state);
+  document.getElementById("abLevel").textContent=L.cur.name;
+  document.getElementById("abXpFill").style.width=L.pct+"%";
+}
+
+function renderMapView(){
+  const box=document.getElementById("mapView"); if(!box) return;
+  const cur=state.quest.cur, w=worldOf(Math.min(cur,QN-1)), L=levelInfo(state);
+  const dn=dayNumber(state), left=Math.max(0,state.totalDays-dn+1);
+  box.innerHTML=`<div class="panel qmaphead" style="--wc:${w.color}">
+      <div><div class="qday">You are here</div>
+        <h2>${cur>=QN?"🏆 Quest complete":`${w.ico} World ${w.n} · ${w.name}`}</h2>
+        <div class="qblurb">${cur>=QN?"Every bucket cleared.":esc(w.blurb)}</div></div>
+      <div class="qmapstats">
+        <div><b>${clearedCount(state)}/${QN}</b><span>buckets</span></div>
+        <div><b>${starsTotal(state)}</b><span>stars</span></div>
+        <div><b>${left}</b><span>days to Dec 31</span></div>
+        <div><b>${L.x.toLocaleString()}</b><span>${esc(L.cur.name)}</span></div>
+      </div>
+    </div>`+mapHTML();
+}
+
+// one delegated listener for the whole Today view
+(function wireToday(){
+  const box=document.getElementById("todayView");
+  box.addEventListener("click", e=>{
+    const el=e.target.closest("[data-act]"); if(!el) return;
+    const act=el.dataset.act;
+    if(act==="toggle"){
+      const k=TASK_BY_KEY[el.dataset.key]; if(!k) return;
+      const lvl=qNextLevel(k);
+      setQuestTask(k,lvl);
+      if(lvl===1) floatXp(el, `📖 +${15+20+Math.round(k.m/2/5)*5} XP`);
+      if(lvl===2) floatXp(el, `✓ +${(k.g==="x"?0:15)+20+k.m} XP`);
+      render(); checkNewAchievements();
+    } else if(act==="claim"){ claimBucket(); }
+    else if(act==="back"){ viewIdx=null; render(); window.scrollTo({top:0,behavior:"smooth"}); }
+    else if(act==="node"){
+      const n=+el.dataset.n;
+      if(state.quest.cleared[n] || n===state.quest.cur){ viewIdx=(n===state.quest.cur)?null:n; render(); window.scrollTo({top:0,behavior:"smooth"}); }
+      else toast("🔒","Locked",`Clear Bucket ${state.quest.cur+1} first`);
+    } else if(act==="recall"){
+      const key=el.dataset.key, res=el.dataset.res;
+      state.quest.recall[todayISO()]={key,res};
+      const rv=state.quest.revisit;
+      if(res==="shaky" && !rv.includes(key)) rv.push(key);
+      if(res==="nailed"){ state.quest.revisit=rv.filter(x=>x!==key); floatXp(el,"+15 XP"); }
+      render(); checkNewAchievements();
+    } else if(act==="revisit-done"){
+      state.quest.revisit=state.quest.revisit.filter(x=>x!==el.dataset.key); render();
+    } else if(act==="clock-restart"){
+      state.startDate=todayISO(); state.totalDays=daysToTarget(state.startDate); state.quest.clockAck=true; render(); toast("⏰","Clock restarted",`${state.totalDays} days to the Dec 31 finish line`);
+    } else if(act==="clock-keep"){ state.quest.clockAck=true; render(); }
+  });
+  box.addEventListener("input", e=>{
+    if(e.target.id==="qNote"){ noteDraft=e.target.value; const s=document.getElementById("qStars"); if(s) s.innerHTML=starsHTML(state.quest.cur); }
+  });
+})();
+
+document.getElementById("mapView").addEventListener("click", e=>{
+  const el=e.target.closest('[data-act="node"]'); if(!el) return;
+  const n=+el.dataset.n;
+  if(state.quest.cleared[n] || n===state.quest.cur){ viewIdx=(n===state.quest.cur)?null:n; setView("today"); }
+  else toast("🔒","Locked",`Clear Bucket ${state.quest.cur+1} first`);
+});
+document.getElementById("navToday").addEventListener("click",()=>{ if(viewIdx!=null){ viewIdx=null; if(state.view==="today") render(); } });
+// remember the how-to box open/closed across re-renders ('toggle' doesn't bubble → capture)
+document.getElementById("todayView").addEventListener("toggle", e=>{ if(e.target.id==="qHow") howOpen=e.target.open; }, true);
+
+function floatXp(el,text){
+  const r=el.getBoundingClientRect();
+  const f=document.createElement("div"); f.className="xpfloat"; f.textContent=text;
+  f.style.left=(r.left+r.width/2-20)+"px"; f.style.top=(r.top-8)+"px";
+  document.body.appendChild(f); setTimeout(()=>f.remove(),1150);
+}
+function confetti(){
+  if(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const c=document.createElement("canvas"); c.className="confetti"; document.body.appendChild(c);
+  const ctx=c.getContext("2d"), W=c.width=innerWidth, H=c.height=innerHeight;
+  const cols=["#f472b6","#60a5fa","#facc15","#34d399","#a78bfa","#fb923c"];
+  const P=Array.from({length:170},()=>({x:W/2+(Math.random()-.5)*240,y:H*.35,vx:(Math.random()-.5)*15,vy:-Math.random()*15-4,
+    r:Math.random()*7+4,c:cols[Math.random()*cols.length|0],a:Math.random()*6,va:(Math.random()-.5)*.3}));
+  const t0=performance.now();
+  (function frame(t){
+    const dt=t-t0; ctx.clearRect(0,0,W,H);
+    P.forEach(p=>{ p.vy+=.35; p.vx*=.99; p.x+=p.vx; p.y+=p.vy; p.a+=p.va;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.a); ctx.globalAlpha=Math.max(0,1-dt/2800);
+      ctx.fillStyle=p.c; ctx.fillRect(-p.r/2,-p.r/4,p.r,p.r/2); ctx.restore(); });
+    if(dt<2800) requestAnimationFrame(frame); else c.remove();
+  })(t0);
+}
 
 // ---------- utils ----------
 function esc(s){ return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
