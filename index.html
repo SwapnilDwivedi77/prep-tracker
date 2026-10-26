@@ -328,6 +328,53 @@
   .qmapstats span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
   @media(max-width:520px){.qmapstats{grid-template-columns:repeat(2,1fr);width:100%}}
 
+  /* ===== v5: sessions, warm-up, mistakes, scorecard, schedule ===== */
+  .qsess{background:rgba(14,20,36,.55);border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:12px}
+  .qsess.now{border-color:rgba(124,140,255,.6);box-shadow:0 0 0 1px rgba(124,140,255,.25) inset}
+  .qsess.bonus{border-style:dashed}
+  .qsess .qtasks{margin-bottom:0}
+  .qsess-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:2px 4px 10px}
+  .qsess-m{margin-left:auto;font-weight:600;text-transform:none;letter-spacing:0;color:var(--muted2)}
+  .qstag{font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;letter-spacing:.6px}
+  .qstag.now{background:var(--accent);color:#fff}
+  .qstag.late{color:var(--orange);border:1px solid rgba(251,146,60,.5)}
+  .qstag.ok{color:var(--green);border:1px solid rgba(52,211,153,.45)}
+  .qmethod{font-size:11.5px;color:var(--muted2);margin-top:6px;line-height:1.5}
+  .qres a{color:var(--blue);text-decoration:none;font-weight:600}
+  .qres a:hover{text-decoration:underline}
+  .qwarm,.qerr{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:14px}
+  .qwarm{background:linear-gradient(140deg,#17183a,var(--card));border-color:rgba(167,139,250,.4)}
+  .qwarm.muted{background:var(--card);border-color:var(--line);color:var(--muted2);font-size:13px}
+  .qwarm .qsub,.qerr .qsub{font-size:12px;color:var(--muted);margin-bottom:8px}
+  .qwi{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--line)}
+  .qwi:first-of-type{border-top:none}
+  .qwt{flex:1;min-width:0;font-size:13px}
+  .qwfrom{display:block;font-size:11px;color:var(--muted2);margin-top:2px}
+  .qwt details{font-size:12px;color:var(--muted);margin-top:4px}
+  .qwt summary{cursor:pointer;color:var(--purple)}
+  .qwb{display:flex;gap:6px;flex:none}
+  @media(max-width:520px){.qwi{flex-direction:column}.qwb{width:100%}}
+  .qerr-in{display:flex;gap:8px;margin-bottom:6px}
+  .qerr-in .btn{white-space:nowrap;flex:none}
+  .qscore{background:#0e1424;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:10px}
+  .qsrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 0;font-size:13px}
+  .qsbtns{display:flex;gap:4px}
+  .qsbtns button{width:30px;height:28px;border-radius:7px;border:1px solid var(--line);background:var(--card);color:var(--muted);font-weight:800;cursor:pointer;font-family:inherit}
+  .qsbtns button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .qsched{display:flex;flex-direction:column;gap:3px}
+  .qsw{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin:12px 0 4px}
+  .qsw:first-child{margin-top:0}
+  .qsr{display:grid;grid-template-columns:24px 170px 1fr auto;gap:10px;align-items:center;font-size:13px;padding:6px 8px;border-radius:8px}
+  .qsr.cur{background:rgba(124,140,255,.1)}
+  .qsr.now{box-shadow:0 0 0 1px rgba(124,140,255,.45) inset}
+  .qsr.travel{grid-template-columns:24px 1fr;color:var(--muted2);font-style:italic}
+  .qsd{color:var(--muted2);font-size:12px}
+  .qsm{color:var(--muted2);font-size:12px;white-space:nowrap}
+  @media(max-width:640px){.qsr{grid-template-columns:22px 1fr;row-gap:2px}.qsd,.qsm{grid-column:2}}
+  .qstack{display:flex;flex-wrap:wrap;gap:6px}
+  .qstack span{font-size:12px;background:#0e1424;border:1px solid var(--line);border-radius:999px;padding:5px 10px;color:var(--muted)}
+  .qstack b{color:var(--txt);margin-right:4px}
+
   /* ===== TODAY / QUEST ===== */
   .qbanner{background:rgba(250,204,21,.07);border:1px solid rgba(250,204,21,.35);color:#fde68a;border-radius:12px;padding:12px 14px;font-size:13px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;line-height:1.45}
   .qbanner-act{display:flex;gap:8px;margin-left:auto}
@@ -602,6 +649,17 @@
     </div>
   </div>
 
+  <div class="panel" id="parkPanel">
+    <h2>🧭 Study stack & parking lot <span class="tag">one resource per job · review the parking lot on Jan 1</span></h2>
+    <div class="qstack">
+      <span><b>JS coding & builds</b> GreatFrontEnd</span><span><b>JS concepts</b> MDN</span><span><b>React</b> react.dev</span>
+      <span><b>Next.js</b> nextjs.org/docs</span><span><b>CSS & browser</b> web.dev / MDN</span><span><b>SD concepts</b> Namaste FSD</span>
+      <span><b>SD case studies</b> GreatFrontEnd</span><span><b>DSA</b> LeetCode</span><span><b>Parked till Jan</b> LearnersBucket, faangprep, frontendinterviews.dev</span>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px"><input id="parkIn" placeholder="Found a new course / site / article? Park it here instead of opening it…" /><button class="btn sm" id="parkAdd">Park it</button></div>
+    <div id="parkList" style="margin-top:8px"></div>
+  </div>
+
   <div class="panel" id="historyPanel">
     <h2>📜 Log History <span class="tag" id="histCount"></span></h2>
     <div class="hist-toolbar">
@@ -636,6 +694,7 @@ const pad2 = n => String(n).padStart(2,"0");
 function fmt(d){ return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`; }
 function parseISO(s){ const [y,m,d]=String(s).split("-").map(Number); return new Date(y,(m||1)-1,d||1); }
 const todayISO = () => fmt(new Date());
+function addDays(iso,n){ const d=parseISO(iso); d.setDate(d.getDate()+n); return fmt(d); }
 
 const C = {JS:"JS Core & Polyfills", MC:"Machine Coding", SD:"System Design", RN:"React & Next",
            WEB:"Web, CSS & Testing", DSA:"DSA", BEH:"Behavioral"};
@@ -858,258 +917,276 @@ const GROUP_CAT = {"sd-concepts":C.SD,"sd-cases":C.SD,react:C.RN,next:C.RN,js:C.
 const EST = {"sd-concepts":35,"sd-cases":70,react:30,next:30,js:35,mc:55,web:30,test:30,dsa:45,beh:30};
 const T = (g,i,d,o) => Object.assign({g,i,d}, o||{});
 const B = (g,i,d,o) => T(g,i,d,Object.assign({b:1},o||{}));          // bonus (optional) task
-const X = (t,d,c,m) => ({g:"x",t,d,c,m});                             // boss drill, not a syllabus item
+const X = (t,d,c,m,o) => Object.assign({g:"x",t,d,c,m}, o||{});        // boss drill / review, not a syllabus item
 
+// ---------------------------------------------------------------------------
+// PLAN v5 — "Winter Arc": 10 weeks, Oct 26 → Dec 31, travel Nov 8–11 blocked out.
+// Weekly rhythm:  Mon–Tue = concepts (A) · Wed–Thu = concepts (B) · Fri–Sun = apply: builds, designs, DSA, bosses (W)
+// Weekday concepts feed that weekend's builds, so every topic is used within ~5 days of learning it.
+// ---------------------------------------------------------------------------
+const PLAN_START = "2026-10-26";
 const TARGET_END = "2026-12-31";
+const TRAVEL = {from:"2026-11-08", to:"2026-11-11"};
+const HOLIDAYS = {"2026-12-25":"Christmas"};
+const DAY_CAP = {weekday:70, fri:60, sat:180, sun:180, holiday:180};  // minutes of NEW work (weekday evenings also start with a 10-min warm-up)
+const SRS_INT = [2, 6, 14, 30];                                         // spaced-repetition review gaps (days)
+const REVIEW = n => X("Weekly review","Clear due warm-ups · re-attempt 1 item from your mistake log · check the pace chip · skim next week's buckets.","Review",20);
+
 const WORLDS = [
-  {n:1, name:"Runtime Village",     ico:"🌱", color:"#34d399", from:1,  to:7,  blurb:"How JavaScript, the browser and CSS actually work."},
-  {n:2, name:"Render Forest",       ico:"⚛️", color:"#22d3ee", from:8,  to:14, blurb:"React internals, state and rendering performance."},
-  {n:3, name:"Network Canyon",      ico:"🌐", color:"#60a5fa", from:15, to:21, blurb:"Bundles, data, caching, real-time and security — finishing the SD concepts."},
-  {n:4, name:"Architect's Citadel", ico:"🏛️", color:"#a78bfa", from:22, to:28, blurb:"Next.js essentials and the classic system design case studies."},
-  {n:5, name:"Dragon's Peak",       ico:"🐉", color:"#f472b6", from:29, to:34, blurb:"Your home-turf designs, TypeScript, revision and the full loop."},
+  {n:1, name:"Runtime Village",     ico:"🌱", color:"#34d399", from:1,  to:8,  blurb:"Weeks 1–3 · How JavaScript, the browser and CSS actually work — proven in plain JS."},
+  {n:2, name:"Render Forest",       ico:"⚛️", color:"#22d3ee", from:9,  to:14, blurb:"Weeks 4–5 · React's rendering engine, component architecture and system-design foundations."},
+  {n:3, name:"Network Canyon",      ico:"🌐", color:"#60a5fa", from:15, to:20, blurb:"Weeks 6–7 · Performance, lists, caching, real-time, security — and your first design mock."},
+  {n:4, name:"Architect's Citadel", ico:"🏛️", color:"#a78bfa", from:21, to:26, blurb:"Weeks 8–9 · Shipping & measuring, Next.js, TypeScript and the classic case studies."},
+  {n:5, name:"Dragon's Peak",       ico:"🐉", color:"#f472b6", from:27, to:28, blurb:"Week 10 · The full interview loop — one round per evening, like a real multi-day loop."},
 ];
 
 const QUEST = [
-/* 1 */ {t:"Boot Sequence", e:"🔌", b:"How code actually runs — from URL to event loop — plus the JS basics every screen starts with.", k:[
+// ============================ WEEK 1 · How JS runs ============================
+/* 1 */ {wk:1, slot:"A", w:["2026-10-26","2026-10-27"], t:"Boot Sequence", e:"🔌", b:"How code actually runs: the event loop, coercion, closures and the trip from URL to pixels.", k:[
   T("js",0,"Predict the output of 6 snippets mixing setTimeout, Promise.then, queueMicrotask and async/await. Explain each in one line."),
   T("js",5,"Predict 8 outputs: [] + {}, '5' - 2, null == undefined, NaN === NaN, typeof null… then state the coercion rules from memory."),
-  T("web",0,"Narrate URL → DNS → TCP → TLS → HTTP (and why HTTP/2 multiplexing matters) → parse → render in under 3 minutes."),
-  T("sd-concepts",0,"Write the RADIO skeleton from memory, plus the 3 questions you'd always ask in Requirements."),
-  T("mc",0,"Hover preview, click to set, keyboard support, configurable max. Build it in plain JS first, then in React.",{m:45}),
-  B("js",25,"clearAllTimeouts() by wrapping setTimeout, and setInterval built from recursive setTimeout — asked in a recent LinkedIn loop.",{m:30}),
-]},
-/* 2 */ {t:"Closure Cove", e:"🐚", b:"Closures power debounce and timers — and cause React's sneakiest bug.", k:[
   T("js",1,"Explain closures with a counter factory. Predict the classic for-var-setTimeout loop, then fix it two ways."),
-  T("js",6,"Write debounce (leading/trailing options) and throttle from scratch. When would you pick each?",{m:45}),
-  T("react",3,"Reproduce a stale-closure bug in a setInterval effect; fix it with a functional update and with a ref."),
-  T("mc",13,"Start / pause / lap / reset driven by rAF + performance.now() so it never drifts.",{m:45}),
-  T("dsa",0,"Kadane (max subarray) + 'subarray sum equals K' with prefix sums. 2–3 LeetCode mediums, say the complexity out loud."),
+  T("web",0,"Narrate URL → DNS → TCP → TLS → HTTP (why HTTP/2 multiplexing matters) → parse → render in under 3 minutes."),
+  B("js",25,"clearAllTimeouts() by wrapping setTimeout, and setInterval from recursive setTimeout — asked in a recent LinkedIn loop.",{m:30}),
 ]},
-/* 3 */ {t:"The Render Tree", e:"🌳", b:"Follow a frame from HTML to pixels — and the metrics that catch you when it's slow.", k:[
-  T("web",1,"Draw DOM + CSSOM → render tree → layout → paint → composite. What is render-blocking? Where does rAF fit in the 16 ms frame?"),
-  T("web",2,"Write code that causes layout thrashing, then fix it by batching reads and writes."),
-  T("sd-concepts",3,"LCP, CLS, INP: what each measures, the 'good' threshold, 2 fixes each. Tie one to your MMT listing revamp."),
-  T("sd-concepts",5,"AVIF vs WebP vs JPEG, srcset/sizes, lazy loading, fetchpriority for the LCP image."),
-  T("dsa",1,"Two-sum, group anagrams, longest consecutive sequence — and why hash maps make them O(n)."),
-]},
-/* 4 */ {t:"This & That Bay", e:"🧭", b:"The JS-round favourite: this, prototypes and the polyfills built on them.", k:[
+/* 2 */ {wk:1, slot:"B", w:["2026-10-28","2026-10-29"], t:"This & That Bay", e:"🧭", b:"`this`, prototypes and DOM events — the core of every JS round and every vanilla build.", k:[
   T("js",2,"Predict `this` in 6 cases: method, detached method, arrow, class field, setTimeout, bind. State the rules in order."),
   T("js",3,"Draw the prototype chain of a class instance. Implement inheritance without the class keyword."),
+  T("js",9,"Capture → target → bubble. Delegation for a 1,000-item list. When does stopPropagation hurt?"),
+  T("web",11,"A signup form with only native elements: label/for, fieldset, input types, required/pattern, button types."),
+]},
+/* 3 */ {wk:1, slot:"W", w:["2026-10-30","2026-11-01"], t:"Vanilla Valley", e:"🍦", b:"Apply the week: polyfills built on `this` and closures, then three builds in plain JS — some rounds ban frameworks.", k:[
+  T("js",6,"Write debounce (leading/trailing) and throttle from scratch. When would you pick each?",{m:45}),
   T("js",12,"myBind / myCall / myApply + map / filter / reduce polyfills with edge cases (thisArg, sparse arrays, no initial value).",{m:50}),
+  T("js",21,"Render a list from data with createElement + DocumentFragment, delegated events, re-render on state change — no framework.",{m:45}),
+  T("mc",0,"Hover preview, click to set, keyboard support, configurable max. Plain JS first, then React.",{m:45}),
+  T("mc",1,"Plain HTML/CSS/JS (a recent Flipkart round did exactly this): add, edit, delete, filter, localStorage. Review your own structure.",{m:50}),
   T("mc",3,"Single vs multi-open, keyboard nav, aria-expanded/controls — with ONE delegated click listener.",{m:45}),
+  T("dsa",0,"Kadane (max subarray) + 'subarray sum equals K' with prefix sums. 2–3 LeetCode mediums; say the complexity out loud."),
+  REVIEW(),
 ]},
-/* 5 */ {t:"Vanilla Valley", e:"🍦", b:"Some machine-coding rounds ban frameworks. Prove you can build without React.", k:[
-  T("js",9,"Explain capture → target → bubble. Delegation for a 1,000-item list. When does stopPropagation hurt?"),
-  T("js",21,"Render a list from data with createElement + DocumentFragment, wire events via delegation, re-render on state change — no framework.",{m:45}),
-  T("web",11,"A signup form with only native elements: label/for, fieldset, input types, required/pattern, button types. Why native beats div-soup."),
-  T("sd-concepts",14,"The 8 a11y checks you'd run in a design review: semantics, labels, focus order, contrast, ARIA roles, keyboard…"),
-  T("mc",1,"In plain HTML/CSS/JS (a recent Flipkart round did exactly this): add, edit, delete, filter, localStorage. Then review your own folder structure.",{m:50}),
-]},
-/* 6 */ {t:"Flex & Grid Gardens", e:"🌻", b:"Layout day. Interviewers love 'centre this' and 'build this grid' from memory.", k:[
-  T("web",3,"content-box vs border-box, block vs inline-block, relative / absolute / fixed / sticky — a mini demo of each."),
-  T("web",4,"Holy-grail, sticky footer and 'centre anything' with flexbox. Explain the grow / shrink / basis maths."),
-  T("web",5,"Responsive card grid with auto-fill + minmax and named template areas. Grid vs flex — when each?"),
-  T("web",8,"Mobile-first breakpoints, a real container-query use, and when rem vs em vs vw."),
-  T("mc",4,"Winner detection, then generalise to N×N with O(1) checks per move using row/col/diagonal counters.",{m:50}),
-  B("sd-concepts",23,"ICU plurals, date/number formats, logical CSS properties for RTL, lazy-loading locale bundles."),
-]},
-/* 7 */ {t:"Village Warden", e:"👹", boss:true, b:"Mock round 1. No notes, timer on. Find out what actually stuck.", k:[
-  X("Output gauntlet: 10 event-loop / closure / this / coercion snippets in 20 min","Have someone (or an AI) pick them. Score yourself out of 10.",C.JS,25),
-  X("Polyfill sprint: debounce + Promise.all + bind in 40 min","From memory, no peeking. Run your own test cases at the end.",C.JS,40),
-  T("mc",2,"TIMED 45 min, vanilla JS: full WAI-ARIA tabs — roles, arrow keys, Home/End, roving tabindex.",{m:45}),
-  T("beh",0,"Present → past → why next, in 2 minutes. Record 3 takes and keep the best one."),
-]},
-/* 8 */ {t:"Promise Land", e:"🤝", b:"Async JS from first principles — and where React effects meet async.", k:[
+// ============================ WEEK 2 · Async & layout ============================
+/* 4 */ {wk:2, slot:"A", w:["2026-11-02","2026-11-03"], t:"Promise Land", e:"🤝", b:"Async from first principles, function utilities, and how the browser paints.", k:[
   T("js",4,"Promise states, chaining, error propagation in .then vs try/catch with await. Predict 4 outputs."),
-  T("js",11,"Promise.all / race / allSettled / any — handle empty arrays and non-promise values.",{m:50}),
-  T("react",2,"When effects run (render → commit → paint → effect), cleanup order, and fixing a fetch race with an ignore flag."),
-  T("sd-concepts",7,"REST vs GraphQL: over/under-fetching, caching, tooling. Which for a travel app — and why?"),
-  T("dsa",2,"Longest substring without repeats, container with most water, 3-sum. Spot when a window or two pointers apply."),
-]},
-/* 9 */ {t:"Diff & Keys", e:"🔑", b:"How React decides what to re-render — and why keys matter more than you think.", k:[
-  T("react",0,"Reconciliation in 2 minutes, plus Fiber at a high level (interruptible work, render vs commit). Show an index-key bug in a reorderable list."),
-  T("react",1,"Predict setCount(c+1) ×3 vs the functional form, and batching inside setTimeout in React 18+."),
-  T("react",17,"Why hooks can't be conditional (the linked list), and what StrictMode's double-invoke is catching."),
-  T("sd-concepts",1,"Table: CSR / SSR / SSG / ISR / streaming vs TTFB, FCP, SEO, server cost — and when to use each."),
-  T("dsa",3,"Valid brackets, min stack, next greater element (monotonic stack)."),
-]},
-/* 10 */ {t:"Memo Mountain", e:"⛰️", b:"Memoisation all the way down — in JS, in React, and how to prove it helped.", k:[
-  T("react",5,"3 cases where useMemo/useCallback help, 3 where they're pure overhead. What does the React Compiler change?"),
-  T("react",6,"Re-render rules (parent, context, state). Break React.memo with an inline object prop, then use the DevTools Profiler to prove the fix."),
-  T("react",7,"Show context causing whole-tree re-renders; fix it with split contexts / memoised values."),
+  T("js",7,"Variadic curry — sum(2)(3)(4)() (asked at Flipkart) — plus compose and pipe."),
   T("js",19,"memoize (with a key resolver), once, and a cache with TTL."),
-  T("mc",9,"Sortable, filterable, paginated table from a JSON API — then stop needless row re-renders.",{m:60}),
+  T("web",1,"DOM + CSSOM → render tree → layout → paint → composite. What's render-blocking? Where does rAF sit in a 16 ms frame?"),
 ]},
-/* 11 */ {t:"Ref & Portal Pass", e:"🌀", b:"Escaping the component tree properly: refs, portals and stacking contexts.", k:[
-  T("react",4,"useRef as a mutable box vs DOM refs. Build usePrevious. React 19: ref as a regular prop, no forwardRef needed."),
-  T("react",12,"Why portals exist (overflow / z-index traps), and prove events still bubble through the React tree."),
-  T("web",7,"Name 5 things that create a stacking context. Debug 'z-index: 9999 doesn't work'."),
-  T("web",6,"Calculate specificity for 5 selectors. Explain cascade layers, :is() vs :where(), inheritance."),
-  T("mc",7,"Modal in a portal: focus trap, Esc to close, return focus to the trigger, scroll lock."),
+/* 5 */ {wk:2, slot:"B", w:["2026-11-04","2026-11-05"], t:"Flex & Grid Gardens", e:"🌻", b:"CSS fundamentals interviewers still test from memory.", k:[
+  T("web",3,"content-box vs border-box, block vs inline-block, relative / absolute / fixed / sticky — a mini demo of each."),
+  T("web",4,"Holy-grail, sticky footer and 'centre anything' with flexbox. Explain grow / shrink / basis."),
+  T("web",5,"Responsive card grid with auto-fill + minmax and named areas. Grid vs flex — when each?"),
+  T("web",8,"Mobile-first breakpoints, a real container-query use, rem vs em vs vw."),
+  B("mc",4,"Winner detection, then N×N with O(1) checks per move using row/col/diagonal counters."),
+  B("sd-concepts",23,"ICU plurals, date/number formats, logical CSS properties for RTL, lazy-loaded locale bundles."),
 ]},
-/* 12 */ {t:"Reducer Ridge", e:"🏔️", b:"State machines, reducers and the hooks you build on top of them.", k:[
-  T("react",8,"Turn a messy multi-useState form into useReducer with explicit states (idle / loading / success / error)."),
-  T("react",9,"Extract useDebounce, useLocalStorage, useFetch. Talk through naming and API design."),
-  T("react",16,"Find 3 'useEffect to sync state' smells and rewrite them as derived values or key resets."),
-  T("js",7,"Variadic curry (sum(2)(3)(4)() — asked at Flipkart), compose and pipe."),
-  T("mc",17,"Red → green → yellow with configurable durations. One timer + a state map, no nested setTimeouts.",{m:45}),
-  B("mc",27,"past / present / future stacks, keyboard shortcuts, capped history."),
-]},
-/* 13 */ {t:"Form & State Crossroads", e:"🚦", b:"Where state should live — and the forms that test it hardest.", k:[
-  T("react",10,"The same input controlled and uncontrolled; react-hook-form vs controlled re-render cost; zod validation."),
-  T("react",18,"Refactor a tree: move state down (colocate), then up (lift). Explain the trade-off."),
-  T("sd-concepts",13,"Server state vs client state. Normalise a nested API response (posts → authors) and say why."),
-  T("mc",16,"Parent is checked / unchecked / indeterminate from its children, to any depth."),
-  T("dsa",4,"Permutations, subsets, flatten a nested array — recursion and backtracking templates."),
-]},
-/* 14 */ {t:"Forest Guardian", e:"🐲", boss:true, b:"Mock round 2: React, performance and a DSA screen under a clock.", k:[
-  T("mc",11,"TIMED 45 min: auto-advance, backspace to previous, paste the whole code, numeric only.",{m:45}),
-  X("Whiteboard: how React renders, trigger → commit (20 min)","State update → render → reconcile → commit, and where memo, context and keys change the outcome.",C.RN,20),
-  X("DSA screen: 2 LeetCode mediums in 45 min","Arrays / hash maps / sliding window. Talk through brute force → optimal, with complexity.",C.DSA,45),
-  T("beh",3,"STAR on the listing revamp / CWV work: real numbers, your exact part, 2 minutes max."),
-]},
-/* 15 */ {t:"Bundle Bay", e:"📦", b:"What ships to the browser, how it hydrates — and how to ship less of it.", k:[
-  T("react",14,"Route-level splitting with React.lazy + Suspense. Where do boundaries go, and why?"),
-  T("sd-concepts",4,"Code splitting, tree shaking (and why side effects break it), bundle analysis, preload vs prefetch vs preconnect."),
-  T("js",20,"ESM vs CommonJS: static vs dynamic, live bindings, why ESM enables tree shaking, dynamic import()."),
-  T("sd-concepts",19,"Walk through your Module Federation setup: shared deps, versioning, runtime vs build-time integration, pitfalls."),
-  T("sd-concepts",2,"RSC vs SSR, what hydration costs, hydration mismatches, islands, partial prerendering."),
-]},
-/* 16 */ {t:"Scroll Sea", e:"🌊", b:"Endless lists without endless DOM nodes.", k:[
-  T("web",10,"IntersectionObserver for lazy images + an infinite-scroll sentinel. Where do Resize / MutationObserver fit?"),
-  T("sd-concepts",8,"Offset vs cursor pagination: consistency under inserts, deep pages, API design."),
-  T("sd-concepts",6,"Windowing: fixed vs variable heights, overscan, mapping scroll position to rendered rows."),
-  T("mc",6,"Feed with IntersectionObserver, loading / error / end states, no duplicate fetches."),
-  T("dsa",5,"Binary search + lower bound, search in rotated array — the same maths as variable-height virtualisation."),
-  B("mc",26,"10k fixed-height rows — render only the visible rows plus overscan."),
-  B("mc",20,"Ellipsis logic (1 … 4 5 6 … 20), controlled page, keyboard accessible.",{m:40}),
-]},
-/* 17 */ {t:"Fetch Falls", e:"💦", b:"Data that feels instant because it's cached in the right layers.", k:[
-  T("sd-concepts",10,"Walk a request through HTTP cache → service worker → CDN → app memory → normalised store. What invalidates each?"),
-  T("sd-concepts",11,"Stale-while-revalidate, query keys, staleTime vs gcTime, invalidation after a mutation."),
-  T("js",15,"O(1) get/put LRU — with Map, then with hashmap + doubly linked list.",{m:45}),
-  T("react",20,"Redux Toolkit vs Zustand vs Context vs React Query: pick for 3 scenarios and defend each."),
-  T("js",16,"runWithLimit(tasks, n): at most n in flight, results in order. Then run promise-returning fns sequentially without async/await (Flipkart asked both).",{m:45}),
-  B("dsa",10,"Reverse a linked list + detect a cycle — the structure behind the LRU."),
-]},
-/* 18 */ {t:"Optimist's Outpost", e:"⚡", b:"Instant-feeling UIs, live updates — and recovering when things fail.", k:[
-  T("sd-concepts",12,"Optimistic update: snapshot, apply, rollback on error, reconcile with server truth. Concurrent edits?"),
-  T("react",19,"React 19's use(), Actions, useOptimistic, useFormStatus — rebuild a like button with useOptimistic."),
-  T("sd-concepts",9,"Polling vs long-polling vs SSE vs WebSockets: direction, reconnection, proxies, cost. Pick for cab tracking and for chat."),
+/* 6 */ {wk:2, slot:"W", w:["2026-11-06","2026-11-07"], t:"Async Forge", e:"⚒️", b:"Short pre-travel weekend: Promise utilities, pub-sub and an accessible widget.", k:[
+  T("js",11,"Promise.all / race / allSettled / any — empty arrays, non-promise values, rejection order.",{m:50}),
   T("js",14,"EventEmitter with on / off / once / emit. Handle removing a listener during emit."),
-  T("mc",10,"Imperative toast() API via a pub-sub store, stacking, auto-dismiss, pause on hover, max visible."),
-  B("js",17,"retry(fn, {retries, backoff, jitter}) + timeout via Promise.race. When NOT to retry (4xx)."),
-  B("mc",25,"Optimistic toggle, rollback + toast on failure, dedupe in-flight taps."),
+  T("sd-concepts",14,"The 8 a11y checks you'd run in review: semantics, labels, focus order, contrast, ARIA roles, keyboard…"),
+  T("mc",2,"Full WAI-ARIA tabs in plain JS: roles, arrow keys, Home/End, roving tabindex.",{m:45}),
+  T("web",2,"Cause layout thrashing on purpose, then fix it by batching reads and writes."),
+  T("dsa",1,"Two-sum, group anagrams, longest consecutive sequence — why hash maps make them O(n)."),
+  REVIEW(),
+  B("mc",13,"Start / pause / lap / reset on rAF + performance.now() so it never drifts.",{m:45}),
 ]},
-/* 19 */ {t:"Firewall & Vault", e:"🛡️", b:"Keep users safe, keep their data in the right place, and fail gracefully.", k:[
-  T("sd-concepts",15,"Show an XSS via dangerouslySetInnerHTML and fix it. CSRF + SameSite, a CSP header, CORS preflight."),
-  T("sd-concepts",16,"Cookie sessions vs JWT in localStorage (XSS/CSRF exposure). Refresh-token flow and OAuth PKCE."),
-  T("web",9,"Cookies (HttpOnly/Secure/SameSite) vs localStorage vs sessionStorage vs IndexedDB: size, sync/async, access."),
-  T("sd-concepts",17,"Error layers: boundary, query error, global handler, user-facing retry. Retryable vs non-retryable."),
-  T("react",13,"ErrorBoundary with reset keys. What can't it catch (event handlers, async)?"),
-  B("sd-concepts",24,"Offline-first draft editor: SW caching strategies, IndexedDB queue, background sync, conflicts."),
+// ============================ WEEK 3 · re-entry + Boss 1 ============================
+/* 7 */ {wk:3, slot:"R", w:["2026-11-12","2026-11-12"], t:"Re-entry", e:"🛬", b:"One evening back from travel: retrieve before you learn anything new. This is exactly when forgetting peaks.", k:[
+  X("Cold re-code: debounce + Promise.all from memory","No notes. Compare with your Week 1–2 versions and log what you forgot.",C.JS,30),
+  X("Explain out loud: event loop, closures, CRP (2 min each)","Record one on your phone and listen back once.",C.JS,15),
+  X("Clear your warm-up queue","Everything due from weeks 1–2. Grade honestly — 'shaky' is useful data.","Review",20),
 ]},
-/* 20 */ {t:"Design System Workshop", e:"🎨", b:"Components other teams love — and how you measure and roll them out. SD concepts: complete.", k:[
-  T("sd-concepts",20,"Token tiers (primitive → semantic → component), multi-brand theming via CSS variables, versioning; CSS Modules vs CSS-in-JS vs Tailwind."),
+/* 8 */ {wk:3, slot:"W", w:["2026-11-13","2026-11-15"], t:"Village Warden", e:"👹", boss:true, b:"Boss 1 — a JS/vanilla screening round. Timer on, no notes. Then two new topics that build on it.", k:[
+  X("Output gauntlet: 10 event-loop / closure / this / coercion snippets in 20 min","Have someone (or an AI) pick them. Score yourself out of 10.",C.JS,25),
+  X("Polyfill sprint: debounce + Promise.all + bind in 40 min","From memory. Run your own test cases at the end.",C.JS,40),
+  T("mc",17,"TIMED 45 min, plain JS: red → green → yellow with configurable durations, one timer + a state map.",{m:45}),
+  X("DSA screen: 2 LeetCode mediums in 45 min","Arrays / hash maps. Brute force → optimal, complexity out loud.",C.DSA,45),
+  T("beh",0,"Present → past → why next, in 2 minutes. Record 3 takes and keep the best."),
+  T("js",13,"MyPromise: then-chaining, async resolution, error propagation, catch and finally (asked in a recent Flipkart senior loop).",{m:50}),
+  T("mc",10,"Imperative toast() API on your EventEmitter, stacking, auto-dismiss, pause on hover, max visible."),
+  T("dsa",2,"Longest substring without repeats, container with most water, 3-sum."),
+  REVIEW(),
+]},
+// ============================ WEEK 4 · React's engine ============================
+/* 9 */ {wk:4, slot:"A", w:["2026-11-16","2026-11-17"], t:"Diff & Keys", e:"🔑", b:"How React renders, batches and runs effects — the questions every React round opens with.", k:[
+  T("react",0,"Reconciliation in 2 minutes + Fiber at a high level (interruptible work, render vs commit). Show an index-key bug."),
+  T("react",1,"Predict setCount(c+1) ×3 vs the functional form, and batching inside setTimeout in React 18+."),
+  T("react",2,"render → commit → paint → effect; cleanup order; fix a fetch race with an ignore flag."),
+  T("react",3,"Reproduce a stale-closure bug in a setInterval effect — it's Week 1's closures again — and fix it two ways."),
+  B("react",17,"Why hooks can't be conditional (the linked list); what StrictMode's double-invoke catches."),
+]},
+/* 10 */ {wk:4, slot:"B", w:["2026-11-18","2026-11-19"], t:"Memo Mountain", e:"⛰️", b:"Why components re-render, and the four tools that stop it — when they're worth it.", k:[
+  T("react",5,"3 cases where useMemo/useCallback help, 3 where they're overhead. What the React Compiler changes."),
+  T("react",6,"Break React.memo with an inline object prop, then prove the fix in the DevTools Profiler."),
+  T("react",7,"Context causing whole-tree re-renders; fix with split contexts / memoised values."),
+  T("react",16,"Find 3 'useEffect to sync state' smells; rewrite as derived values or key resets."),
+]},
+/* 11 */ {wk:4, slot:"W", w:["2026-11-20","2026-11-22"], t:"Ref & Portal Pass", e:"🌀", b:"Apply the week: a modal that escapes the tree, a table that doesn't over-render, checkboxes that share state.", k:[
+  T("react",4,"useRef as a mutable box vs DOM refs; usePrevious; React 19 ref-as-prop (no forwardRef)."),
+  T("react",12,"Why portals exist (overflow / z-index traps); prove events still bubble through the React tree."),
+  T("web",7,"5 things that create a stacking context; debug 'z-index: 9999 doesn't work'."),
+  T("web",6,"Specificity for 5 selectors (the other half of 'why is my modal hidden?'); cascade layers; :is() vs :where(); what inherits."),
+  T("mc",7,"Portal + focus trap, Esc to close, return focus to the trigger, scroll lock."),
+  T("mc",9,"Sortable, filterable, paginated table from a JSON API — then stop needless row re-renders (Wed–Thu's memo work).",{m:60}),
+  T("react",18,"Move state down (colocate), then up (lift) — and say which the next build needs."),
+  T("mc",16,"Parent checked / unchecked / indeterminate from its children, at any depth."),
+  T("dsa",3,"Valid brackets, min stack, next greater element (monotonic stack)."),
+  REVIEW(),
+]},
+// ============================ WEEK 5 · Components + SD foundations ============================
+/* 12 */ {wk:5, slot:"A", w:["2026-11-23","2026-11-24"], t:"Component Architecture", e:"🧱", b:"Designing components other teams use — the bridge from React to system design.", k:[
+  T("react",10,"Same input controlled and uncontrolled; react-hook-form vs controlled re-render cost; zod validation."),
+  T("react",11,"Tabs as compound components (Tabs.List / Tabs.Panel) via context. Compare render props and HOCs."),
   T("sd-concepts",22,"Design a Select API: controlled/uncontrolled, slots vs props, polymorphic 'as', escape hatches."),
-  T("react",11,"Tabs as compound components (Tabs.List / Tabs.Panel) with context. Compare render props and HOCs."),
-  T("sd-concepts",18,"RUM vs synthetic, what to log, sourcemaps + Sentry, alerting on a CWV regression."),
-  T("sd-concepts",21,"Feature flags, stable A/B assignment, which metrics to track — tie it to your Adobe XDM migration. (LinkedIn's product round asked exactly this.)"),
+  T("sd-concepts",20,"Token tiers (primitive → semantic → component), multi-brand theming with CSS variables; Modules vs CSS-in-JS vs Tailwind."),
 ]},
-/* 21 */ {t:"Canyon Colossus", e:"🗿", boss:true, b:"Mock round 3: your first full system design, a recursive build and an async gauntlet.", k:[
-  T("sd-cases",0,"MOCK, 40 min, no notes: RADIO end-to-end — debounce, cache, race handling, keyboard a11y, ranking. Record, then compare with a reference answer.",{m:50}),
-  T("mc",12,"TIMED 60 min: recursive comments with reply / edit / delete / collapse on normalised state.",{m:60}),
-  X("Async gauntlet: allSettled + promise pool + retry in 30 min","From memory, 3 tests each.",C.JS,30),
-  T("beh",2,"The MFE migration story: why, the hard parts (shared deps, routing), outcome, what you'd change."),
+/* 13 */ {wk:5, slot:"B", w:["2026-11-25","2026-11-26"], t:"System Design 101", e:"🏛️", b:"The framework and the four big rendering/data decisions behind every design answer.", k:[
+  T("sd-concepts",0,"Write the RADIO skeleton from memory, plus the 3 questions you'd always ask in Requirements."),
+  T("sd-concepts",1,"Table: CSR / SSR / SSG / ISR / streaming vs TTFB, FCP, SEO, server cost — when to use each."),
+  T("sd-concepts",2,"RSC vs SSR, what hydration costs, hydration mismatches, islands, partial prerendering."),
+  T("sd-concepts",7,"REST vs GraphQL: over/under-fetching, caching, tooling. Which for a travel app — and why?"),
 ]},
-/* 22 */ {t:"Server Side Story", e:"🖥️", b:"Next.js — only the parts interviews actually probe — then an e-commerce design that uses them.", k:[
-  T("next",0,"File conventions, layouts, loading/error UI, data fetching — and when you'd still pick the Pages Router."),
-  T("next",1,"Where the 'use client' boundary goes; server ↔ client import rules; what gets serialised."),
-  T("next",2,"Draw the 4 caches and how revalidatePath / revalidateTag clear each; static vs dynamic vs streaming routes."),
-  T("next",3,"A Server Action form with progressive enhancement, validation, revalidation — and auth checks inside the action."),
-  T("sd-cases",4,"Filters in the URL, SSR/PPR for SEO, image gallery, cart state, a CWV budget."),
-  B("next",4,"Auth redirects, geo/locale routing, A/B bucketing — and what Middleware can't do."),
-]},
-/* 23 */ {t:"Feed Factory", e:"📰", b:"The most-asked design prompt, plus a carousel and smooth scrolling.", k:[
-  T("sd-cases",1,"Pagination, real-time inserts, virtualisation, optimistic likes, image loading, ad slots without CLS."),
-  T("mc",8,"Prev / next, dots, autoplay with pause on hover, swipe, lazy-load neighbours."),
-  T("react",15,"Keep an input responsive while filtering 10k items — useTransition, then useDeferredValue. The difference?"),
-  B("web",12,"Why transform/opacity are cheap, FLIP for list reorders, prefers-reduced-motion."),
-  B("dsa",9,"Top-K frequent elements with a heap — trending posts."),
-  B("mc",24,"Vote once, animated result bars, optimistic counts."),
-]},
-/* 24 */ {t:"Chat Channel", e:"💬", b:"WhatsApp Web and a ChatGPT-style UI — and the Promise you build under both.", k:[
-  T("sd-cases",2,"Transport, message ordering/ids, delivery receipts, offline queue, upward pagination, unread counts."),
-  T("sd-cases",10,"Stream tokens over SSE / fetch ReadableStream, render incrementally without jank, stop / regenerate, markdown + code blocks, history, retries."),
-  T("js",13,"MyPromise with then-chaining, async resolution, error propagation, catch and finally (asked in a recent Flipkart senior loop).",{m:50}),
-]},
-/* 25 */ {t:"Upload Express", e:"📤", b:"Big files, flaky networks, many at once — and the 'why leaving' answer.", k:[
-  T("sd-cases",6,"Chunking + hashing, parallel limit, per-chunk retry, pause / resume, progress reporting."),
-  T("mc",18,"'Add' starts a bar; max 3 fill at once, the rest wait in a queue.",{m:50}),
-  T("beh",1,"Positive, growth-focused, specific to the company. Under 60 seconds."),
-  B("web",13,"Hash file chunks in a Web Worker. postMessage cost, transferables, Comlink."),
-  B("sd-cases",12,"Widget layout, chart library choice, polling vs push, aggregating large datasets, export."),
-]},
-/* 26 */ {t:"Tree House", e:"🌲", b:"Recursion everywhere: comment threads, file trees and DOM traversal.", k:[
-  T("sd-cases",5,"Data model (adjacency list vs path), lazy-loading deep threads, collapse, voting."),
-  T("mc",15,"Recursive folders, expand / collapse, add / rename / delete, keyboard navigation.",{m:60}),
-  T("dsa",6,"Is node A inside node B? (walk up parentNode — asked at LinkedIn), getElementsByClassName via DFS, one n-ary tree medium."),
-]},
-/* 27 */ {t:"Test Lab", e:"🧪", b:"Prove your code works — and the utility functions interviewers love.", k:[
-  T("test",0,"Pyramid vs trophy for a frontend app: what's unit vs integration vs E2E, and why."),
-  T("test",1,"Query priority (role → label → text), user-event vs fireEvent. Write 5 tests for your Modal or OTP build."),
-  T("js",18,"flat(depth) recursive + iterative; flattenObject({a:{b:1}}) → {'a.b':1}; lodash-style get(obj, 'a.b[0].c').",{m:45}),
-  T("mc",19,"Signup form: sync rules, async 'username taken' (debounced), error display, accessible submit."),
-  B("test",2,"Playwright E2E for login → booking; causes of flakiness and fixes."),
+/* 14 */ {wk:5, slot:"W", w:["2026-11-27","2026-11-29"], t:"Forest Guardian", e:"🐲", boss:true, b:"Boss 2 — a React round. Then reducers and custom hooks, applied to the form that tests them hardest.", k:[
+  T("mc",11,"TIMED 45 min: auto-advance, backspace to previous, paste the whole code, numeric only.",{m:45}),
+  X("Whiteboard: how React renders, trigger → commit (20 min)","Update → render → reconcile → commit, and where memo, context and keys change the outcome.",C.RN,20),
+  X("DSA screen: 2 LeetCode mediums in 45 min","Sliding window / stack. Talk through brute force → optimal.",C.DSA,45),
+  T("beh",3,"STAR on the listing revamp / CWV work: real numbers, your exact part, 2 minutes max."),
+  T("react",8,"Turn a messy multi-useState form into useReducer with explicit states (idle / loading / success / error)."),
+  T("react",9,"Extract useDebounce, useLocalStorage, useFetch. Name them and design their APIs."),
+  T("mc",19,"Signup form with your useReducer + hooks: sync rules, async 'username taken' (debounced), accessible errors."),
+  T("dsa",4,"Permutations, subsets, flatten a nested array — recursion and backtracking templates."),
+  REVIEW(),
+  B("mc",27,"past / present / future stacks, keyboard shortcuts, capped history."),
   B("mc",21,"Multi-step form: progress bar, per-step validation, back/next, survives refresh."),
 ]},
-/* 28 */ {t:"Citadel Keeper", e:"🏯", boss:true, b:"Mock round 4 at senior bar — unseen prompts, and an AI-era review drill.", k:[
-  X("SD mock, unseen prompt: Google Calendar week view (45 min)","Overlapping-event layout, drag to create, time zones, recurring events, performance.",C.SD,45),
-  T("mc",14,"TIMED 60 min: drag between columns (native DnD or pointer events), reorder, persist.",{m:60}),
+// ============================ WEEK 6 · Performance & lists ============================
+/* 15 */ {wk:6, slot:"A", w:["2026-11-30","2026-12-01"], t:"Bundle Bay", e:"📦", b:"What ships to the browser and how to ship less — including your own micro-frontend story.", k:[
+  T("sd-concepts",3,"LCP, CLS, INP: what each measures, the 'good' threshold, 2 fixes each. Tie one to your MMT listing revamp."),
+  T("sd-concepts",4,"Code splitting, tree shaking (why side effects break it), bundle analysis, preload vs prefetch vs preconnect."),
+  T("sd-concepts",19,"Your Module Federation setup: shared deps, versioning, runtime vs build-time integration, pitfalls."),
+  T("react",14,"Route-level splitting with React.lazy + Suspense. Where do boundaries go, and why?"),
+  B("sd-concepts",5,"AVIF vs WebP vs JPEG, srcset/sizes, lazy loading, fetchpriority for the LCP image."),
+  B("js",20,"ESM vs CommonJS: static vs dynamic, live bindings, why ESM enables tree shaking."),
+  B("js",10,"4 leak sources (listeners, timers, closures, detached DOM); WeakMap for metadata; find one in DevTools."),
+]},
+/* 16 */ {wk:6, slot:"B", w:["2026-12-02","2026-12-03"], t:"Scroll & Cache", e:"🗄️", b:"Long lists and fast data — the concepts behind the feed and typeahead you'll build this weekend.", k:[
+  T("sd-concepts",8,"Offset vs cursor pagination: consistency under inserts, deep pages, API design."),
+  T("sd-concepts",6,"Windowing: fixed vs variable heights, overscan, mapping scroll position to rows."),
+  T("sd-concepts",10,"Walk a request through HTTP cache → SW → CDN → memory → normalised store. What invalidates each?"),
+  T("sd-concepts",11,"Stale-while-revalidate, query keys, staleTime vs gcTime, invalidation after a mutation."),
+]},
+/* 17 */ {wk:6, slot:"W", w:["2026-12-04","2026-12-06"], t:"Scroll Sea", e:"🌊", b:"Apply the week: an infinite feed, an interview-grade typeahead, and the caches/limits behind them.", k:[
+  T("web",10,"IntersectionObserver for lazy images + an infinite-scroll sentinel. Where Resize / MutationObserver fit."),
+  T("mc",6,"Feed with IntersectionObserver, loading / error / end states, no duplicate fetches."),
+  T("mc",5,"Debounce, keyboard nav, highlighted match, result cache, race handling, listbox a11y — interview-grade.",{m:60}),
+  T("react",15,"Keep the typeahead responsive on 10k items with useTransition, then useDeferredValue. The difference?"),
+  T("js",15,"O(1) LRU — with Map, then hashmap + doubly linked list. Use it as the typeahead cache.",{m:45}),
+  T("js",16,"runWithLimit(tasks, n), results in order; then run promise fns sequentially without async/await (Flipkart asked both).",{m:45}),
+  T("dsa",5,"Binary search, lower bound, search in rotated array."),
+  REVIEW(),
+  B("mc",26,"10k fixed-height rows — render only visible rows + overscan."),
+  B("mc",20,"Ellipsis logic (1 … 4 5 6 … 20), controlled page, keyboard accessible.",{m:40}),
+  B("js",17,"retry(fn, {retries, backoff, jitter}) + timeout via Promise.race. When NOT to retry (4xx)."),
+  B("dsa",10,"Reverse a linked list + detect a cycle — the structure behind your LRU."),
+]},
+// ============================ WEEK 7 · Real-time, safety + Boss 3 ============================
+/* 18 */ {wk:7, slot:"A", w:["2026-12-07","2026-12-08"], t:"Optimist's Outpost", e:"⚡", b:"Instant-feeling UIs, live data and where state should live.", k:[
+  T("sd-concepts",12,"Optimistic update: snapshot, apply, rollback, reconcile with server truth. Concurrent edits?"),
+  T("react",19,"React 19's use(), Actions, useOptimistic, useFormStatus — rebuild a like button with useOptimistic."),
+  T("sd-concepts",9,"Polling vs long-polling vs SSE vs WebSockets. Pick for cab tracking and for chat — defend it."),
+  T("sd-concepts",13,"Server vs client state. Normalise a nested API response (posts → authors) and say why."),
+]},
+/* 19 */ {wk:7, slot:"B", w:["2026-12-09","2026-12-10"], t:"Firewall & Vault", e:"🛡️", b:"Security, auth, storage and failure — the 'senior' half of every design answer.", k:[
+  T("sd-concepts",15,"XSS via dangerouslySetInnerHTML and the fix; CSRF + SameSite; a CSP header; CORS preflight."),
+  T("sd-concepts",16,"Cookie sessions vs JWT in localStorage; refresh-token flow; OAuth PKCE."),
+  T("web",9,"Cookies (HttpOnly/Secure/SameSite) vs localStorage vs sessionStorage vs IndexedDB."),
+  T("sd-concepts",17,"Error layers: boundary, query error, global handler, user-facing retry. Retryable vs not."),
+  B("sd-concepts",24,"Offline-first draft editor: SW strategies, IndexedDB queue, background sync, conflicts."),
+]},
+/* 20 */ {wk:7, slot:"W", w:["2026-12-11","2026-12-13"], t:"Canyon Colossus", e:"🗿", boss:true, b:"Boss 3 — your first full design mock (on the typeahead you built last weekend) and a recursive build, then its design twin.", k:[
+  T("sd-cases",0,"MOCK, 40 min, no notes: RADIO end-to-end — debounce, cache, races, keyboard a11y, ranking. Record it, compare with a reference.",{m:50}),
+  T("mc",12,"TIMED 60 min: recursive comments with reply / edit / delete / collapse on normalised state.",{m:60}),
+  T("beh",2,"The MFE migration story: why, the hard parts (shared deps, routing), outcome, what you'd change."),
   X("AI-assisted round drill: review AI-written code like an interviewer","Have an AI generate a component, then find 3 bugs / a11y gaps, fix them and explain the trade-offs. Some companies now run rounds like this.",C.RN,30),
-  T("beh",5,"What broke, how you found it, the fix, and what you changed in the process afterwards."),
-]},
-/* 29 */ {t:"Home Turf", e:"✈️", b:"Travel booking and live tracking — designs you've literally shipped. Plus the product-sense round.", k:[
-  T("sd-cases",7,"Search params in the URL, filter/sort on big results, fare holds, seat map, payment-failure recovery."),
-  T("sd-cases",8,"Location stream, map rendering, interpolation between pings, battery / network, ETA. Use your MMT cab-tracking work."),
-  T("beh",7,"Pick an app you use daily: P0/P1/P2 for an MVP, 3 success metrics, one A/B test. Flipkart and LinkedIn both run product-sense rounds."),
-  B("mc",22,"Date-range picker: month grid, disabled dates, range hover preview, keyboard nav."),
-  B("dsa",8,"Merge intervals + insert interval — the same logic as booking overlap checks."),
-]},
-/* 30 */ {t:"Type Temple", e:"🛕", b:"TypeScript depth and a typed, multi-brand component library.", k:[
-  T("js",22,"Generic useFetch<T>, typed groupBy<T, K>, constraints with extends keyof; type a polymorphic Button."),
-  T("js",23,"Partial, Required, Pick, Omit, Record, ReturnType on real API types. Implement MyPick / MyOmit."),
-  T("js",24,"Model API states / notification kinds as discriminated unions; exhaustive switch with never; type guards."),
-  T("sd-cases",9,"Tokens, theming (MMT + Goibibo style), versioning, docs, a11y, driving adoption across teams."),
-]},
-/* 31 */ {t:"Graph Gallery", e:"📸", b:"Instagram, graph traversal and the tricky object utilities.", k:[
-  T("sd-cases",3,"Feed, upload flow, image CDN + variants, stories, like counts at scale."),
-  T("dsa",7,"Number of islands, rotting oranges, course schedule (topological sort)."),
-  T("js",8,"deepClone with cycles (WeakMap), Dates, Maps, Sets — then isEqual. Compare with structuredClone."),
-  T("js",10,"4 leak sources (listeners, timers, closures, detached DOM), WeakMap for metadata, finding a leak in DevTools."),
-  B("dsa",11,"Climbing stairs + coin change — learn to spot overlapping subproblems."),
-  B("sd-cases",14,"Adaptive bitrate (HLS/DASH), buffering, accessible player controls, watch-progress sync."),
-]},
-/* 32 */ {t:"Final Polish", e:"💎", b:"The most-asked build, done properly — and your last two stories.", k:[
-  T("mc",5,"Debounce, keyboard nav, highlighted match, result cache, race handling, listbox/option a11y — interview-grade.",{m:60}),
-  T("beh",4,"How you aligned them, what you conceded, the outcome."),
-  T("beh",6,"Who, what you did, how you measured their growth."),
-  B("mc",23,"Recipient chips: add on Enter/comma, backspace removes, validation, paste a list."),
-  B("sd-cases",11,"Virtualised grid, cell dependency graph, recalculation order, collaborative edits."),
+  T("react",13,"ErrorBoundary with reset keys; what it can't catch (event handlers, async)."),
+  T("sd-cases",5,"Now design what you just built: data model (adjacency vs path), lazy-loading deep threads, collapse, voting."),
+  T("dsa",6,"Is node A inside node B (walk up parentNode — asked at LinkedIn), getElementsByClassName via DFS, one n-ary tree medium."),
+  REVIEW(),
+  B("mc",25,"Optimistic toggle, rollback + toast on failure, dedupe in-flight taps."),
+  B("mc",24,"Vote once, animated result bars, optimistic counts."),
   B("sd-cases",13,"Fan-in via WebSocket/SSE, unread counts across tabs (BroadcastChannel), batching, preferences."),
 ]},
-/* 33 */ {t:"Revision Run", e:"🔁", b:"Lock it in before the dragon: rebuild, re-explain, re-design.", k:[
-  X("Cold rebuild: redo your 2 slowest builds, 45 min each","Pick them from Log History. No notes; compare with your first attempt.",C.MC,90),
-  X("Empty your revisit queue — explain each topic out loud","2 minutes per topic. Anything still shaky → re-read and try again tomorrow.",C.JS,30),
-  X("SD speed round: outline feed, chat and uploader in 15 min each","Requirements, components, data, API, top 3 trade-offs. Speed is the skill here.",C.SD,45),
+// ============================ WEEK 8 · Ship, Next.js, classic cases ============================
+/* 21 */ {wk:8, slot:"A", w:["2026-12-14","2026-12-15"], t:"Ship & Measure", e:"📏", b:"How seniors prove impact: monitoring, experiments, state choices — and the product-sense round.", k:[
+  T("sd-concepts",18,"RUM vs synthetic, what to log, sourcemaps + Sentry, alerting on a CWV regression."),
+  T("sd-concepts",21,"Feature flags, stable A/B assignment, which metrics to track — tie it to your Adobe XDM migration."),
+  T("react",20,"Redux Toolkit vs Zustand vs Context vs React Query: pick for 3 scenarios and defend each."),
+  T("beh",7,"Pick an app you use daily: P0/P1/P2 for an MVP, 3 success metrics, one A/B test. (Flipkart and LinkedIn both run this round.)"),
 ]},
-/* 34 */ {t:"The Interview Dragon", e:"🐉", boss:true, b:"The full loop. Spread it over 2–3 evenings — then go book real interviews.", k:[
-  X("Round 1 — JS round (45 min)","A friend or an AI interviewer gives 2 polyfills + 5 output questions. No notes.",C.JS,45),
-  X("Round 2 — Machine coding (75 min)","One you haven't repeated (date picker, chip input or traffic light). Talk throughout.",C.MC,75),
-  X("Round 3 — System design (45 min)","A travel app's hotel listing + details page, end-to-end with RADIO. Record and self-review.",C.SD,45),
-  X("Round 4 — DSA (45 min)","Two LeetCode mediums, explaining complexity as you go.",C.DSA,45),
-  B("beh",8,"5 sharp questions: team, tech debt, on-call, growth, what success looks like at 90 days."),
-  B("beh",9,"Anchor, range, framing a competing offer, non-cash asks — rehearse out loud."),
+/* 22 */ {wk:8, slot:"B", w:["2026-12-16","2026-12-17"], t:"Next Essentials", e:"▲", b:"Only the Next.js that interviews probe — feeding Saturday's e-commerce design — plus testing.", k:[
+  T("next",0,"File conventions, layouts, loading/error UI, data fetching — when you'd still pick Pages Router."),
+  T("next",1,"Where the 'use client' boundary goes; server ↔ client import rules; what gets serialised."),
+  T("next",2,"The 4 caches and how revalidatePath / revalidateTag clear each; static vs dynamic vs streaming routes."),
+  T("test",1,"Query priority (role → label → text), user-event vs fireEvent; write 5 tests for your Modal or OTP build."),
+  B("next",3,"A Server Action form: progressive enhancement, validation, revalidation, auth inside the action."),
+  B("next",4,"Auth redirects, geo/locale routing, A/B bucketing — and what Middleware can't do."),
+  B("test",0,"Pyramid vs trophy: what's unit vs integration vs E2E, and why."),
+  B("test",2,"Playwright E2E for login → booking; flakiness causes and fixes."),
+  B("sd-cases",12,"Widget layout, chart choice, polling vs push, aggregating big datasets, export."),
+]},
+/* 23 */ {wk:8, slot:"W", w:["2026-12-18","2026-12-20"], t:"Feed Factory", e:"📰", b:"The three most-asked design prompts, each built on concepts you've already drilled — plus a recursive build.", k:[
+  T("sd-cases",1,"Pagination, real-time inserts, virtualisation, optimistic likes, image loading, ad slots without CLS."),
+  T("sd-cases",4,"Filters in the URL, SSR/PPR for SEO (Wed's Next.js), image gallery, cart state, a CWV budget."),
+  T("sd-cases",2,"Transport, message ordering/ids, delivery receipts, offline queue, upward pagination, unread counts."),
+  T("mc",15,"Recursive folders, expand / collapse, add / rename / delete, keyboard navigation.",{m:60}),
+  T("dsa",7,"Number of islands, rotting oranges, course schedule (topological sort)."),
+  REVIEW(),
+  B("mc",8,"Prev / next, dots, autoplay with pause on hover, swipe, lazy-load neighbours."),
+  B("web",12,"Why transform/opacity are cheap, FLIP for reorders, prefers-reduced-motion."),
+  B("dsa",9,"Top-K frequent with a heap — trending posts."),
+  B("sd-cases",3,"Feed, upload flow, image CDN + variants, stories, like counts at scale."),
+  B("mc",23,"Recipient chips: add on Enter/comma, backspace removes, validation, paste a list."),
+]},
+// ============================ WEEK 9 · Types, stories, home turf ============================
+/* 24 */ {wk:9, slot:"A", w:["2026-12-21","2026-12-22"], t:"Type Temple", e:"🛕", b:"TypeScript that holds up to a senior review — and your 'why leaving' answer.", k:[
+  T("js",22,"Generic useFetch<T>, typed groupBy<T, K>, extends keyof constraints; type a polymorphic Button."),
+  T("js",23,"Partial, Required, Pick, Omit, Record, ReturnType on real API types. Implement MyPick / MyOmit."),
+  T("js",24,"API states / notification kinds as discriminated unions; exhaustive switch with never; type guards."),
+  T("beh",1,"Positive, growth-focused, specific to the company. Under 60 seconds."),
+]},
+/* 25 */ {wk:9, slot:"B", w:["2026-12-23","2026-12-24"], t:"Storyteller", e:"🎤", b:"Two senior-level stories and the object utilities interviewers love.", k:[
+  T("beh",4,"Stakeholder disagreement: how you aligned them, what you conceded, the outcome."),
+  T("beh",6,"Mentoring / leading without authority: who, what you did, how you measured their growth."),
+  T("js",18,"flat(depth) recursive + iterative; flattenObject({a:{b:1}}) → {'a.b':1}; lodash-style get(obj, 'a.b[0].c').",{m:45}),
+  T("js",8,"deepClone with cycles (WeakMap), Dates, Maps, Sets — then isEqual. Compare with structuredClone."),
+  B("dsa",11,"Climbing stairs + coin change — spot overlapping subproblems."),
+]},
+/* 26 */ {wk:9, slot:"W", w:["2026-12-25","2026-12-27"], t:"Home Turf", e:"✈️", b:"Christmas long weekend: uploads, AI streaming UIs, and three designs you've literally shipped.", k:[
+  T("sd-cases",6,"Chunking + hashing, parallel limit (your Week 6 pool), per-chunk retry, pause / resume, progress."),
+  T("mc",18,"'Add' starts a bar; max 3 fill at once, the rest queue — the uploader's UI in miniature.",{m:50}),
+  T("sd-cases",10,"Stream tokens over SSE / fetch ReadableStream, render incrementally without jank, stop / regenerate, markdown, retries."),
+  T("sd-cases",7,"Search params in the URL, big-result filter/sort, fare holds, seat map, payment-failure recovery — from your MMT experience.",{m:45}),
+  T("sd-cases",8,"Location stream, interpolation between pings, battery / network, ETA — your cab-tracking work, told as a design.",{m:45}),
+  T("sd-cases",9,"Tokens, theming (MMT + Goibibo style), versioning, docs, a11y, driving adoption.",{m:45}),
+  REVIEW(),
+  B("web",13,"Hash file chunks in a Web Worker; postMessage cost, transferables, Comlink."),
+  B("mc",22,"Date-range picker: month grid, disabled dates, hover preview, keyboard nav."),
+  B("dsa",8,"Merge / insert intervals — booking overlap checks."),
+  B("sd-cases",11,"Virtualised grid, dependency graph, recalculation order, collaborative edits."),
+  B("sd-cases",14,"Adaptive bitrate (HLS/DASH), buffering, accessible player controls."),
+]},
+// ============================ WEEK 10 · The full loop ============================
+/* 27 */ {wk:10, slot:"A", w:["2026-12-28","2026-12-29"], t:"Final Loop I", e:"🐉", boss:true, b:"A real loop spread over four evenings. Tonight: the JS round. Tomorrow: machine coding.", k:[
+  X("Round 1 — JS round (45 min)","A friend or an AI interviewer gives 2 polyfills + 5 output questions. No notes. Score it honestly.",C.JS,45,{on:"2026-12-28"}),
+  T("beh",5,"Failure / incident story: what broke, how you found it, the fix, what changed after.",{on:"2026-12-28"}),
+  T("mc",14,"Round 2 — TIMED 75 min: drag between columns, reorder, persist. Talk throughout.",{m:75,on:"2026-12-29"}),
+]},
+/* 28 */ {wk:10, slot:"B", w:["2026-12-30","2026-12-31"], t:"Final Loop II", e:"🏆", boss:true, b:"System design and DSA rounds — then a readiness audit, and you're done for 2026.", k:[
+  X("Round 3 — System design (45 min)","A travel app's hotel listing + details page, end-to-end with RADIO. Record and self-review.",C.SD,45,{on:"2026-12-30"}),
+  X("Round 4 — DSA (45 min)","Two LeetCode mediums, explaining complexity as you go.",C.DSA,45,{on:"2026-12-31"}),
+  X("Readiness audit (20 min)","Average your 4 boss scorecards. Anything under 3/4 → the first two weeks of January. Then book real interviews.","Review",20,{on:"2026-12-31"}),
+  B("beh",8,"5 sharp questions: team, tech debt, on-call, growth, success at 90 days."),
+  B("beh",9,"Anchor, range, competing-offer framing, non-cash asks — rehearse out loud."),
 ]},
 ];
 const QN = QUEST.length;
@@ -1201,16 +1278,18 @@ const ACHIEVEMENTS = [
   {id:"st50",   ico:"✨", name:"Star Collector", desc:"Collect 30 stars",           check:s=>starsTotal(s)>=30},
   {id:"st100",  ico:"🌌", name:"Constellation",  desc:"Collect 75 stars",           check:s=>starsTotal(s)>=75},
   {id:"st150",  ico:"☀️", name:"Full Sky",       desc:"Collect every star",      check:s=>starsTotal(s)>=QN*3},
-  {id:"rec10",  ico:"🧠", name:"Memory Palace",  desc:"Nail 10 flash recalls",      check:s=>recallNailed(s)>=10},
-  {id:"comeback",ico:"🦾",name:"Comeback Kid",   desc:"Clear a bucket you carried 5+ days", check:s=>Object.values(s.quest.cleared).some(c=>c.days>=5)},
+  {id:"rec10",  ico:"🧠", name:"Memory Palace",  desc:"Nail 25 warm-up reviews",    check:s=>recallNailed(s)>=25},
+  {id:"ace",    ico:"🎯", name:"Interview-Grade", desc:"Score 3+/4 on a boss scorecard", check:s=>Object.values(s.quest.cleared).some(c=>c.score&&Object.values(c.score).reduce((a,b)=>a+b,0)/4>=3)},
+  {id:"comeback",ico:"🦾",name:"Comeback Kid",   desc:"Clear a bucket you carried 4+ days", check:s=>Object.values(s.quest.cleared).some(c=>c.days>=4)},
 ];
 
 // ---------- state ----------
 function defaultState(){
   return {
-    v: 4,
-    startDate: todayISO(),
-    totalDays: daysToTarget(todayISO()),
+    v: 5,
+    startDate: PLAN_START,
+    totalDays: daysToTarget(PLAN_START),
+    parking: [],
     logs: [],
     resume: RESUME_SEED.map(r=>({...r, conf:0})),
     syllabus: {},
@@ -1220,7 +1299,7 @@ function defaultState(){
   };
 }
 function daysToTarget(start){ return Math.max(14, daysBetween(start, TARGET_END)+1); }   // sprint always ends Dec 31
-function defaultQuest(){ return {cur:0, opened:{}, cleared:{}, extra:{}, recall:{}, revisit:[], clockAck:false}; }
+function defaultQuest(){ return {cur:0, opened:{}, cleared:{}, extra:{}, recall:{}, revisit:[], clockAck:true, srs:{}, srsN:0, srsShaky:0, errors:[]}; }
 function load(){
   try{
     const raw = localStorage.getItem(LS_KEY);
@@ -1244,6 +1323,14 @@ function load(){
       s.v=4; s.totalDays=daysToTarget(s.startDate||todayISO()); s.quest=defaultQuest();
       s.seen=(s.seen||[]).filter(id=>!/^(q\d|w\d|st\d|star3|rec10|comeback)/.test(id));
     }
+    if(s.v<5){
+      // v5: calendar-anchored 10-week plan (Oct 26 → Dec 31). Bucket order changed → quest progress restarts;
+      // syllabus ticks are kept, and anything already interview-ready is seeded into spaced repetition.
+      s.v=5; s.startDate=PLAN_START; s.totalDays=daysToTarget(PLAN_START); s.quest=defaultQuest();
+      s.seen=(s.seen||[]).filter(id=>!/^(q\d|w\d|st\d|star3|rec10|comeback|ace)/.test(id));
+      Object.entries(s.syllabus||{}).forEach(([k,v])=>{ if(v===2) s.quest.srs[k]={box:0, due:addDays(todayISO(),SRS_INT[0])}; });
+    }
+    s.parking = s.parking||[];
     s.quest = Object.assign(defaultQuest(), s.quest||{});
     s.quest.cur = Math.min(Math.max(0, +s.quest.cur||0), QN);
     return s;
@@ -1315,11 +1402,11 @@ function baseXp(s){
 // quest stats (take state param so achievements can use them)
 const clearedCount = s => Object.keys(s.quest.cleared).length;
 const starsTotal   = s => Object.values(s.quest.cleared).reduce((a,c)=>a+(c.stars||0),0);
-const recallNailed = s => Object.values(s.quest.recall).filter(r=>r.res==="nailed").length;
+const recallNailed = s => s.quest.srsN||0;
 function questXp(s){
   let x=0;
   Object.values(s.quest.cleared).forEach(c=>{ x += 100 + (c.stars||0)*40 + (c.boss?200:0); });
-  return x + recallNailed(s)*15;
+  return x + recallNailed(s)*10;
 }
 function nonLevelAchievements(s){
   return ACHIEVEMENTS.filter(a=>a.id!=="lvl3"&&a.id!=="lvl6"&&a.check(s));
@@ -1393,7 +1480,7 @@ function render(){
   renderTabs();
   renderNav();
   renderAppbar();
-  if(state.view==="stats") renderHistory();
+  if(state.view==="stats"){ renderHistory(); renderParking(); }
   if(state.view==="today") renderToday();
   if(state.view==="map") renderMapView();
   save();
@@ -1450,7 +1537,7 @@ function renderSyllabus(){
   });
   box.querySelectorAll(".sylhead").forEach(h=>h.onclick=()=>{ expanded[h.dataset.g]=!expanded[h.dataset.g]; renderSyllabus(); });
   box.querySelectorAll(".sylitem").forEach(it=>it.onclick=()=>{
-    const id=it.dataset.id; state.syllabus[id]=((state.syllabus[id]||0)+1)%3; render(); checkNewAchievements();
+    const id=it.dataset.id; state.syllabus[id]=((state.syllabus[id]||0)+1)%3; srsTouch(id,state.syllabus[id]); render(); checkNewAchievements();
   });
 }
 
@@ -1804,6 +1891,7 @@ document.getElementById("resetBtn").onclick=()=>{
 // =====================================================================
 let viewIdx = null;      // which bucket is on screen (null = current)
 let noteDraft = "";      // takeaway text, kept across re-renders
+let scoreDraft = {};     // boss scorecard in progress
 let howOpen = null;      // remembers whether the how-to box is open (null = auto)
 
 const qTaskDone = k => k.g==="x" ? !!state.quest.extra[k.key] : (state.syllabus[k.key]||0)===2;
@@ -1812,16 +1900,54 @@ const qBonus = q => q.k.filter(k=>k.b);
 const qCoreDone = q => qCore(q).every(qTaskDone);
 const worldOf = n => WORLDS.find(w=>n+1>=w.from && n+1<=w.to);
 const fmtDate = iso => parseISO(iso).toLocaleDateString(undefined,{month:"short",day:"numeric"});
-function strHash(s){ let x=0; for(const ch of s) x=(x*31+ch.charCodeAt(0))|0; return Math.abs(x); }
+const fmtDay  = iso => parseISO(iso).toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});
+const fmtRange = w => w[0]===w[1] ? fmtDay(w[0]) : `${fmtDay(w[0])} – ${fmtDay(w[1])}`;
+const avg = o => { const v=Object.values(o||{}); return v.length? v.reduce((a,b)=>a+b,0)/v.length : 0; };
+const SCORE_DIMS = ["Correctness","Speed","Code / design quality","Communication"];
 
 // 0 = to-do, 1 = 📖 studying, 2 = ✓ interview-ready  (boss drills are just 0 / 2)
 const qLevel = k => k.g==="x" ? (state.quest.extra[k.key]?2:0) : (state.syllabus[k.key]||0);
 const qNextLevel = k => k.g==="x" ? (qLevel(k)?0:2) : (qLevel(k)+1)%3;
 const fmtMin = m => m<60 ? `${m} min` : `${Math.floor(m/60)}h${m%60?` ${m%60}m`:""}`;
 
+// ---- how to study each kind of task (learning protocol) + where to study it ----
+const JS_CODING = new Set([6,7,8,11,12,13,14,15,16,17,18,19,21,25]);
+function methodOf(k){
+  if(k.g==="x") return "";
+  if(k.g==="mc" || (k.g==="js" && JS_CODING.has(k.i))) return "🛠 Attempt cold 10–15 min before any help → finish to spec → compare with a reference → re-code the tricky part from memory next session";
+  if(k.g==="sd-cases") return "🗺 Requirements on paper (5 min) → RADIO out loud, timed → compare with a reference → log 3 gaps in your mistake log";
+  if(k.g==="dsa") return "🧩 Pattern first (5 min) → 2–3 problems, 20-min cap each before a hint → re-solve misses in the weekly review";
+  if(k.g==="beh") return "🎤 STAR bullets, not a script → say it out loud 3× → cut to 2 minutes";
+  return "📖 Jot what you already know (3 min) → learn (≈20 min) → close the tab → do the drill → explain it out loud in 2 min";
+}
+function resourceOf(k){
+  if(k.g==="js") return k.i>=22&&k.i<=24 ? ["TS Handbook","https://www.typescriptlang.org/docs/handbook/"]
+                     : JS_CODING.has(k.i) ? ["GreatFrontEnd","https://www.greatfrontend.com/"] : ["MDN","https://developer.mozilla.org/en-US/docs/Web/JavaScript"];
+  return ({react:["react.dev","https://react.dev/learn"], next:["Next.js docs","https://nextjs.org/docs"], web:["web.dev / MDN","https://web.dev/learn"],
+    "sd-concepts":["Namaste FSD","https://namastedev.com/learn/namaste-frontend-system-design"], "sd-cases":["GreatFrontEnd","https://www.greatfrontend.com/"],
+    mc:["GreatFrontEnd","https://www.greatfrontend.com/"], dsa:["LeetCode","https://leetcode.com/problemset/"], test:["Testing Library","https://testing-library.com/docs/"],
+    beh:["your STAR notes",null]})[k.g]||null;
+}
+
+// ---- spaced repetition (Leitner): a topic marked ready comes back after 2, 6, 14 and 30 days ----
+function srsTouch(key,lvl){
+  const S=state.quest.srs;
+  if(lvl===2){ if(!S[key]) S[key]={box:0, due:addDays(todayISO(),SRS_INT[0])}; }
+  else delete S[key];
+}
+function srsDue(){
+  const t=todayISO();
+  return Object.entries(state.quest.srs).filter(([k,v])=>v.due && v.due<=t && TASK_BY_KEY[k]).sort((a,b)=>a[1].due.localeCompare(b[1].due)).map(([k])=>TASK_BY_KEY[k]);
+}
+function srsGrade(key,nailed){
+  const c=state.quest.srs[key]; if(!c) return;
+  if(nailed){ c.box++; state.quest.srsN++; c.due = c.box>=SRS_INT.length ? null : addDays(todayISO(),SRS_INT[c.box]); }   // null = graduated
+  else { c.box=0; c.due=addDays(todayISO(),1); state.quest.srsShaky=(state.quest.srsShaky||0)+1; }
+}
+
 function setQuestTask(k, lvl){
   if(k.g==="x") state.quest.extra[k.key]=lvl===2;
-  else state.syllabus[k.key]=lvl;
+  else { state.syllabus[k.key]=lvl; srsTouch(k.key,lvl); }
   if(lvl>0 && k.n===state.quest.cur && !state.quest.opened[k.n]) state.quest.opened[k.n]=todayISO();
   // Auto-log time so the streak/heatmap keep moving even on study-only evenings:
   // half the estimate when you start studying, the rest when you mark it ready.
@@ -1834,24 +1960,51 @@ function setQuestTask(k, lvl){
   if(lvl===2) addLog(k.key, state.logs.some(l=>l.taskKey===SK) ? k.m-half : k.m, "");
 }
 
-// Target pace: one bucket every 2 days on the sprint clock.
+// ---- calendar pace: which bucket does the plan expect today? ----
+const inTravel = t => t>=TRAVEL.from && t<=TRAVEL.to;
+function plannedIdx(t){ for(let i=0;i<QN;i++) if(QUEST[i].w[1]>=t) return i; return QN; }
 function paceChip(){
-  const dn=dayNumber(state); if(dn<1) return "";
-  const expected=Math.min(QN, Math.max(1, Math.ceil(dn*QN/state.totalDays)));   // where an even pace to Dec 31 would put you
-  const diff=(state.quest.cur+1)-expected;
-  if(diff>0) return `<span class="qchip ok">🚀 ${diff} bucket${diff>1?"s":""} ahead of pace</span>`;
-  if(diff===0) return `<span class="qchip ok">🟢 On pace</span>`;
-  return `<span class="qchip carry">🟡 ${-diff} behind pace — a weekend catches you up</span>`;
+  const t=todayISO(), cur=state.quest.cur;
+  if(inTravel(t)) return `<span class="qchip ok">✈️ Travel break — next session ${fmtDay(QUEST[plannedIdx(addDays(TRAVEL.to,1))].w[0])}</span>`;
+  const p=plannedIdx(t);
+  if(t<PLAN_START) return `<span class="qchip">⏳ Plan starts ${fmtDay(PLAN_START)}</span>`;
+  const diff=cur-p;
+  if(diff>0) return `<span class="qchip ok">🚀 ${diff} bucket${diff>1?"s":""} ahead of plan</span>`;
+  if(diff===0) return `<span class="qchip ok">🟢 On plan</span>`;
+  return `<span class="qchip carry">🟡 ${-diff} behind — Friday evening is your catch-up slot</span>`;
+}
+
+// ---- sessions: which evening / block each task belongs to ----
+function buildSessions(q){
+  const dates=[]; for(let d=q.w[0]; d<=q.w[1]; d=addDays(d,1)) if(!inTravel(d)) dates.push(d);
+  const cap=d=>{ if(HOLIDAYS[d]) return DAY_CAP.holiday; const wd=parseISO(d).getDay(); return wd===6?DAY_CAP.sat : wd===0?DAY_CAP.sun : wd===5?DAY_CAP.fri : DAY_CAP.weekday; };
+  const S=dates.map(d=>({date:d, cap:cap(d), used:0, tasks:[]}));
+  const core=q.k.filter(k=>!k.b), pinned=core.filter(k=>k.on), review=core.filter(k=>!k.on && k.t==="Weekly review");
+  let i=0;
+  core.filter(k=>!k.on && k.t!=="Weekly review").forEach(k=>{
+    while(i<S.length-1 && S[i].used>0 && S[i].used+k.m > S[i].cap*1.15) i++;
+    S[i].tasks.push(k); S[i].used+=k.m;
+  });
+  pinned.forEach(k=>{ const s=S.find(x=>x.date===k.on)||S[S.length-1]; s.tasks.push(k); s.used+=k.m; });
+  review.forEach(k=>{ const s=S[S.length-1]; s.tasks.push(k); s.used+=k.m; });
+  return S.filter(s=>s.tasks.length);
+}
+QUEST.forEach(q=>q.sessions=buildSessions(q));   // after inTravel is defined
+function sessionLabel(d){
+  if(HOLIDAYS[d]) return `${fmtDay(d)} · ${HOLIDAYS[d]} — deep-work block`;
+  const wd=parseISO(d).getDay();
+  return `${fmtDay(d)} · ${wd===0||wd===6?"deep-work block":"evening"}`;
 }
 
 function starParts(n){
-  const q=QUEST[n], opened=state.quest.opened[n]||todayISO();
-  const momentum = daysBetween(opened, todayISO()) <= 2;
+  const q=QUEST[n];
+  const momentum = todayISO() <= addDays(q.w[1],1);
   const bonus=qBonus(q), bonusOk=bonus.every(qTaskDone), noteOk=!!noteDraft.trim();
+  const scoreOk = !q.boss || SCORE_DIMS.every((_,i)=>scoreDraft[i]);
   return [
     {on:true, name:"Clear", why:"All core tasks done"},
-    {on:momentum, name:"Momentum", why: momentum ? "Cleared within 3 days of starting" : "Took 4+ days — still counts as a clear"},
-    {on:bonusOk&&noteOk, name:"Mastery", why:(bonus.length?(bonusOk?"Bonus ✓":"Finish the bonus")+" + ":"")+(noteOk?"takeaway ✓":"write a takeaway")},
+    {on:momentum, name:"On schedule", why: momentum ? `Cleared by ${fmtDay(addDays(q.w[1],1))}` : "Behind plan — still counts as a clear"},
+    {on:bonusOk&&noteOk&&scoreOk, name:"Mastery", why:[q.boss?(scoreOk?"scorecard ✓":"fill the scorecard"):"", bonus.length?(bonusOk?"bonus ✓":"finish the bonus"):"", noteOk?"takeaway ✓":"write a takeaway"].filter(Boolean).join(" + ")},
   ];
 }
 function starsHTML(n){
@@ -1864,59 +2017,83 @@ function claimBucket(){
   const parts=starParts(n), stars=parts.filter(p=>p.on).length;
   const opened=state.quest.opened[n]||todayISO();
   state.quest.opened[n]=opened;
-  state.quest.cleared[n]={date:todayISO(), stars, note:noteDraft.trim(), days:daysBetween(opened,todayISO())+1, boss:!!q.boss};
-  noteDraft=""; viewIdx=null;
+  const score = q.boss && SCORE_DIMS.every((_,i)=>scoreDraft[i]) ? {...scoreDraft} : null;
+  state.quest.cleared[n]={date:todayISO(), stars, note:noteDraft.trim(), days:daysBetween(opened,todayISO())+1, boss:!!q.boss, score};
+  noteDraft=""; scoreDraft={}; viewIdx=null;
   state.quest.cur=Math.min(n+1, QN);
   const xpGain=100+stars*40+(q.boss?200:0);
   confetti();
   toast("⭐".repeat(stars), `Bucket ${n+1} cleared!`, `+${xpGain} XP · ${q.t}`);
   const w=worldOf(n);
-  if(q.boss && w) setTimeout(()=>toast(w.ico, `World ${w.n} conquered!`, w.name), 600);
+  if(w && n===w.to-1) setTimeout(()=>toast(w.ico, `World ${w.n} conquered!`, w.name), 600);
   render(); checkNewAchievements();
   window.scrollTo({top:0, behavior:"smooth"});
 }
 
-function recallPick(){
-  const t=todayISO(), rec=state.quest.recall[t];
-  if(rec && TASK_BY_KEY[rec.key]) return {k:TASK_BY_KEY[rec.key], rec};
-  const rv=state.quest.revisit.map(key=>TASK_BY_KEY[key]).filter(Boolean);
-  const pool=[];
-  for(let n=0;n<state.quest.cur-1;n++){
-    if(!state.quest.cleared[n]) continue;
-    QUEST[n].k.forEach(k=>{ if(!["x","mc","beh"].includes(k.g) && qTaskDone(k)) pool.push(k); });
-  }
-  const src = rv.length ? rv : pool;
-  if(!src.length) return null;
-  return {k:src[strHash(t)%src.length], rec:null};
-}
-
 function taskHTML(k){
-  const lvl=qLevel(k), g=GROUPS[k.g], cat=CATS[k.c]||{color:"#888",icon:"•"};
+  const lvl=qLevel(k), g=GROUPS[k.g], cat=CATS[k.c]||{color:"#94a3b8",icon:"🔁"};
   const color=g?g.color:cat.color, icon=g?g.icon:cat.icon, label=g?g.title:k.c;
   const cls=lvl===2?"done":lvl===1?"studying":"";
   const tip=k.g==="x" ? (lvl?"Mark not done":"Mark done") : ["Tap: start studying","Tap: mark interview-ready","Tap: reset to to-do"][lvl];
+  const method=methodOf(k), res=resourceOf(k);
   return `<div class="qtask ${cls} ${k.b?"bonus":""}">
     <button class="qcheck" data-act="toggle" data-key="${escAttr(k.key)}" aria-label="${tip}" title="${tip}">${lvl===2?"✓":lvl===1?"📖":""}</button>
     <div class="qbody">
       <div class="qmeta"><span class="pill" style="background:${hex2rgba(color,.15)};color:${color}">${icon} ${esc(label)}</span>${k.b?'<span class="qbonus">BONUS</span>':""}${lvl===1?'<span class="qstudy">STUDYING</span>':""}<span class="qmin">~${fmtMin(k.m)}</span></div>
       <div class="qtitle">${esc(k.t)}</div>
       <div class="qdrill">🎯 ${esc(k.d)}</div>
+      ${method||res?`<div class="qmethod">${esc(method)}${res?` <span class="qres">· 📚 ${res[1]?`<a href="${res[1]}" target="_blank" rel="noopener">${esc(res[0])}</a>`:esc(res[0])}</span>`:""}</div>`:""}
     </div>
   </div>`;
 }
 
-function recallHTML(){
-  const r=recallPick();
-  if(!r) return `<div class="qrecall muted">🧠 <b>Flash Recall</b> unlocks once you've cleared a couple of days. Each day it quizzes you on one older topic so it sticks.</div>`;
-  const {k,rec}=r;
-  const revisit=state.quest.revisit.map(key=>TASK_BY_KEY[key]).filter(Boolean);
-  return `<div class="qrecall">
-    <div class="qrh">🧠 Flash Recall <span class="tag">${revisit.some(x=>x.key===k.key)?"from your revisit queue":"from Bucket "+(k.n+1)}</span></div>
-    <div class="qrq">Explain out loud in 60 seconds: <b>${esc(k.t)}</b></div>
-    <details><summary>Peek at the drill</summary><div class="qdrill">${esc(k.d)}</div></details>
-    ${rec ? `<div class="qrres">${rec.res==="nailed"?"✅ Nailed it today · +15 XP":"🔁 Added to your revisit queue — it'll come back"}</div>`
-          : `<div class="qract"><button class="btn sm" data-act="recall" data-res="nailed" data-key="${escAttr(k.key)}">💪 Nailed it</button><button class="btn ghost sm" data-act="recall" data-res="shaky" data-key="${escAttr(k.key)}">😬 Shaky — revisit</button></div>`}
-    ${revisit.length?`<div class="qrevisit"><div class="lbl">🔁 Revisit queue (${revisit.length})</div>${revisit.map(x=>`<div class="qrv"><span>${esc(x.t)}</span><button class="btn ghost sm" data-act="revisit-done" data-key="${escAttr(x.key)}">Got it now</button></div>`).join("")}</div>`:""}
+function sessionsHTML(q,n){
+  const t=todayISO(), isCur=n===state.quest.cur && !state.quest.cleared[n];
+  let html="";
+  q.sessions.forEach((s,i)=>{
+    const done=s.tasks.filter(qTaskDone).length, all=s.tasks.length, mins=s.tasks.filter(k=>!qTaskDone(k)).reduce((a,k)=>a+k.m,0);
+    const wd=parseISO(s.date).getDay(), weekend=wd===0||wd===6||HOLIDAYS[s.date];
+    let tag="";
+    if(isCur && s.date===t) tag=`<span class="qstag now">${weekend?"TODAY":"TONIGHT"}</span>`;
+    else if(isCur && s.date<t && done<all) tag=`<span class="qstag late">CARRY-OVER</span>`;
+    else if(done===all) tag=`<span class="qstag ok">DONE</span>`;
+    html+=`<div class="qsess ${isCur&&s.date===t?"now":""}">
+      <div class="qsess-h"><span>${esc(sessionLabel(s.date))}</span>${tag}<span class="qsess-m">${done}/${all}${mins?` · ~${fmtMin(mins)} left`:""}</span></div>
+      <div class="qtasks">${s.tasks.map(taskHTML).join("")}</div></div>`;
+  });
+  const bonus=qBonus(q);
+  if(bonus.length) html+=`<div class="qsess bonus"><div class="qsess-h"><span>⭐ Bonus — only once the core is done</span><span class="qsess-m">${bonus.filter(qTaskDone).length}/${bonus.length}</span></div>
+    <div class="qtasks">${bonus.map(taskHTML).join("")}</div></div>`;
+  return html;
+}
+
+function warmupHTML(){
+  const due=srsDue(), show=due.slice(0,4);
+  if(!due.length){
+    const total=Object.keys(state.quest.srs).length;
+    return `<div class="qwarm muted">🧠 <b>Warm-up</b> — nothing due. ${total?`${total} topic${total>1?"s":""} in rotation; they return 2, 6, 14 and 30 days after you mark them ready.`:"Topics you mark interview-ready come back here after 2, 6, 14 and 30 days."}</div>`;
+  }
+  return `<div class="qwarm">
+    <div class="qrh">🧠 Warm-up · ~${Math.min(due.length,4)*2+2} min <span class="tag">${due.length} due${due.length>4?" · showing 4":""}</span></div>
+    <div class="qsub">Before anything new: explain each out loud in ~2 minutes, no notes. Grade honestly — "shaky" brings it back tomorrow.</div>
+    ${show.map(k=>`<div class="qwi"><div class="qwt"><b>${esc(k.t)}</b><span class="qwfrom">Bucket ${k.n+1} · review ${(state.quest.srs[k.key].box||0)+1}/${SRS_INT.length}</span>
+        <details><summary>peek at the drill</summary><div class="qdrill">${esc(k.d)}</div></details></div>
+      <div class="qwb"><button class="btn sm" data-act="srs" data-res="1" data-key="${escAttr(k.key)}">💪 Nailed</button><button class="btn ghost sm" data-act="srs" data-res="0" data-key="${escAttr(k.key)}">😬 Shaky</button></div></div>`).join("")}
+  </div>`;
+}
+
+function mistakesHTML(){
+  const open=state.quest.errors.filter(e=>!e.fixed);
+  return `<div class="qerr">
+    <div class="qrh">🪲 Mistake log <span class="tag">${open.length} open · re-attempt one in each weekly review</span></div>
+    <div class="qerr-in"><input id="errIn" placeholder="What tripped you up? e.g. forgot microtasks run before rAF" /><button class="btn sm" data-act="err-add">Log it</button></div>
+    ${open.slice(-6).reverse().map(e=>`<div class="qrv"><span>${esc(e.text)} <i style="color:var(--muted2)">· ${fmtDate(e.date)}${e.b!=null?` · Bucket ${e.b+1}`:""}</i></span><button class="btn ghost sm" data-act="err-fix" data-id="${e.id}">Fixed ✓</button></div>`).join("")}
+  </div>`;
+}
+
+function scorecardHTML(){
+  return `<div class="qscore"><div class="qsub" style="margin-bottom:6px">Boss scorecard — rate each round 1 (weak) to 4 (interview-grade). Under 3 average means that area goes into next week's review.</div>
+    ${SCORE_DIMS.map((d,i)=>`<div class="qsrow"><span>${d}</span><span class="qsbtns">${[1,2,3,4].map(v=>`<button class="${scoreDraft[i]===v?"on":""}" data-act="score" data-i="${i}" data-v="${v}">${v}</button>`).join("")}</span></div>`).join("")}
   </div>`;
 }
 
@@ -1928,49 +2105,53 @@ function mapHTML(){
     for(let n=w.from-1;n<w.to;n++){
       const q=QUEST[n], c=state.quest.cleared[n]; if(c) wc++;
       const st=c?"cleared":n===cur?"current":"locked";
-      const known=c||n<=cur+1;
-      nodes.push(`<button class="qnode ${st} ${q.boss?"boss":""} ${n===viewing?"viewing":""}" data-act="node" data-n="${n}" title="Bucket ${n+1} · ${known?escAttr(q.t):"???"}">
+      nodes.push(`<button class="qnode ${st} ${q.boss?"boss":""} ${n===viewing?"viewing":""}" data-act="node" data-n="${n}" title="Bucket ${n+1} · ${escAttr(q.t)} · ${fmtRange(q.w)}">
         <span class="qn">${q.boss||c?q.e:n+1}</span>${c?`<span class="qs">${"★".repeat(c.stars)}${"☆".repeat(3-c.stars)}</span>`:""}</button>`);
     }
     return `<div class="qworld" style="--wc:${w.color}"><div class="qwhead"><span>${w.ico} World ${w.n} · ${w.name}</span><span class="tag">${wc}/${w.to-w.from+1}</span></div><div class="qnodes">${nodes.join("")}</div></div>`;
   }).join("")+`</div>`;
 }
 
-function showClockBanner(){
-  if(state.quest.clockAck) return false;
-  const dn=dayNumber(state);
-  return dn>state.totalDays || (clearedCount(state)===0 && dn>3);
+function scheduleHTML(){
+  const cur=state.quest.cur, t=todayISO();
+  let html=`<div class="panel"><h2>📅 10-week schedule <span class="tag">Mon–Tue · Wed–Thu · Fri–Sun</span></h2><div class="qsched">`;
+  let wk=0;
+  QUEST.forEach((q,n)=>{
+    if(q.wk!==wk){ wk=q.wk;
+      const wq=QUEST.filter(x=>x.wk===wk);
+      html+=`<div class="qsw">Week ${wk} · ${fmtDate(wq[0].w[0])} – ${fmtDate(wq[wq.length-1].w[1])}</div>`;
+      if(wk===3) html+=`<div class="qsr travel">✈️ <span>Travel break · ${fmtDay(TRAVEL.from)} – ${fmtDay(TRAVEL.to)}</span></div>`;
+    }
+    const c=state.quest.cleared[n], mins=qCore(q).reduce((a,k)=>a+k.m,0);
+    const st=c?"✅":n===cur?"▶️":"○", now=t>=q.w[0]&&t<=q.w[1];
+    const sc=c&&c.score?` · scorecard ${avg(c.score).toFixed(1)}/4`:"";
+    html+=`<div class="qsr ${n===cur?"cur":""} ${now?"now":""}"><span class="qss">${st}</span><span class="qsd">${fmtRange(q.w)}</span>
+      <span class="qst">${q.e} ${esc(q.t)}${q.boss?" ⚔️":""}</span><span class="qsm">~${fmtMin(mins)}${c?` · ${"★".repeat(c.stars)}`:""}${sc}</span></div>`;
+  });
+  return html+`</div></div>`;
 }
 
 function renderToday(){
   const box=document.getElementById("todayView"); if(!box) return;
   const Q=state.quest, cur=Q.cur;
   let html="";
-  if(showClockBanner()){
-    html+=`<div class="qbanner">⏰ Your sprint clock started on <b>${fmtDate(state.startDate)}</b> (it's day ${dayNumber(state)} on that clock). Restart it from today, with the finish line on Dec 31?
-      <span class="qbanner-act"><button class="btn sm" data-act="clock-restart">Start today</button><button class="btn ghost sm" data-act="clock-keep">Keep it</button></span></div>`;
-  }
   if(cur>=QN && viewIdx==null){
-    html+=`<div class="panel qvictory"><div class="big">🏆</div><h2>All ${QN} days cleared.</h2>
+    html+=`<div class="panel qvictory"><div class="big">🏆</div><h2>All ${QN} buckets cleared.</h2>
       <div class="qblurb">${starsTotal(state)}/${QN*3} stars collected. You're iron-clad — go book those interviews.</div></div>`;
-    box.innerHTML=html; return;
+    box.innerHTML=html+warmupHTML()+mistakesHTML(); return;
   }
   const n=viewIdx!=null?viewIdx:cur, q=QUEST[n], w=worldOf(n);
   const core=qCore(q), doneCore=core.filter(qTaskDone).length;
   const pct=Math.round(doneCore/core.length*100);
   const left=core.filter(k=>!qTaskDone(k)).reduce((a,k)=>a+k.m,0);
   const cleared=Q.cleared[n];
-  const opened=Q.opened[n], daysOn=opened?daysBetween(opened,todayISO())+1:1;
   const R=38, CIRC=2*Math.PI*R;
 
-  const chips=[`<span class="qchip world">${w.ico} World ${w.n} · ${w.name}</span>`];
+  const chips=[`<span class="qchip world">${w.ico} World ${w.n} · ${w.name}</span>`, `<span class="qchip">📅 ${fmtRange(q.w)}</span>`];
   if(q.boss) chips.push(`<span class="qchip boss">⚔️ BOSS ROUND</span>`);
-  const studying=q.k.filter(k=>qLevel(k)===1).length;
   if(cleared) chips.push(`<span class="qchip ok">✅ Cleared ${"★".repeat(cleared.stars)}${"☆".repeat(3-cleared.stars)}</span>`);
   else if(n===cur){
     chips.push(`<span class="qchip">⏱ ${left?`~${fmtMin(left)} left`:"ready to clear"}</span>`);
-    if(studying) chips.push(`<span class="qchip carry">📖 ${studying} in progress</span>`);
-    if(daysOn>1) chips.push(`<span class="qchip">📌 Evening ${daysOn} on this bucket${daysOn<=3?" · Momentum ★ still possible":""}</span>`);
     chips.push(paceChip());
   }
 
@@ -1978,7 +2159,7 @@ function renderToday(){
     <div class="qchips">${chips.join("")}</div>
     <div class="qhero-main">
       <div class="qhero-text">
-        <span class="qday">Bucket ${n+1} of ${QN}</span>
+        <span class="qday">Week ${q.wk} · Bucket ${n+1} of ${QN}</span>
         <h2>${q.e} ${esc(q.t)}</h2>
         <div class="qblurb">${esc(q.b)}</div>
       </div>
@@ -1991,28 +2172,30 @@ function renderToday(){
     ${worldBarHTML(w,n)}
   </div>`;
 
-  if(n!==cur) html+=`<div style="margin-bottom:12px"><button class="btn ghost sm" data-act="back">← Back to today's bucket (Bucket ${cur+1})</button></div>`;
-  if(cleared) html+=`<div class="qcleared">✅ Cleared on ${fmtDate(cleared.date)} in ${cleared.days} day${cleared.days>1?"s":""} · ${cleared.stars}/3 stars${cleared.note?`<div class="qnote">“${esc(cleared.note)}”</div>`:""}</div>`;
+  if(n!==cur) html+=`<div style="margin-bottom:12px"><button class="btn ghost sm" data-act="back">← Back to your current bucket (Bucket ${cur+1})</button></div>`;
+  if(cleared) html+=`<div class="qcleared">✅ Cleared on ${fmtDate(cleared.date)} · ${cleared.stars}/3 stars${cleared.score?` · scorecard ${avg(cleared.score).toFixed(1)}/4`:""}${cleared.note?`<div class="qnote">“${esc(cleared.note)}”</div>`:""}</div>`;
 
-  if(!q.boss) html+=`<details class="qhow" id="qHow" ${(howOpen ?? (clearedCount(state)===0 && !q.k.some(k=>qLevel(k)>0)))?"open":""}><summary>How to cover a topic — and when it counts as ready</summary>
-    📖 Learn it (docs, article, video) → 🎯 do the drill → 🗣 explain it out loud. Tap once when you start studying, again when it's <b>interview-ready</b>:
-    you can do the drill and explain it in 2 minutes without notes. Aim for about 2 evenings per bucket.</details>`;
-  html+=`<div class="qtasks">${q.k.map(taskHTML).join("")}</div>`;
+  if(n===cur) html+=warmupHTML();
+  html+=`<details class="qhow" id="qHow" ${(howOpen ?? (clearedCount(state)===0 && !q.k.some(k=>qLevel(k)>0)))?"open":""}><summary>How this plan works — and when a topic counts as ready</summary>
+    <b>Week shape:</b> Mon–Tue and Wed–Thu are concept buckets (~75 min/evening, starting with the 10-min warm-up). Fri–Sun applies them: builds, designs, DSA and every second weekend a boss round. Friday evening is also your catch-up slot.<br>
+    <b>Each task shows its method and where to study it</b> — use only that resource. <b>Ready</b> means you did the drill closed-book and can explain it out loud in 2 minutes. Tap once when you start, again when it's ready.<br>
+    <b>Bad day?</b> Do only the warm-up — it keeps the streak and the memory alive. <b>Stuck 20+ min?</b> Look at the answer, log the gap in the mistake log, move on.</details>`;
+  html+=sessionsHTML(q,n);
 
   if(n===cur && !cleared){
     const ready=qCoreDone(q), remaining=core.length-doneCore;
     html+=`<div class="qclaim ${ready?"ready":""}">
       <h3>${ready?"🎉 Bucket complete — claim your stars":"🔒 Clear this bucket"}</h3>
-      <div class="qsub">${ready?"Write one line you'd say in an interview about today's topics — it earns the Mastery star."
-        :`${remaining} core task${remaining>1?"s":""} to go. Not done tonight? It'll be right here tomorrow.`}</div>
+      <div class="qsub">${ready?"One line you'd say in an interview about these topics — it earns the Mastery star."
+        :`${remaining} core task${remaining>1?"s":""} to go. Anything unfinished carries to the next evening — Friday is the catch-up slot.`}</div>
       <div class="qstars" id="qStars">${starsHTML(n)}</div>
-      ${ready?`<textarea id="qNote" placeholder="Today's takeaway, in one line…" style="margin-bottom:10px">${esc(noteDraft)}</textarea>`:""}
+      ${ready&&q.boss?scorecardHTML():""}
+      ${ready?`<textarea id="qNote" placeholder="Takeaway, in one line…" style="margin-bottom:10px">${esc(noteDraft)}</textarea>`:""}
       <button class="btn big ${ready?"glow":""}" data-act="claim" ${ready?"":"disabled"}>${ready?`⚔️ Clear Bucket ${n+1}`:`Clear Bucket ${n+1}`}</button>
     </div>`;
-    if(n+1<QN) html+=`<div class="qnext">Up next: Bucket ${n+2} · ${QUEST[n+1].e} ${esc(QUEST[n+1].t)} 🔒</div>`;
+    if(n+1<QN) html+=`<div class="qnext">Up next: ${fmtRange(QUEST[n+1].w)} · ${QUEST[n+1].e} ${esc(QUEST[n+1].t)}</div>`;
   }
-
-  html+=recallHTML();
+  html+=mistakesHTML();
   box.innerHTML=html;
 }
 
@@ -2037,7 +2220,7 @@ function renderAppbar(){
 function renderMapView(){
   const box=document.getElementById("mapView"); if(!box) return;
   const cur=state.quest.cur, w=worldOf(Math.min(cur,QN-1)), L=levelInfo(state);
-  const dn=dayNumber(state), left=Math.max(0,state.totalDays-dn+1);
+  const left=Math.max(0, daysBetween(todayISO(), TARGET_END)+1);
   box.innerHTML=`<div class="panel qmaphead" style="--wc:${w.color}">
       <div><div class="qday">You are here</div>
         <h2>${cur>=QN?"🏆 Quest complete":`${w.ico} World ${w.n} · ${w.name}`}</h2>
@@ -2046,9 +2229,9 @@ function renderMapView(){
         <div><b>${clearedCount(state)}/${QN}</b><span>buckets</span></div>
         <div><b>${starsTotal(state)}</b><span>stars</span></div>
         <div><b>${left}</b><span>days to Dec 31</span></div>
-        <div><b>${L.x.toLocaleString()}</b><span>${esc(L.cur.name)}</span></div>
+        <div><b>${state.quest.srsN}</b><span>reviews nailed</span></div>
       </div>
-    </div>`+mapHTML();
+    </div>`+mapHTML()+scheduleHTML();
 }
 
 // one delegated listener for the whole Today view
@@ -2066,26 +2249,25 @@ function renderMapView(){
       render(); checkNewAchievements();
     } else if(act==="claim"){ claimBucket(); }
     else if(act==="back"){ viewIdx=null; render(); window.scrollTo({top:0,behavior:"smooth"}); }
-    else if(act==="node"){
-      const n=+el.dataset.n;
-      if(state.quest.cleared[n] || n===state.quest.cur){ viewIdx=(n===state.quest.cur)?null:n; render(); window.scrollTo({top:0,behavior:"smooth"}); }
-      else toast("🔒","Locked",`Clear Bucket ${state.quest.cur+1} first`);
-    } else if(act==="recall"){
-      const key=el.dataset.key, res=el.dataset.res;
-      state.quest.recall[todayISO()]={key,res};
-      const rv=state.quest.revisit;
-      if(res==="shaky" && !rv.includes(key)) rv.push(key);
-      if(res==="nailed"){ state.quest.revisit=rv.filter(x=>x!==key); floatXp(el,"+15 XP"); }
-      render(); checkNewAchievements();
-    } else if(act==="revisit-done"){
-      state.quest.revisit=state.quest.revisit.filter(x=>x!==el.dataset.key); render();
-    } else if(act==="clock-restart"){
-      state.startDate=todayISO(); state.totalDays=daysToTarget(state.startDate); state.quest.clockAck=true; render(); toast("⏰","Clock restarted",`${state.totalDays} days to the Dec 31 finish line`);
-    } else if(act==="clock-keep"){ state.quest.clockAck=true; render(); }
+    else if(act==="srs"){
+      const nailed=el.dataset.res==="1"; if(nailed) floatXp(el,"+10 XP");
+      srsGrade(el.dataset.key, nailed); render(); checkNewAchievements();
+    } else if(act==="err-add"){
+      const inp=document.getElementById("errIn"), text=(inp&&inp.value||"").trim(); if(!text) return;
+      const b=viewIdx!=null?viewIdx:Math.min(state.quest.cur,QN-1);
+      state.quest.errors.push({id:"e"+Date.now(), date:todayISO(), text, b, fixed:false}); render();
+    } else if(act==="err-fix"){
+      const e=state.quest.errors.find(x=>x.id===el.dataset.id); if(e){ e.fixed=true; e.fixedOn=todayISO(); } render();
+    } else if(act==="score"){
+      scoreDraft[+el.dataset.i]=+el.dataset.v;
+      const n=state.quest.cur; el.closest(".qscore").outerHTML=scorecardHTML();
+      const s=document.getElementById("qStars"); if(s) s.innerHTML=starsHTML(n);
+    }
   });
   box.addEventListener("input", e=>{
     if(e.target.id==="qNote"){ noteDraft=e.target.value; const s=document.getElementById("qStars"); if(s) s.innerHTML=starsHTML(state.quest.cur); }
   });
+  box.addEventListener("keydown", e=>{ if(e.target.id==="errIn" && e.key==="Enter"){ e.preventDefault(); box.querySelector('[data-act="err-add"]').click(); } });
 })();
 
 document.getElementById("mapView").addEventListener("click", e=>{
@@ -2097,6 +2279,16 @@ document.getElementById("mapView").addEventListener("click", e=>{
 document.getElementById("navToday").addEventListener("click",()=>{ if(viewIdx!=null){ viewIdx=null; if(state.view==="today") render(); } });
 // remember the how-to box open/closed across re-renders ('toggle' doesn't bubble → capture)
 document.getElementById("todayView").addEventListener("toggle", e=>{ if(e.target.id==="qHow") howOpen=e.target.open; }, true);
+
+// ---- Stats page: resource parking lot ----
+function renderParking(){
+  const box=document.getElementById("parkList"); if(!box) return;
+  box.innerHTML=(state.parking||[]).map((p,i)=>`<div class="qrv"><span>${esc(p.text)} <i style="color:var(--muted2)">· parked ${fmtDate(p.date)}</i></span><button class="btn ghost sm" data-park="${i}">✕</button></div>`).join("")
+    || `<div class="empty">Nothing parked. Found a shiny new course? Park it here and get back to tonight's bucket.</div>`;
+}
+document.getElementById("parkAdd").onclick=()=>{ const i=document.getElementById("parkIn"), v=i.value.trim(); if(!v) return; state.parking.push({text:v,date:todayISO()}); i.value=""; renderParking(); save(); };
+document.getElementById("parkIn").addEventListener("keydown",e=>{ if(e.key==="Enter") document.getElementById("parkAdd").click(); });
+document.getElementById("parkList").addEventListener("click",e=>{ const b=e.target.closest("[data-park]"); if(!b) return; state.parking.splice(+b.dataset.park,1); renderParking(); save(); });
 
 function floatXp(el,text){
   const r=el.getBoundingClientRect();
